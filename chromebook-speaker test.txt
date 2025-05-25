@@ -19,81 +19,62 @@
     button {
       font-size: 18px;
       margin: 10px;
-      padding: 12px 24px;
+      padding: 10px 20px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
+      cursor: pointer;
       background-color: #4CAF50;
       color: white;
-      cursor: pointer;
-      transition: background-color 0.2s;
     }
 
-    button:hover {
-      background-color: #45a049;
+    .nav {
+      margin-top: 50px;
     }
 
-    button.active {
-      background-color: #A5D6A7;
-      color: black;
-    }
-
-    audio {
-      display: none;
+    .nav button {
+      background-color: #2f4f4f;
     }
   </style>
 </head>
 <body>
+  <h1>スピーカーテスト</h1>
 
-  <h1>🔊 スピーカーテスト</h1>
+  <button onclick="playAudio('left')">1. 左スピーカー</button>
+  <button onclick="playAudio('right')">2. 右スピーカー</button>
+  <button onclick="playAudio('center')">3. 左右スピーカー</button>
 
-  <button onclick="toggleAudio('left', this)">1. 左 スピーカー</button>
-  <button onclick="toggleAudio('right', this)">2. 右 スピーカー</button>
-  <br>
-  <button onclick="toggleAudio('center', this)">3. 左右 スピーカー</button>
+  <div class="nav">
+    <button onclick="playAudio('prev')">⬅ 前のテスト</button>
+    <button onclick="playAudio('home')">🏠 ホーム</button>
+    <button onclick="playAudio('next')">次のテスト ➡</button>
+  </div>
 
-  <audio id="left" src="left-speaker.mp3"></audio>
-  <audio id="right" src="right-speaker.mp3"></audio>
-  <audio id="center" src="center-speaker.mp3"></audio>
+  <!-- 오디오 요소들 -->
+  <audio id="left" src="../media/audio/left-speaker.mp3"></audio>
+  <audio id="right" src="../media/audio/right-speaker.mp3"></audio>
+  <audio id="center" src="../media/audio/center-speaker.mp3"></audio>
+  <audio id="home" src="../media/audio/home-button-sound.mp3"></audio>
+  <audio id="next" src="../media/audio/next-button-sound.mp3"></audio>
+  <audio id="prev" src="../media/audio/previous-button-sound.mp3"></audio>
 
   <script>
-    let currentAudio = null;
-    let currentButton = null;
-
-    function toggleAudio(id, button) {
-      const audio = document.getElementById(id);
-
-      // 같은 버튼 다시 누름 → 정지
-      if (currentAudio === audio && !audio.paused) {
-        audio.pause();
-        audio.currentTime = 0;
-        currentAudio = null;
-        currentButton.classList.remove("active");
-        currentButton = null;
-        return;
-      }
-
-      // 기존 오디오 정지
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
-      if (currentButton) {
-        currentButton.classList.remove("active");
-      }
-
-      // 새로 재생
-      currentAudio = audio;
-      currentButton = button;
-
-      audio.play().then(() => {
-        button.classList.add("active");
-      }).catch(err => {
-        alert("再生できませんでした: " + err);
+    function playAudio(id) {
+      const sounds = ['left', 'right', 'center', 'home', 'next', 'prev'];
+      sounds.forEach(s => {
+        const audio = document.getElementById(s);
+        if (audio) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
       });
 
-      // ✅ 버튼 색상 유지: 끝나도 active 클래스 제거하지 않음
+      const target = document.getElementById(id);
+      if (target) {
+        target.play().catch(err => {
+          alert("再生できませんでした: " + err.message);
+        });
+      }
     }
   </script>
-
 </body>
 </html>
