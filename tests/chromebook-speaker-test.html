@@ -23,119 +23,56 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-    }
-
-    /* テスト用ボタン色・緑 */
-    .test-button {
       background-color: #4CAF50;
       color: white;
     }
 
-    .test-button.active {
-      background-color: #A5D6A7;
-      color: black;
+    .nav {
+      margin-top: 50px;
     }
 
-    /* ナビゲーションボタン色・青灰 */
-    .nav-buttons button {
-      background-color: #607D8B;
-      color: white;
-    }
-
-    .nav-buttons button:hover {
-      background-color: #455A64;
-    }
-
-    .nav-buttons {
-      margin-top: 40px;
-    }
-
-    audio {
-      display: none;
+    .nav button {
+      background-color: #2f4f4f;
     }
   </style>
 </head>
 <body>
+  <h1>スピーカーテスト</h1>
 
-  <h1>スピーカーテスト🔊 </h1>
+  <button onclick="playAudio('left')">1. 左スピーカー</button>
+  <button onclick="playAudio('right')">2. 右スピーカー</button>
+  <button onclick="playAudio('center')">3. 左右スピーカー</button>
 
-  <button class="test-button" onclick="toggleAudio('left', this)">1. 左 スピーカー</button>
-  <button class="test-button" onclick="toggleAudio('right', this)">2. 右 スピーカー</button>
-  <br>
-  <button class="test-button" onclick="toggleAudio('center', this)">3. 左右 スピーカー</button>
-
-  <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
-
-  <div class="nav-buttons">
-    <button onclick="playAndNavigate('sound-previous', 'keyboard-test.html')">⬅ 前のテスト</button>
-    <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
-    <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
+  <div class="nav">
+    <button onclick="playAudio('prev')">⬅ 前のテスト</button>
+    <button onclick="playAudio('home')">🏠 ホーム</button>
+    <button onclick="playAudio('next')">次のテスト ➡</button>
   </div>
 
-  <!-- 🔈 スピーカーテスト用サウンド -->
-  <audio id="left" src="../media/audio/left-speaker.mp3"></audio>
-  <audio id="right" src="../media/audio/right-speaker.mp3"></audio>
-  <audio id="center" src="../media/audio/center-speaker.mp3"></audio>
-
-  <!-- 🎵 ボタン効果音 -->
-  <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
-  <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
-  <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+  <!-- 오디오 요소들 -->
+  <audio id="left" src="../media/left-speaker.mp3"></audio>
+  <audio id="right" src="../media/right-speaker.mp3"></audio>
+  <audio id="center" src="../media/center-speaker.mp3"></audio>
+  <audio id="home" src="../media/home-button-sound.mp3"></audio>
+  <audio id="next" src="../media/next-button-sound.mp3"></audio>
+  <audio id="prev" src="../media/previous-button-sound.mp3"></audio>
 
   <script>
-    let currentAudio = null;
-    let currentButton = null;
-
-    function toggleAudio(id, button) {
-      const audio = document.getElementById(id);
-
-      // 同じボタンを再度押したら停止
-      if (currentAudio === audio && !audio.paused) {
+    function playAudio(id) {
+      const sounds = ['left', 'right', 'center', 'home', 'next', 'prev'];
+      sounds.forEach(s => {
+        const audio = document.getElementById(s);
         audio.pause();
         audio.currentTime = 0;
-        currentAudio = null;
-        currentButton.classList.remove("active");
-        currentButton = null;
-        return;
-      }
-
-      // それ以外は旧オーディオ停止
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
-      if (currentButton) {
-        currentButton.classList.remove("active");
-      }
-
-      // 新しく再生
-      currentAudio = audio;
-      currentButton = button;
-
-      audio.play().then(() => {
-        button.classList.add("active");
-      }).catch(err => {
-        alert("\u518d\u751f\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f: " + err);
       });
-    }
 
-    function playAndNavigate(soundId, nextPage) {
-      const audio = document.getElementById(soundId);
-      if (!audio) {
-        location.href = nextPage;
-        return;
+      const target = document.getElementById(id);
+      if (target) {
+        target.play().catch(err => {
+          alert("再生できませんでした: " + err.message);
+        });
       }
-
-      audio.currentTime = 0;
-      audio.play().then(() => {
-        setTimeout(() => {
-          location.href = nextPage;
-        }, 400);
-      }).catch(() => {
-        location.href = nextPage;
-      });
     }
   </script>
-
 </body>
 </html>
