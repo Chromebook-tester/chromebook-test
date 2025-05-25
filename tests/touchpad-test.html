@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>トラックパッドテスト</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #fdfdfd;
+      font-family: sans-serif;
+      position: relative;
+    }
+
+    #coords {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 18px;
+      color: #333;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 5px 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    #cursor {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: rgba(0, 150, 255, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      transition: transform 0.03s linear;
+    }
+
+    .click-dot {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.8;
+      animation: fadeOut 0.5s forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(6);
+      }
+      
+    }
+
+    .title {
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 6px 12px;
+  border-radius: 6px;
+  z-index: 101;
+}
+
+  </style>
+</head>
+<body>
+<div id="title" class="title">➀タッチパッドテスト</div>
+
+  <div id="coords">X: 0 / Y: 0</div>
+  <div id="cursor"></div>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const coords = document.getElementById('coords');
+
+    document.addEventListener('mousemove', function(e) {
+      coords.textContent = `X: ${e.clientX} / Y: ${e.clientY}`;
+      cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+    });
+
+    document.addEventListener('click', function(e) {
+      createClickDot(e.clientX, e.clientY, 'rgba(0, 150, 255, 0.7)'); // 파란 점 (좌클릭)
+    });
+
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault(); // 우클릭 메뉴 막기
+      createClickDot(e.clientX, e.clientY, 'orange'); // 주황 점 (우클릭)
+    });
+
+    function createClickDot(x, y, color) {
+      const dot = document.createElement('div');
+      dot.classList.add('click-dot');
+      dot.style.left = `${x - 10}px`;
+      dot.style.top = `${y - 10}px`;
+      dot.style.backgroundColor = color;
+      document.body.appendChild(dot);
+
+      setTimeout(() => {
+        document.body.removeChild(dot);
+      }, 500);
+    }
+  </script>
+
+</body>
+</html>
+
+<!-- ✅ 내비게이션 버튼 3개 + 사운드 + 스타일 완전 동일 템플릿 -->
+<hr id="nav-line">
+
+
+<div class="nav-buttons">
+  <button onclick="playAndNavigate('sound-previous', 'youtube-test.html')">⬅ 前のテスト</button>
+  <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+  <button onclick="playAndNavigate('sound-next', 'speaker-test.html')">次のテスト ➡</button>
+</div>
+
+<!-- 🎵 버튼 사운드 (중복되면 생략 가능) -->
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+<!-- 🎨 버튼 스타일 (speaker-test.html과 완전 동일) -->
+<style>
+
+  #nav-line {
+  position: fixed;
+  bottom: 160px; /* 버튼보다 위에 */
+  width: 60%;
+  border: 1px solid #ccc;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+}
+
+  .nav-buttons {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 100;
+}
+
+
+  .nav-buttons button {
+    background-color: #607D8B;
+    color: white;
+    font-size: 18px;
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .nav-buttons button:hover {
+    background-color: #455A64;
+  }
+
+  audio {
+    display: none;
+  }
+</style>
+
+<script>
+  function playAndNavigate(soundId, nextPage) {
+    const audio = document.getElementById(soundId);
+    if (!audio) {
+      location.href = nextPage;
+      return;
+    }
+
+    audio.currentTime = 0;
+    audio.play().then(() => {
+      setTimeout(() => {
+        location.href = nextPage;
+      }, 400);
+    }).catch(() => {
+      location.href = nextPage;
+    });
+  }
+</script>
+
