@@ -49,7 +49,7 @@
     <button onclick="playAudio('next')">次のテスト ➡</button>
   </div>
 
-  <!-- 오디오 요소들 -->
+  <!-- 오디오 요소들 (경로만 수정됨) -->
   <audio id="left" src="../media/audio/left-speaker.mp3"></audio>
   <audio id="right" src="../media/audio/right-speaker.mp3"></audio>
   <audio id="center" src="../media/audio/center-speaker.mp3"></audio>
@@ -62,10 +62,8 @@
       const sounds = ['left', 'right', 'center', 'home', 'next', 'prev'];
       sounds.forEach(s => {
         const audio = document.getElementById(s);
-        if (audio) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
+        audio.pause();
+        audio.currentTime = 0;
       });
 
       const target = document.getElementById(id);
