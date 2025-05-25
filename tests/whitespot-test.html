@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>➁LCDホワイトスポットテスト</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: white;
+      font-family: sans-serif;
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .title {
+      position: fixed;
+      top: 70px;
+      font-size: 30px;
+      font-weight: bold;
+      color: #333;
+      z-index: 10;
+    }
+
+    .start-button {
+      position: absolute;
+      top: 160px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 100px;
+      width: 120px;
+      height: 120px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+
+    .nav-buttons {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .nav-buttons button {
+      background-color: #607D8B;
+      color: white;
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #455A64;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="title" class="title">➁LCDホワイトスポットテスト</div>
+  <button id="start" class="start-button">スタート</button>
+
+  <!-- ✅ 내비게이션 버튼 -->
+  <div id="nav" class="nav-buttons">
+    <button onclick="playAndNavigate('sound-previous', '<<< 이전 페이지 경로 >>>')">⬅ 前のテスト</button>
+    <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+    <button onclick="playAndNavigate('sound-next', '<<< 다음 페이지 경로 >>>')">次のテスト ➡</button>
+  </div>
+
+  <!-- 🎵 버튼 사운드 -->
+  <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+  <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+  <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+  <script>
+    const colors = ['red', 'green', 'white', 'blue', 'black'];
+    let currentIndex = -1;
+    let testStarted = false;
+
+    function startTest() {
+      document.getElementById("start").classList.add("hidden");
+      document.getElementById("title").classList.add("hidden");
+      document.getElementById("nav").classList.add("hidden");
+      testStarted = true;
+      currentIndex = -1;
+      document.body.style.backgroundColor = "white";
+      document.body.style.cursor = "none";
+    }
+
+    function endTest() {
+      document.getElementById("start").classList.remove("hidden");
+      document.getElementById("title").classList.remove("hidden");
+      document.getElementById("nav").classList.remove("hidden");
+      document.body.style.backgroundColor = "white";
+      document.body.style.cursor = "default";
+      testStarted = false;
+      currentIndex = -1;
+    }
+
+    function showNextColor() {
+      if (!testStarted) return;
+
+      currentIndex++;
+
+      if (currentIndex >= colors.length) {
+        endTest(); // 검정색 다음: 초기 화면으로 복귀
+      } else {
+        document.body.style.backgroundColor = colors[currentIndex];
+      }
+    }
+
+    function playAndNavigate(soundId, nextPage) {
+      const audio = document.getElementById(soundId);
+      if (!audio) {
+        location.href = nextPage;
+        return;
+      }
+
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        setTimeout(() => {
+          location.href = nextPage;
+        }, 400);
+      }).catch(() => {
+        location.href = nextPage;
+      });
+    }
+
+    document.getElementById("start").addEventListener("click", startTest);
+    document.body.addEventListener("click", showNextColor);
+    document.body.addEventListener("touchstart", showNextColor);
+  </script>
+
+</body>
+</html>
