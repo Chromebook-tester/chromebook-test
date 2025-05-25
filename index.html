@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Chromebook テストホーム</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f0f8ff;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      font-size: 18px;
+    }
+
+    li {
+      margin: 12px 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2196F3;
+      border: 1px solid #2196F3;
+      border-radius: 6px;
+      padding: 10px 20px;
+      display: inline-block;
+      width: 320px;
+      transition: 0.2s;
+    }
+
+    a:hover {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .summary-link {
+      margin-top: 40px;
+      display: inline-block;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1> Chromebook テストホーム </h1>
+
+  <ul id="test-list"></ul>
+
+  <a href="summary.html" class="summary-link">📄 テスト結果まとめへ</a>
+
+  <script>
+    window.onload = function () {
+      const testList = [
+        { id: "test_touch", label: " 1. LCDタッチテスト👆", file: "touchscreen-test.html" },
+        { id: "test_white", label: " 2. LCDホワイトスポットテスト⚪", file: "whitespot-test.html" },
+        { id: "test_rotate", label: "3. 画面回転テスト🔄", file: "rotation-test.html" },
+        { id: "test_speaker", label: "4. スピーカーテスト🔊", file: "speaker-test.html" },
+        { id: "test_keyboard", label: "5. キーボードテスト⌨", file: "keyboard-test.html" },
+        { id: "test_sleep", label: " 6. スリープテスト🌙", file: "sleep-test.html" },
+        { id: "test_camera", label: "7. カメラテスト📷", file: "camera-test.html" },
+        { id: "test_youtube", label: "8. YouTube接続テスト🌐", file: "youtube-test.html" },
+        { id: "test_speed", label: "9. インターネットスピードテスト🚀", file: "speed-test.html" }
+      ];
+
+      const list = document.getElementById("test-list");
+      testList.forEach(test => {
+        const li = document.createElement("li");
+        const status = localStorage.getItem(test.id) === "done" ? " ✅ 完了" : "";
+        li.innerHTML = `<a href="tests/${test.file}">${test.label}${status}</a>`;
+        list.appendChild(li);
+      });
+    }
+  </script>
+
+</body>
+</html>

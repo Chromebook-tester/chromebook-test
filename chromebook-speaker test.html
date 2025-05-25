@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スピーカーテスト</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* 테스트용 버튼 색상 (초록) */
+    .test-button {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .test-button.active {
+      background-color: #A5D6A7;
+      color: black;
+    }
+
+    /* 이전/홈/다음 버튼 색상 (블루그레이) */
+    .nav-buttons button {
+      background-color: #607D8B;
+      color: white;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #455A64;
+    }
+
+    .nav-buttons {
+      margin-top: 40px;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔊 スピーカーテスト</h1>
+
+  <button class="test-button" onclick="toggleAudio('left', this)">1. 左 スピーカー</button>
+  <button class="test-button" onclick="toggleAudio('right', this)">2. 右 スピーカー</button>
+  <br>
+  <button class="test-button" onclick="toggleAudio('center', this)">3. 左右 スピーカー</button>
+
+  <div class="nav-buttons">
+    <button onclick="location.href='keyboard-test.html'">⬅ 前へ</button>
+    <button onclick="location.href='index.html'">🏠 ホーム</button>
+    <button onclick="location.href='youtube-test.html'">次へ ➡</button>
+  </div>
+
+  <audio id="left" src="left-speaker.mp3"></audio>
+  <audio id="right" src="right-speaker.mp3"></audio>
+  <audio id="center" src="center-speaker.mp3"></audio>
+
+  <script>
+    let currentAudio = null;
+    let currentButton = null;
+
+    function toggleAudio(id, button) {
+      const audio = document.getElementById(id);
+
+      // 같은 버튼 다시 누르면 정지
+      if (currentAudio === audio && !audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+        currentAudio = null;
+        currentButton.classList.remove("active");
+        currentButton = null;
+        return;
+      }
+
+      // 기존 오디오 정지
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+      if (currentButton) {
+        currentButton.classList.remove("active");
+      }
+
+      // 새로 재생
+      currentAudio = audio;
+      currentButton = button;
+
+      audio.play().then(() => {
+        button.classList.add("active");
+      }).catch(err => {
+        alert("再生できませんでした: " + err);
+      });
+    }
+  </script>
+
+</body>
+</html>
