@@ -2,41 +2,49 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>トラックパッドテスト</title>
+  <title>トラックパッドクリックテスト</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #fdfdfd;
+    body {
       font-family: sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      padding: 40px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+.click-message {
+  font-size: 16px;
+  color: #555;
+  margin-top: -10px;
+  margin-bottom: 30px;
+}
+
+    .trackpad-wrapper {
       position: relative;
+      width: 480px;
+      margin: 0 auto;
     }
 
-    #coords {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      font-size: 18px;
-      color: #333;
-      background: rgba(255, 255, 255, 0.7);
-      padding: 5px 10px;
-      border-radius: 6px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      z-index: 100;
+    .trackpad-img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
 
-    #cursor {
+    .area {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: rgba(0, 150, 255, 0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      transition: transform 0.03s linear;
+      top: 0;
+      bottom: 0;
+      width: 33.33%;
+      background-color: rgba(0,0,0,0);
     }
+
+    .area.left   { left: 0; }
+    .area.center { left: 33.33%; }
+    .area.right  { left: 66.66%; }
 
     .click-dot {
       position: absolute;
@@ -47,6 +55,7 @@
       z-index: 99;
       opacity: 0.8;
       animation: fadeOut 0.5s forwards;
+      background-color: orange;
     }
 
     @keyframes fadeOut {
@@ -54,142 +63,163 @@
         opacity: 0;
         transform: scale(6);
       }
-      
     }
 
-    .title {
-  position: fixed;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 6px 12px;
-  border-radius: 6px;
-  z-index: 101;
-}
+    .counter-wrapper {
+      margin-top: 30px;
+      font-size: 20px;
+      display: flex;
+      justify-content: space-around;
+      width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
+    .counter-box {
+      font-weight: bold;
+    }
+
+    /* 좌표 표시 박스 */
+    #coords {
+      position: fixed;
+      top: 300px;
+      left: 600px;
+      font-size: 18px;
+      color: #333;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 5px 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      z-index: 200;
+    }
+
+    /* 내비게이션 버튼 스타일 */
+    #nav-line {
+      position: fixed;
+      bottom: 160px;
+      width: 60%;
+      border: 1px solid #ccc;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99;
+    }
+
+    .nav-buttons {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .nav-buttons button {
+      background-color: #607D8B;
+      color: white;
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #455A64;
+    }
+
+    audio {
+      display: none;
+    }
   </style>
 </head>
 <body>
-<div id="title" class="title">➀タッチパッドテスト</div>
+  
 
+  <h1>➁ タッチパッドクリックテスト</h1>
+
+<p class="click-message">各領域を10回以上クリックしてくださいネ。</p>
+
+</p>
   <div id="coords">X: 0 / Y: 0</div>
-  <div id="cursor"></div>
+
+  <div class="trackpad-wrapper">
+    <img src="../media/images/trackpad-image.PNG" alt="トラックパッド" class="trackpad-img">
+
+    <div class="area left"   onclick="handleClick(event, 'left')"></div>
+    <div class="area center" onclick="handleClick(event, 'center')"></div>
+    <div class="area right"  onclick="handleClick(event, 'right')"></div>
+  </div>
+
+  <div class="counter-wrapper">
+    <div class="counter-box">左: <span id="count-left">0</span> 回</div>
+    <div class="counter-box">中央: <span id="count-center">0</span> 回</div>
+    <div class="counter-box">右: <span id="count-right">0</span> 回</div>
+  </div>
+
+</p>
+  <hr id="nav-line">
+  <div class="nav-buttons">
+    <button onclick="playAndNavigate('sound-previous', 'youtube-test.html')">⬅ 前のテスト</button>
+    <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+    <button onclick="playAndNavigate('sound-next', 'speaker-test.html')">次のテスト ➡</button>
+  </div>
+
+  <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+  <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+  <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
 
   <script>
-    const cursor = document.getElementById('cursor');
-    const coords = document.getElementById('coords');
+    const counts = {
+      left: 0,
+      center: 0,
+      right: 0
+    };
 
-    document.addEventListener('mousemove', function(e) {
-      coords.textContent = `X: ${e.clientX} / Y: ${e.clientY}`;
-      cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
-    });
+    function handleClick(event, area) {
+      const wrapper = document.querySelector('.trackpad-wrapper');
+      const rect = wrapper.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-    document.addEventListener('click', function(e) {
-      createClickDot(e.clientX, e.clientY, 'rgba(0, 150, 255, 0.7)'); // 파란 점 (좌클릭)
-    });
+      createClickDot(rect.left + x, rect.top + y);
+      counts[area]++;
+      document.getElementById(`count-${area}`).textContent = counts[area];
+    }
 
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault(); // 우클릭 메뉴 막기
-      createClickDot(e.clientX, e.clientY, 'orange'); // 주황 점 (우클릭)
-    });
-
-    function createClickDot(x, y, color) {
+    function createClickDot(x, y) {
       const dot = document.createElement('div');
       dot.classList.add('click-dot');
       dot.style.left = `${x - 10}px`;
       dot.style.top = `${y - 10}px`;
-      dot.style.backgroundColor = color;
       document.body.appendChild(dot);
-
-      setTimeout(() => {
-        document.body.removeChild(dot);
-      }, 500);
+      setTimeout(() => dot.remove(), 500);
     }
+
+    function playAndNavigate(soundId, nextPage) {
+      const audio = document.getElementById(soundId);
+      if (!audio) {
+        location.href = nextPage;
+        return;
+      }
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        setTimeout(() => {
+          location.href = nextPage;
+        }, 400);
+      }).catch(() => {
+        location.href = nextPage;
+      });
+    }
+
+    // 👉 좌표 표시 기능 추가!
+    const coords = document.getElementById('coords');
+    document.addEventListener('mousemove', function(e) {
+      coords.textContent = `X: ${e.clientX} / Y: ${e.clientY}`;
+    });
   </script>
 
 </body>
 </html>
-
-<!-- ✅ 내비게이션 버튼 3개 + 사운드 + 스타일 완전 동일 템플릿 -->
-<hr id="nav-line">
-
-
-<div class="nav-buttons">
-  <button onclick="playAndNavigate('sound-previous', 'youtube-test.html')">⬅ 前のテスト</button>
-  <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
-  <button onclick="playAndNavigate('sound-next', 'speaker-test.html')">次のテスト ➡</button>
-</div>
-
-<!-- 🎵 버튼 사운드 (중복되면 생략 가능) -->
-<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
-<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
-<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
-
-<!-- 🎨 버튼 스타일 (speaker-test.html과 완전 동일) -->
-<style>
-
-  #nav-line {
-  position: fixed;
-  bottom: 160px; /* 버튼보다 위에 */
-  width: 60%;
-  border: 1px solid #ccc;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99;
-}
-
-  .nav-buttons {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  z-index: 100;
-}
-
-
-  .nav-buttons button {
-    background-color: #607D8B;
-    color: white;
-    font-size: 18px;
-    margin: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .nav-buttons button:hover {
-    background-color: #455A64;
-  }
-
-  audio {
-    display: none;
-  }
-</style>
-
-<script>
-  function playAndNavigate(soundId, nextPage) {
-    const audio = document.getElementById(soundId);
-    if (!audio) {
-      location.href = nextPage;
-      return;
-    }
-
-    audio.currentTime = 0;
-    audio.play().then(() => {
-      setTimeout(() => {
-        location.href = nextPage;
-      }, 400);
-    }).catch(() => {
-      location.href = nextPage;
-    });
-  }
-</script>
-
