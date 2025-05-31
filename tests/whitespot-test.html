@@ -78,8 +78,11 @@
 </head>
 <body>
 
-  <div id="title" class="title">➁LCDホワイトスポットテスト</div>
+  <div id="title" class="title">LCDホワイトスポットテスト</div>
   <button id="start" class="start-button">スタート</button>
+  <button id="start" class="start-button">スタート</button>
+
+ 
 
   <!-- ✅ 내비게이션 버튼 -->
   <div id="nav" class="nav-buttons">
@@ -149,7 +152,10 @@
 
     document.getElementById("start").addEventListener("click", startTest);
     document.body.addEventListener("click", showNextColor);
-    document.body.addEventListener("touchstart", showNextColor);
+    document.body.addEventListener("touchstart", (e) => {
+  e.preventDefault();       // 브라우저의 기본 동작(예: click 발생) 방지
+  showNextColor();          // 직접 호출
+}, { passive: false });     // preventDefault 쓸 땐 이 옵션 꼭 필요
   </script>
 
 </body>
