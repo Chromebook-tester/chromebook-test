@@ -160,11 +160,8 @@
     document.body.addEventListener("touchstart", () => {
       if (touchUsed) return;
 
-      // 💡 click 이벤트보다 너무 빨리 true 되지 않도록 살짝 딜레이
-      setTimeout(() => {
-        touchUsed = true;
-      }, 10);
-
+  
+ 
       showNextColor();
 
       // ⏱️ 민감도 설정: 1000ms 동안 다시 못 누르게
