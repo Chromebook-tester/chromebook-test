@@ -151,11 +151,24 @@
     }
 
     document.getElementById("start").addEventListener("click", startTest);
-    document.body.addEventListener("click", showNextColor);
-    document.body.addEventListener("touchstart", (e) => {
-  e.preventDefault();       // 브라우저의 기본 동작(예: click 발생) 방지
-  showNextColor();          // 직접 호출
-}, { passive: false });     // preventDefault 쓸 땐 이 옵션 꼭 필요
+    let touchUsed = false;
+
+
+
+
+document.body.addEventListener("click", () => {
+  if (touchUsed) return;
+  showNextColor();
+});
+
+document.body.addEventListener("touchstart", () => {
+  touchUsed = true;
+  showNextColor();
+  setTimeout(() => {
+    touchUsed = false;
+  }, 1000);
+});
+
   </script>
 
 </body>
