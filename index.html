@@ -58,38 +58,34 @@
   <a href="summary.html" class="summary-link">📄 テスト結果まとめへ</a>
 
   <script>
- window.onload = function () {
-  const testList = [
-    { id: "test_touch", label: " 1.タッチパットテスト👆", file: "touchpad-test.html" },
-    { id: "test_white", label: " 2. LCDホワイトスポットテスト⚪", file: "whitespot-test.html" },
-    { id: "test_rotate", label: "3. 画面回転テスト🔄", file: "rotation-test.html" },
-    { id: "test_speaker", label: "4. スピーカーテスト🔊", file: "speaker-test.html" },
-    { id: "test_keyboard", label: "5. キーボードテスト⌨", file: "keyboard-test.html" },
-    { id: "test_sleep", label: " 6. スリープテスト🌙", file: "sleep-test.html" },
-    { id: "test_camera", label: "7. カメラテスト📷", file: "camera-test.html" },
-    { id: "test_youtube", label: "8. YouTube接続テスト🌐", file: "youtube-test.html" },
-    { id: "test_speed", label: "9. インターネットスピードテスト🚀", file: "speed-test.html" }
-  ];
+    window.onload = function () {
+      const testList = [
+        { id: "test_touch", label: "  タッチパットテスト👆", file: "touchpad-test.html" },
+        { id: "test_white", label: " LCDホワイトスポットテスト⚪", file: "whitespot-test.html" },
+        { id: "test_rotate", label: "画面回転テスト🔄", file: "rotation-test.html" },
+        { id: "test_speaker", label: "スピーカーテスト🔊", file: "speaker-test.html" },
+        { id: "test_keyboard", label: "キーボードテスト⌨", file: "keyboard-test.html" },
+        { id: "test_sleep", label: " スリープテスト🌙", file: "sleep-test.html" },
+        { id: "test_camera", label: "カメラテスト📷", file: "camera-test.html" },
+        { id: "test_youtube", label: "YouTube接続テスト🌐", file: "youtube-test.html" },
+        { id: "test_speed", label: "タッチ入力テスト📱", file: "touchscreen-test1.html" },
+        { id: "test_speed", label: "タッチペンテスト✏️ ", file: "speed-test.html" },
+        { id: "test_speed", label: "インジケーター🟢🔴🟡", file: "speed-test.html" },
+        { id: "test_speed", label: "シリアル番号確認🆔 ", file: "speed-test.html" },
+        { id: "test_speed", label: "MACアドレス確認📶", file: "speed-test.html" },
+        { id: "test_speed", label: "Bluetooth確認💙", file: "speed-test.html" },
+        { id: "test_speed", label: "本体を振ってください。異常音チェエク😫📢", file: "speed-test.html" },
+        { id: "test_speed", label: "ボトムケースのネジ数チェック🔩🪛", file: "speed-test.html" },
+      ];
 
-  const enabledIds = ["test_touch", "test_white", "test_speaker", "test_youtube"];
-  const list = document.getElementById("test-list");
-
-  testList.forEach(test => {
-    const li = document.createElement("li");
-    const status = localStorage.getItem(test.id) === "done" ? " ✅ 完了" : "";
-
-    if (enabledIds.includes(test.id)) {
-      // ✅ 활성화
-      li.innerHTML = `<a href="tests/${test.file}">${test.label}${status}</a>`;
-    } else {
-      // ❌ 비활성화
-      li.innerHTML = `<a style="pointer-events: none; opacity: 0.4; cursor: default;">${test.label}</a>`;
+      const list = document.getElementById("test-list");
+      testList.forEach(test => {
+        const li = document.createElement("li");
+        const status = localStorage.getItem(test.id) === "done" ? " ✅ 完了" : "";
+        li.innerHTML = `<a href="tests/${test.file}">${test.label}${status}</a>`;
+        list.appendChild(li);
+      });
     }
-
-    list.appendChild(li);
-  });
-};
-
   </script>
 
 </body>
