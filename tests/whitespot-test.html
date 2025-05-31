@@ -96,102 +96,85 @@
   <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
   <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
 
-  <script>
-    const colors = ['red', 'green', 'white', 'blue', 'black'];
-    let currentIndex = -1;
-    let testStarted = false;
+ <script>
+  const colors = ['red', 'green', 'white', 'blue', 'black'];
+  let currentIndex = -1;
+  let testStarted = false;
 
-    function startTest() {
-      document.getElementById("start").classList.add("hidden");
-      document.getElementById("title").classList.add("hidden");
-      document.getElementById("nav").classList.add("hidden");
-      testStarted = true;
-      currentIndex = -1;
-      document.body.style.backgroundColor = "white";
-      document.body.style.cursor = "none";
+  function startTest() {
+    document.getElementById("start").classList.add("hidden");
+    document.getElementById("title").classList.add("hidden");
+    document.getElementById("nav").classList.add("hidden");
+    testStarted = true;
+    currentIndex = -1;
+    document.body.style.backgroundColor = "white";
+    document.body.style.cursor = "none";
+  }
+
+  function endTest() {
+    document.getElementById("start").classList.remove("hidden");
+    document.getElementById("title").classList.remove("hidden");
+    document.getElementById("nav").classList.remove("hidden");
+    document.body.style.backgroundColor = "white";
+    document.body.style.cursor = "default";
+    testStarted = false;
+    currentIndex = -1;
+  }
+
+  function showNextColor() {
+    if (!testStarted) return;
+
+    currentIndex++;
+
+    if (currentIndex >= colors.length) {
+      endTest(); // 검정색 다음: 초기 화면으로 복귀
+    } else {
+      document.body.style.backgroundColor = colors[currentIndex];
+    }
+  }
+
+  function playAndNavigate(soundId, nextPage) {
+    const audio = document.getElementById(soundId);
+    if (!audio) {
+      location.href = nextPage;
+      return;
     }
 
-    function endTest() {
-      document.getElementById("start").classList.remove("hidden");
-      document.getElementById("title").classList.remove("hidden");
-      document.getElementById("nav").classList.remove("hidden");
-      document.body.style.backgroundColor = "white";
-      document.body.style.cursor = "default";
-      testStarted = false;
-      currentIndex = -1;
-    }
-
-    function showNextColor() {
-      if (!testStarted) return;
-
-      currentIndex++;
-
-      if (currentIndex >= colors.length) {
-        endTest(); // 검정색 다음: 초기 화면으로 복귀
-      } else {
-        document.body.style.backgroundColor = colors[currentIndex];
-      }
-    }
-
-    function playAndNavigate(soundId, nextPage) {
-      const audio = document.getElementById(soundId);
-      if (!audio) {
+    audio.currentTime = 0;
+    audio.play().then(() => {
+      setTimeout(() => {
         location.href = nextPage;
-        return;
-      }
+      }, 400);
+    }).catch(() => {
+      location.href = nextPage;
+    });
+  }
 
-      audio.currentTime = 0;
-      audio.play().then(() => {
-        setTimeout(() => {
-          location.href = nextPage;
-        }, 400);
-      }).catch(() => {
-        location.href = nextPage;
-      });
-    }
+  // ✅ 스타트 버튼 이벤트: 클릭 + 터치
+  document.getElementById("start").addEventListener("click", startTest);
+  document.getElementById("start").addEventListener("touchstart", (e) => {
+    e.preventDefault(); // 터치 시 click 중복 방지
+    startTest();
+  });
 
-    // ✅ 스타트 버튼 이벤트: 클릭 + 터치
-document.getElementById("start").addEventListener("click", startTest);
-document.getElementById("start").addEventListener("touchstart", (e) => {
-  e.preventDefault(); // 터치 시 click 중복 방지
-  startTest();
-});
+  // ✅ 색상 전환 이벤트 (중복 제거 + 쿨다운 추가)
+  let touchUsed = false;
 
-// ✅ 색상 전환 관련
-let touchUsed = false;
+  document.body.addEventListener("click", () => {
+    if (touchUsed) return;
+    showNextColor();
+  });
 
-document.body.addEventListener("click", () => {
-  if (touchUsed) return;
-  showNextColor();
-});
+  document.body.addEventListener("touchstart", () => {
+    if (touchUsed) return;
+    touchUsed = true;
+    showNextColor();
+    setTimeout(() => {
+      touchUsed = false;
+    }, 1500); // ← 너구리 기준으로 약간 둔감하게 만들기 위해 늘렸어 😆
+  });
+</script>
 
-document.body.addEventListener("touchstart", () => {
-  touchUsed = true;
-  showNextColor();
-  setTimeout(() => {
-    touchUsed = false;
-  }, 1000);
-});
-
-    let touchUsed = false;
-
-
-
-
-document.body.addEventListener("click", () => {
-  if (touchUsed) return;
-  showNextColor();
-});
-
-document.body.addEventListener("touchstart", () => {
-  touchUsed = true;
-  showNextColor();
-  setTimeout(() => {
-    touchUsed = false;
-  }, 1000);
-});
-
-  </script>
 
 </body>
 </html>
