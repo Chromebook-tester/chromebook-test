@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>➁LCDホワイトスポットテスト</title>
+  <title>LCDホワイトスポットテスト</title>
   <style>
     html, body {
       margin: 0;
@@ -18,31 +18,32 @@
       justify-content: center;
     }
 
-    .title {
-      position: fixed;
-      top: 70px;
-      font-size: 30px;
-      font-weight: bold;
-      color: #333;
-      z-index: 10;
-    }
+   .title {
+  position: absolute;        /* ← 화면 기준 고정 위치로 */
+  top: 40px;                 /* ← 위에서 40px 정도 떨어지게 */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  padding: 12px 24px;
+  border: 2px solid #708238;
+  background-color: #DDE7C7;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+  
 
     .start-button {
-      position: absolute;
-      top: 160px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 100px;
-      width: 120px;
-      height: 120px;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 5;
+     position: absolute;
+     top: 160px;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 250px;
+    height: auto;
+    cursor: pointer;
+    z-index: 5;
     }
 
     .nav-buttons {
@@ -79,14 +80,20 @@
 <body>
 
   <div id="title" class="title">LCDホワイトスポットテスト</div>
-  <button id="start" class="start-button">スタート</button>
+  <img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
 
+ 
+
+ 
+
+  <!-- ✅ 내비게이션 버튼 -->
   <div id="nav" class="nav-buttons">
     <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
     <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
     <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
   </div>
 
+  <!-- 🎵 버튼 사운드 -->
   <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
   <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
   <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
@@ -103,7 +110,7 @@
       testStarted = true;
       currentIndex = -1;
       document.body.style.backgroundColor = "white";
-      //document.body.style.cursor = "none";
+      document.body.style.cursor = "none";
     }
 
     function endTest() {
@@ -118,9 +125,11 @@
 
     function showNextColor() {
       if (!testStarted) return;
+
       currentIndex++;
+
       if (currentIndex >= colors.length) {
-        endTest();
+        endTest(); // 검정색 다음: 초기 화면으로 복귀
       } else {
         document.body.style.backgroundColor = colors[currentIndex];
       }
@@ -132,6 +141,7 @@
         location.href = nextPage;
         return;
       }
+
       audio.currentTime = 0;
       audio.play().then(() => {
         setTimeout(() => {
@@ -142,33 +152,13 @@
       });
     }
 
-    // ✅ 스타트 버튼 이벤트: 클릭 + 터치
     document.getElementById("start").addEventListener("click", startTest);
-    document.getElementById("start").addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      startTest();
-    }, { passive: false });
-
-    // ✅ 색상 전환 이벤트 (터치 민감도 완화)
-    let touchUsed = false;
-
-    document.body.addEventListener("click", () => {
-      if (touchUsed) return;
-      showNextColor();
-    });
-
-    document.body.addEventListener("touchstart", () => {
-      if (touchUsed) return;
-
-  
- 
-      showNextColor();
-
-      // ⏱️ 민감도 설정: 1000ms 동안 다시 못 누르게
-      setTimeout(() => {
-        touchUsed = false;
-      }, 500);
-    });
+    document.body.addEventListener("click", showNextColor);
+    document.body.addEventListener("touchstart", (e) => {
+  e.preventDefault();       // 브라우저의 기본 동작(예: click 발생) 방지
+  showNextColor();          // 직접 호출
+}, { passive: false });     // preventDefault 쓸 땐 이 옵션 꼭 필요
   </script>
+
 </body>
 </html>
