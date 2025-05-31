@@ -1,0 +1,91 @@
+/* common_layout.css */
+
+/* --- 공통 레이아웃 및 버튼 스타일 --- */
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: #f9f9f9;
+  /* 고정된 헤더/푸터 때문에 필요한 바디 패딩 */
+  padding-top: 60px; /* h1의 높이 + 약간의 여백 */
+  padding-bottom: 80px; /* 네비게이션 버튼 높이 + 약간의 여백 */
+}
+
+/* 상단 타이틀 (h1) 스타일 */
+h1 {
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 12px 24px;
+  border: 2px solid #708238;
+  background-color: #DDE7C7;
+  color: #333; /* 텍스트 색상 유지 */
+  border-radius: 0;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  cursor: pointer; /* 타이틀 자체에 포인터 커서 추가 */
+}
+
+/* 타이틀 링크 스타일 */
+.title-link {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 부모(h1)의 텍스트 색상 상속 */
+  display: block; /* 링크 영역을 h1 전체로 확장 */
+  height: 100%; /* 링크 영역을 h1 전체 높이로 확장 */
+  line-height: 1; /* 텍스트가 중앙에 오도록 필요시 조정 */
+}
+
+/* 모든 버튼의 공통 스타일 */
+button {
+  font-size: 18px;
+  margin: 10px;
+  padding: 10px 20px;
+  border: none; /* 기본 테두리 없음 */
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 테스트용 버튼 색상 (녹색 계열) - 혹시 다른 페이지에서도 재사용된다면 여기에 유지 */
+.test-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.test-button.active {
+  background-color: #A5D6A7;
+  color: black;
+}
+
+/* 하단 네비게이션 버튼 색상 (청회색 계열) */
+.nav-buttons button {
+  background-color: #607D8B;
+  color: white;
+  border: 2px solid #B0BEC5; /* 버튼 테두리 */
+}
+
+.nav-buttons button:hover {
+  background-color: #455A64;
+  border: 2px solid white; /* 호버 시 흰색 테두리 */
+}
+
+/* 하단 네비게이션 바 컨테이너 스타일 */
+.nav-buttons {
+  margin-top: 0;
+  padding: 15px 0;
+  background-color: #607D8B;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 1000;
+}
