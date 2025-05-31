@@ -3,17 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>➈ タッチスクリーンテスト</title>
+  <link rel="stylesheet" href="common-layout.css">
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #f0f8ff;
+      background-color: #f0f8ff; /* 공통 배경 덮어씌우기 */
       text-align: center;
       padding: 60px;
-    }
-
-    h1 {
-      font-size: 26px;
-      margin-bottom: 30px;
+      font-family: sans-serif; /* 혹시 common-layout에 없으면 유지 */
     }
 
     p {
@@ -34,38 +30,17 @@
     .start-button:hover {
       background-color: #388E3C;
     }
-
-    .nav-buttons {
-      margin-top: 50px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .nav-buttons button {
-      font-size: 16px;
-      padding: 10px 20px;
-      background-color: #607D8B;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .nav-buttons button:hover {
-      background-color: #455A64;
-    }
   </style>
 </head>
 <body>
   <h1>➈ タッチスクリーンテスト</h1>
-  <p>LCDパネルの全領域をタッチして、感度を確認しましょう。</p>
+  <p>画面全体をタッチしてみて、おかしい部分がないかチェック！🤗</p>
 
   <button class="start-button" onclick="startTest()">テストを開始する（全画面）</button>
 
   <div class="nav-buttons">
     <button onclick="navigateTo('rotation-test.html')">⬅ 前のテスト</button>
-    <button onclick="navigateTo('index.html')">🏠 ホーム</button>
+    <button onclick="navigateTo('../index.html')">🏠 ホーム</button>
     <button onclick="navigateTo('camera-test.html')">次のテスト ➡</button>
   </div>
 
@@ -74,10 +49,9 @@
       const elem = document.documentElement;
       if (elem.requestFullscreen) {
         elem.requestFullscreen().then(() => {
-          location.href = 'touchscreen-test2.html'; // 전체화면 후 터치페이지로
+          location.href = 'touchscreen-test2.html';
         });
       } else {
-        // fallback
         location.href = 'touchscreen-test1.html';
       }
     }
