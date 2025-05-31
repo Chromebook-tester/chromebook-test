@@ -2,19 +2,60 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>➃スピーカーテスト</title>
+  <title>スピーカーテスト</title>
   <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 40px;
-      background-color: #f9f9f9;
-    }
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: #f9f9f9;
+  padding-top: 60px; /* h1의 높이 + 약간의 여백 */
+  padding-bottom: 80px; /* 네비게이션 버튼 높이 + 약간의 여백 */
+}
 
-    h1 {
-      font-size: 24px;
-      margin-bottom: 30px;
-    }
+h1 {
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 12px 24px;
+  border: 2px solid #708238;
+  background-color: #DDE7C7;
+  color: #333; /* 텍스트 색상 유지 */
+  border-radius: 0;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  /* 타이틀 자체에 포인터 커서 추가 */
+  cursor: pointer;
+}
+
+/* 새로 추가된 타이틀 링크 스타일 */
+.title-link {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 부모(h1)의 텍스트 색상 상속 */
+  display: block; /* 링크 영역을 h1 전체로 확장 */
+  height: 100%; /* 링크 영역을 h1 전체 높이로 확장 */
+  line-height: 1; /* 텍스트가 중앙에 오도록 필요시 조정 */
+}
+
+
+.speaker-image {
+  cursor: pointer;
+  margin: 20px;
+  margin-top: 80px;
+  width: 150px;
+  height: auto;
+}
+
+.speaker-image.center {
+  width: 190px;
+  margin-top: 30px;
+}
 
     button {
       font-size: 18px;
@@ -40,14 +81,27 @@
     .nav-buttons button {
       background-color: #607D8B;
       color: white;
+      border: 2px solid #B0BEC5;
     }
 
     .nav-buttons button:hover {
       background-color: #455A64;
+      border: 2px solid white;
     }
 
+    /* 기존 .nav-buttons 스타일 */
     .nav-buttons {
-      margin-top: 40px;
+      margin-top: 0;
+      padding: 15px 0;
+      background-color: #607D8B;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      z-index: 1000;
     }
 
     audio {
@@ -57,12 +111,13 @@
 </head>
 <body>
 
-  <h1>➃スピーカーテスト🔊 </h1>
+  <h1><a href="../index.html" class="title-link">スピーカーテスト🔊 </a></h1>
 
-  <button class="test-button" onclick="toggleAudio('left', this)">1. 左 スピーカー</button>
-  <button class="test-button" onclick="toggleAudio('right', this)">2. 右 スピーカー</button>
+  <img src="../media/images/left-speaker.png" alt="左スピーカー" onclick="toggleAudio('left', this)" class="speaker-image">
+  <img src="../media/images/right-speaker.png" alt="右スピーカー" onclick="toggleAudio('right', this)" class="speaker-image">
   <br>
-  <button class="test-button" onclick="toggleAudio('center', this)">3. 左右 スピーカー</button>
+  <img src="../media/images/both-speaker.png" alt="左右スピーカー" onclick="toggleAudio('center', this)" class="speaker-image center">
+
 
   <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
 
@@ -72,12 +127,10 @@
     <button onclick="playAndNavigate('sound-next', 'whitespot-test.html')">次のテスト ➡</button>
   </div>
 
-  <!-- 🔈 スピーカーテスト用サウンド -->
   <audio id="left" src="../media/audio/left-speaker.mp3"></audio>
   <audio id="right" src="../media/audio/right-speaker.mp3"></audio>
   <audio id="center" src="../media/audio/center-speaker.mp3"></audio>
 
-  <!-- 🎵 ボタン効果音 -->
   <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
   <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
   <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
@@ -115,7 +168,7 @@
       audio.play().then(() => {
         button.classList.add("active");
       }).catch(err => {
-        alert("\u518d\u751f\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f: " + err);
+        alert("\u518d\u751f\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305F: " + err);
       });
     }
 
