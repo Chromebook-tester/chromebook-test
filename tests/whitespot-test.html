@@ -150,7 +150,29 @@
       });
     }
 
-    document.getElementById("start").addEventListener("click", startTest);
+    // ✅ 스타트 버튼 이벤트: 클릭 + 터치
+document.getElementById("start").addEventListener("click", startTest);
+document.getElementById("start").addEventListener("touchstart", (e) => {
+  e.preventDefault(); // 터치 시 click 중복 방지
+  startTest();
+});
+
+// ✅ 색상 전환 관련
+let touchUsed = false;
+
+document.body.addEventListener("click", () => {
+  if (touchUsed) return;
+  showNextColor();
+});
+
+document.body.addEventListener("touchstart", () => {
+  touchUsed = true;
+  showNextColor();
+  setTimeout(() => {
+    touchUsed = false;
+  }, 1000);
+});
+
     let touchUsed = false;
 
 
