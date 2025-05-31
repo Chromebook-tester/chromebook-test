@@ -10,8 +10,7 @@ body {
   text-align: center;
   background-color: #f9f9f9;
   padding-top: 60px; /* h1의 높이 + 약간의 여백 */
-  /* 여기에 하단 고정 내비게이션 버튼을 위한 패딩 추가 */
-  padding-bottom: 80px; /* 네비게이션 버튼 높이 + 약간의 여백 (아래에서 설명) */
+  padding-bottom: 80px; /* 네비게이션 버튼 높이 + 약간의 여백 */
 }
 
 h1 {
@@ -21,7 +20,7 @@ h1 {
   padding: 12px 24px;
   border: 2px solid #708238;
   background-color: #DDE7C7;
-  color: #333;
+  color: #333; /* 텍스트 색상 유지 */
   border-radius: 0;
   display: block;
   width: 100%;
@@ -31,18 +30,31 @@ h1 {
   top: 0;
   left: 0;
   z-index: 1000;
+  /* 타이틀 자체에 포인터 커서 추가 */
+  cursor: pointer;
 }
+
+/* 새로 추가된 타이틀 링크 스타일 */
+.title-link {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 부모(h1)의 텍스트 색상 상속 */
+  display: block; /* 링크 영역을 h1 전체로 확장 */
+  height: 100%; /* 링크 영역을 h1 전체 높이로 확장 */
+  line-height: 1; /* 텍스트가 중앙에 오도록 필요시 조정 */
+}
+
 
 .speaker-image {
   cursor: pointer;
-  margin: 10px;
+  margin: 20px;
+  margin-top: 80px;
   width: 150px;
   height: auto;
-  margin-top: 80px; /* 이 값을 조절하여 원하는 만큼 아래로 내리세요 */
 }
 
 .speaker-image.center {
-  width: 180px;
+  width: 190px;
+  margin-top: 30px;
 }
 
     button {
@@ -69,28 +81,27 @@ h1 {
     .nav-buttons button {
       background-color: #607D8B;
       color: white;
+      border: 2px solid #B0BEC5;
     }
 
     .nav-buttons button:hover {
       background-color: #455A64;
+      border: 2px solid white;
     }
 
-    /* 기존 .nav-buttons 스타일 수정 */
+    /* 기존 .nav-buttons 스타일 */
     .nav-buttons {
-      /* margin-top: 40px; <-- 이 부분은 이제 필요 없거나 다른 방식으로 조정 */
-      margin-top: 0; /* 고정되므로 더 이상 필요 없습니다. */
-      padding: 15px 0; /* 내부 버튼과 여백을 위해 패딩 추가 */
-      background-color: #607D8B; /* 배경색 추가 (선택 사항, 통일감을 줍니다) */
-      box-shadow: 0 -2px 6px rgba(0,0,0,0.1); /* 상단에 그림자 추가 */
-
-      /* 하단 고정을 위한 속성 */
-      position: fixed; /* 화면 하단에 고정 */
-      bottom: 0; /* 화면의 최하단에 위치 */
-      left: 0; /* 화면의 좌측에 위치 */
-      width: 100%; /* 전체 너비를 차지하도록 설정 */
-      box-sizing: border-box; /* padding이 너비에 포함되도록 설정 */
-      text-align: center; /* 버튼들을 가운데 정렬 */
-      z-index: 1000; /* 타이틀과 동일하게 다른 요소 위에 표시 */
+      margin-top: 0;
+      padding: 15px 0;
+      background-color: #607D8B;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      z-index: 1000;
     }
 
     audio {
@@ -100,7 +111,7 @@ h1 {
 </head>
 <body>
 
-  <h1>スピーカーテスト🔊 </h1>
+  <h1><a href="../index.html" class="title-link">スピーカーテスト🔊 </a></h1>
 
   <img src="../media/images/left-speaker.png" alt="左スピーカー" onclick="toggleAudio('left', this)" class="speaker-image">
   <img src="../media/images/right-speaker.png" alt="右スピーカー" onclick="toggleAudio('right', this)" class="speaker-image">
