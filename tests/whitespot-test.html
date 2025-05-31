@@ -153,6 +153,11 @@
     }
 
     document.getElementById("start").addEventListener("click", startTest);
+    document.getElementById("start").addEventListener("touchstart", (e) => {
+  e.preventDefault();       // 모바일 기본 동작 방지
+  startTest();              // 시작 함수 실행
+}, { passive: false });
+
     document.body.addEventListener("click", showNextColor);
     document.body.addEventListener("touchstart", (e) => {
   e.preventDefault();       // 브라우저의 기본 동작(예: click 발생) 방지
