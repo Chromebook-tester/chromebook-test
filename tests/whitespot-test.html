@@ -155,6 +155,7 @@
   document.getElementById("start").addEventListener("touchstart", (e) => {
     e.preventDefault(); // 터치 시 click 중복 방지
     startTest();
+  }, { passive: false }); // ← 바로 이거 추가!
   });
 
   // ✅ 색상 전환 이벤트 (중복 제거 + 쿨다운 추가)
