@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スピーカーテスト</title>
+  <style>
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: #f9f9f9;
+  padding-top: 60px; /* h1의 높이 + 약간의 여백 */
+  /* 여기에 하단 고정 내비게이션 버튼을 위한 패딩 추가 */
+  padding-bottom: 80px; /* 네비게이션 버튼 높이 + 약간의 여백 (아래에서 설명) */
+}
+
+h1 {
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 12px 24px;
+  border: 2px solid #708238;
+  background-color: #DDE7C7;
+  color: #333;
+  border-radius: 0;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.speaker-image {
+  cursor: pointer;
+  margin: 10px;
+  width: 150px;
+  height: auto;
+  margin-top: 80px; /* 이 값을 조절하여 원하는 만큼 아래로 내리세요 */
+}
+
+.speaker-image.center {
+  width: 180px;
+}
+
+    button {
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* テスト用ボタン色・緑 */
+    .test-button {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .test-button.active {
+      background-color: #A5D6A7;
+      color: black;
+    }
+
+    /* ナビゲーションボタン色・青灰 */
+    .nav-buttons button {
+      background-color: #607D8B;
+      color: white;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #455A64;
+    }
+
+    /* 기존 .nav-buttons 스타일 수정 */
+    .nav-buttons {
+      /* margin-top: 40px; <-- 이 부분은 이제 필요 없거나 다른 방식으로 조정 */
+      margin-top: 0; /* 고정되므로 더 이상 필요 없습니다. */
+      padding: 15px 0; /* 내부 버튼과 여백을 위해 패딩 추가 */
+      background-color: #607D8B; /* 배경색 추가 (선택 사항, 통일감을 줍니다) */
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.1); /* 상단에 그림자 추가 */
+
+      /* 하단 고정을 위한 속성 */
+      position: fixed; /* 화면 하단에 고정 */
+      bottom: 0; /* 화면의 최하단에 위치 */
+      left: 0; /* 화면의 좌측에 위치 */
+      width: 100%; /* 전체 너비를 차지하도록 설정 */
+      box-sizing: border-box; /* padding이 너비에 포함되도록 설정 */
+      text-align: center; /* 버튼들을 가운데 정렬 */
+      z-index: 1000; /* 타이틀과 동일하게 다른 요소 위에 표시 */
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>スピーカーテスト🔊 </h1>
+
+  <img src="../media/images/left-speaker.png" alt="左スピーカー" onclick="toggleAudio('left', this)" class="speaker-image">
+  <img src="../media/images/right-speaker.png" alt="右スピーカー" onclick="toggleAudio('right', this)" class="speaker-image">
+  <br>
+  <img src="../media/images/both-speaker.png" alt="左右スピーカー" onclick="toggleAudio('center', this)" class="speaker-image center">
+
+
+  <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
+
+  <div class="nav-buttons">
+    <button onclick="playAndNavigate('sound-previous', 'touchpad-test.html')">⬅ 前のテスト</button>
+    <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+    <button onclick="playAndNavigate('sound-next', 'whitespot-test.html')">次のテスト ➡</button>
+  </div>
+
+  <audio id="left" src="../media/audio/left-speaker.mp3"></audio>
+  <audio id="right" src="../media/audio/right-speaker.mp3"></audio>
+  <audio id="center" src="../media/audio/center-speaker.mp3"></audio>
+
+  <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+  <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+  <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+  <script>
+    let currentAudio = null;
+    let currentButton = null;
+
+    function toggleAudio(id, button) {
+      const audio = document.getElementById(id);
+
+      // 同じボタンを再度押したら停止
+      if (currentAudio === audio && !audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+        currentAudio = null;
+        currentButton.classList.remove("active");
+        currentButton = null;
+        return;
+      }
+
+      // それ以外は旧オーディオ停止
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+      if (currentButton) {
+        currentButton.classList.remove("active");
+      }
+
+      // 新しく再生
+      currentAudio = audio;
+      currentButton = button;
+
+      audio.play().then(() => {
+        button.classList.add("active");
+      }).catch(err => {
+        alert("\u518d\u751f\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305F: " + err);
+      });
+    }
+
+    function playAndNavigate(soundId, nextPage) {
+      const audio = document.getElementById(soundId);
+      if (!audio) {
+        location.href = nextPage;
+        return;
+      }
+
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        setTimeout(() => {
+          location.href = nextPage;
+        }, 400);
+      }).catch(() => {
+        location.href = nextPage;
+      });
+    }
+  </script>
+
+</body>
+</html>
