@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube 接続テスト</title>
+  <title>Wi-Fi 接続テスト</title>
   <style>
     body {
       font-family: sans-serif;
@@ -11,14 +11,25 @@
       text-align: center;
     }
 
+  
     h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
+  font-size: 24px;
+  margin-bottom: 5px;
+  padding: 12px 24px;
+  border: 2px solid #708238; /* 진한 올리브 테두리 */
+  background-color: #DDE7C7; /* 부드러운 올리브 배경 */
+  color: #333;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+    
 
     .video-container {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: center; 
       align-items: center;
       gap: 20px;
     }
@@ -62,8 +73,8 @@
   </style>
 </head>
 <body>
-  <h1>8. YouTube 接続テスト</h1>
-
+  <h1>Wi-Fi 接続テスト</h1>
+  <p>2つの動画が20秒以上再生できれば OK!</p>
 
   <div class="video-container">
     <iframe 
@@ -80,15 +91,15 @@
   </div>
 
   <div class="status">
-    <p>2つの動画が20秒以上、再生できたら、合格</p>
+    <p>２つの動画の再生中に、画面の明るさと音量テストもしてくださいねっ😘</p>
   </div>
 
   <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
 
   <div class="nav-buttons">
-    <button onclick="playAndNavigate('sound-previous', 'whitespot-test.html')">⬅ 前のテスト</button>
+    <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
     <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
-    <button onclick="playAndNavigate('sound-next', 'touchpad-test.html')">次のテスト ➡</button>
+    <button onclick="playAndNavigate('sound-next', 'keyboard-test.html')">次のテスト ➡</button>
   </div>
 
   <!-- 🎵 ボタン効果音 -->
