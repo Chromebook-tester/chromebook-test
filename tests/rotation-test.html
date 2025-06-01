@@ -2,51 +2,29 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>画面回転テスト</title>
+  <title>Accelerometer Test</title>
   <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
-
-    .info {
-      font-size: 24px;
-      margin: 20px;
-    }
-
-    .status {
-      font-size: 32px;
-      font-weight: bold;
-      color: #333;
-      margin-top: 40px;
-    }
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    .reading { font-size: 24px; margin: 10px; }
   </style>
 </head>
 <body>
-  <h1>📱 画面回転テスト</h1>
-  <p class="info">端末を回転させて、センサーが正しく反応するか確認してください。</p>
-  <div class="status" id="orientationStatus">読み込み中...</div>
+  <h1>📱 Accelerometer Test</h1>
+  <p class="reading" id="x">X: ...</p>
+  <p class="reading" id="y">Y: ...</p>
+  <p class="reading" id="z">Z: ...</p>
 
   <script>
-    function updateOrientation() {
-      const orientation = window.screen.orientation || window.orientation;
-      let message = '';
-
-      if (typeof orientation === 'object') {
-        message = `画面の向き: ${orientation.type}（${orientation.angle}度）`;
-      } else {
-        // fallback for older browsers
-        if (orientation === 0) message = '画面の向き: ポートレート（縦）';
-        else if (orientation === 90 || orientation === -90) message = '画面の向き: ランドスケープ（横）';
-        else message = `画面の向き（角度）: ${orientation}度`;
-      }
-
-      document.getElementById("orientationStatus").textContent = message;
+    if (window.DeviceMotionEvent) {
+      window.addEventListener('devicemotion', function(event) {
+        const acc = event.accelerationIncludingGravity;
+        document.getElementById("x").textContent = "X: " + acc.x.toFixed(2);
+        document.getElementById("y").textContent = "Y: " + acc.y.toFixed(2);
+        document.getElementById("z").textContent = "Z: " + acc.z.toFixed(2);
+      });
+    } else {
+      document.body.innerHTML += "<p>この端末は加速度センサーに対応していません。</p>";
     }
-
-    window.addEventListener("orientationchange", updateOrientation);
-    window.addEventListener("DOMContentLoaded", updateOrientation);
   </script>
 </body>
 </html>
