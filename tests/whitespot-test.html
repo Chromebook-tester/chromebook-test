@@ -1,173 +1,242 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>LCDホワイトスポットテスト</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      background-color: white;
-      font-family: sans-serif;
-      cursor: default;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-   .title {
-  position: absolute;        /* ← 화면 기준 고정 위치로 */
-  top: 40px;                 /* ← 위에서 40px 정도 떨어지게 */
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  padding: 12px 24px;
-  border: 2px solid #708238;
-  background-color: #DDE7C7;
-  color: #333;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  z-index: 10;
+<meta charset="UTF-8">
+<title>LCDホワイトスポットテストを</title>
+<link rel="stylesheet" href="common-layout.css">
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
-  
+body {
+  font-family: sans-serif;
+  background-color: white !important; /* 초기 배경색은 다시 흰색으로 */
+  cursor: default;
+}
 
-    .start-button {
-     position: absolute;
-     top: 160px;
-     left: 50%;
-     transform: translateX(-50%);
-     width: 250px;
-    height: auto;
-    cursor: pointer;
-    z-index: 5;
-    }
+/* 전체화면 활성 모드일 때 HTML과 BODY에 대한 스타일 */
+html.fullscreen-active-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  z-index: 9999;
+}
 
-    .nav-buttons {
-      position: fixed;
-     bottom: 40px;
-     left: 50%;
-     transform: translateX(-50%);
-     display: flex;
-     justify-content: center;
-     gap: 20px;
-     z-index: 10;
-    }
+/* 추가: 전체화면 모드일 때 body의 배경색이 초기화되지 않도록 */
+html.fullscreen-active-mode body {
+   background-color: initial !important; /* 또는 white !important; */
+}
 
-    .nav-buttons button {
-      background-color: #607D8B;
-      color: white;
-      font-size: 18px;
-      margin: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
 
-    .nav-buttons button:hover {
-      background-color: #455A64;
-    }
+html.fullscreen-active-mode h1,
+html.fullscreen-active-mode .nav-buttons,
+html.fullscreen-active-mode .start-button,
+html.fullscreen-active-mode p.instruction-text {
+  display: none !important;
+}
 
-    .hidden {
-      display: none;
-    }
+.start-button {
+  display: block;
+  margin: 100px auto 30px auto;
+  width: 250px;
+  height: auto;
+  cursor: pointer;
+  z-index: 5;
+}
 
-    audio {
-      display: none;
-    }
-  </style>
+p.instruction-text {
+  font-size: 18px;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  max-width: 80%;
+}
+
+.hidden {
+  display: none;
+}
+
+audio {
+  display: none;
+}
+
+.end-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 28px;
+  padding: 30px 50px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1.5;
+  display: none;
+  z-index: 99999;
+}
+.end-message span {
+  display: block;
+}
+</style>
 </head>
 <body>
 
-  <div id="title" class="title">LCDホワイトスポットテスト</div>
-  <img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
+<h1><a href="../index.html" class="title-link">LCDホワイトスポットテスト</a></h1>
 
- 
+<img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
+<p class="instruction-text">画面に不具合がないかチェックしましょう🔎</p>
 
- 
+<div id="endMessage" class="end-message">
+  <span>테스트 끝!</span>
+  <span>ESC키 누르면 종료돼.</span>
+</div>
 
-  <!-- ✅ 내비게이션 버튼 -->
-  <div id="nav" class="nav-buttons">
-    <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
-    <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
-    <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
-  </div>
+<div id="nav" class="nav-buttons">
+  <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">>⬅ 前のテスト</button>
+  <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+  <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
+</div>
 
-  <!-- 🎵 버튼 사운드 -->
-  <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
-  <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
-  <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
 
-  <script>
-    const colors = ['red', 'green', 'white', 'blue', 'black'];
-    let currentIndex = -1;
-    let testStarted = false;
+<script>
+const colors = ['red', 'green', 'white', 'blue', 'black'];
+let currentIndex = -1;
+let testStarted = false;
+const endMessageEl = document.getElementById("endMessage");
+const htmlEl = document.documentElement; // html 태그 요소 가져오기
 
-    function startTest() {
-      document.getElementById("start").classList.add("hidden");
-      document.getElementById("title").classList.add("hidden");
-      document.getElementById("nav").classList.add("hidden");
-      testStarted = true;
-      currentIndex = -1;
-      document.body.style.backgroundColor = "white";
-      document.body.style.cursor = "none";
-    }
+function startTest() {
+  document.getElementById("start").classList.add("hidden");
+  document.querySelector('h1').classList.add("hidden");
+  document.querySelector('p.instruction-text').classList.add("hidden");
+  document.getElementById("nav").classList.add("hidden");
 
-    function endTest() {
-      document.getElementById("start").classList.remove("hidden");
-      document.getElementById("title").classList.remove("hidden");
-      document.getElementById("nav").classList.remove("hidden");
-      document.body.style.backgroundColor = "white";
-      document.body.style.cursor = "default";
-      testStarted = false;
-      currentIndex = -1;
-    }
+  testStarted = true;
+  currentIndex = -1; // 이걸 -1로 유지해서 showNextColor에서 첫 번째 색깔이 나오게 해.
 
-    function showNextColor() {
-      if (!testStarted) return;
+  // body와 html 태그의 배경색을 모두 첫 번째 색상으로 강제 설정
+  document.body.style.setProperty("background-color", colors[0], "important");
+  document.documentElement.style.setProperty("background-color", colors[0], "important"); // html 태그에도 적용!
 
-      currentIndex++;
+  tryFullscreen().then(success => {
+    if (!success) activateSimulatedFullscreen();
+    document.body.style.cursor = "none";
+    // ⭐ 이 줄을 제거했어! 이제 showNextColor는 클릭 이벤트로만 호출돼.
+    // showNextColor(); 
+  });
+}
 
-      if (currentIndex >= colors.length) {
-        endTest(); // 검정색 다음: 초기 화면으로 복귀
-      } else {
-        document.body.style.backgroundColor = colors[currentIndex];
-      }
-    }
-
-    function playAndNavigate(soundId, nextPage) {
-      const audio = document.getElementById(soundId);
-      if (!audio) {
-        location.href = nextPage;
-        return;
-      }
-
-      audio.currentTime = 0;
-      audio.play().then(() => {
-        setTimeout(() => {
-          location.href = nextPage;
-        }, 400);
-      }).catch(() => {
-        location.href = nextPage;
+function tryFullscreen() {
+  return new Promise(resolve => {
+    if (document.body.requestFullscreen) {
+      document.body.requestFullscreen().then(() => {
+        resolve(true);
+      }).catch(err => {
+        console.warn("전체화면 실패:", err);
+        resolve(false);
       });
+    } else {
+      resolve(false);
     }
+  });
+}
 
-    document.getElementById("start").addEventListener("click", startTest);
-    document.getElementById("start").addEventListener("touchstart", (e) => {
-  e.preventDefault();       // 모바일 기본 동작 방지
-  startTest();              // 시작 함수 실행
+function activateSimulatedFullscreen() {
+  htmlEl.classList.add('fullscreen-active-mode');
+}
+
+function endTest() {
+  testStarted = false;
+  currentIndex = -1;
+  endMessageEl.style.display = 'flex';
+
+  if (document.fullscreenElement) {
+    document.exitFullscreen().then(() => {
+      restoreInitialUI();
+    }).catch(() => {
+      restoreInitialUI();
+    });
+  } else {
+    restoreInitialUI();
+  }
+}
+
+function restoreInitialUI() {
+  htmlEl.classList.remove('fullscreen-active-mode');
+  document.getElementById("start").classList.remove("hidden");
+  document.querySelector('h1').classList.remove("hidden");
+  document.querySelector('p.instruction-text').classList.remove("hidden");
+  document.getElementById("nav").classList.remove("hidden");
+  document.body.style.backgroundColor = "white"; // 초기 배경색으로 돌려놔
+  document.body.style.cursor = "default";
+  endMessageEl.style.display = 'none';
+}
+
+function showNextColor() {
+  if (!testStarted) return;
+  currentIndex++;
+  if (currentIndex >= colors.length) {
+    endTest();
+  } else {
+    document.body.style.setProperty("background-color", colors[currentIndex], "important");
+  }
+}
+
+function playAndNavigate(soundId, nextPage) {
+  const audio = document.getElementById(soundId);
+  if (!audio) {
+    location.href = nextPage;
+    return;
+  }
+  audio.currentTime = 0;
+  audio.play().then(() => {
+    setTimeout(() => {
+      location.href = nextPage;
+    }, 400);
+  }).catch(() => {
+    location.href = nextPage;
+  });
+}
+
+document.getElementById("start").addEventListener("click", startTest);
+document.getElementById("start").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  startTest();
 }, { passive: false });
 
-    document.body.addEventListener("click", showNextColor);
-    document.body.addEventListener("touchstart", (e) => {
-  e.preventDefault();       // 브라우저의 기본 동작(예: click 발생) 방지
-  showNextColor();          // 직접 호출
-}, { passive: false });     // preventDefault 쓸 땐 이 옵션 꼭 필요
-  </script>
+document.body.addEventListener("click", showNextColor);
+document.body.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  showNextColor();
+}, { passive: false });
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    if (testStarted) {
+      endTest();
+    }
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && testStarted) {
+    endTest();
+  }
+});
+</script>
 
 </body>
 </html>
