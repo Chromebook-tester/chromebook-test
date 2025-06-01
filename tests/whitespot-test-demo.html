@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>LCDホワイトスポットテスト</title>
+<link rel="stylesheet" href="common-layout.css">
+<style>
+/* 이 페이지에만 적용되는 스타일 */
+body {
+font-family: sans-serif;
+background-color: white; /* 테스트 중 색상 변경되므로 초기값은 흰색으로 유지 */
+cursor: default;
+overflow: hidden; /* 전체 화면 전환 시 스크롤 방지용으로 유지 */
+
+/* !!! 새로 추가하거나 수정한 부분 !!! */
+margin: 0 !important; /* common-layout.css의 마진/패딩을 덮어씀 */
+padding: 0 !important; /* common-layout.css의 마진/패딩을 덮어씀 */
+height: 100vh !important; /* 뷰포트 높이 100%로 강제 */
+width: 100vw !important; /* 뷰포트 너비 100%로 강제 */
+position: relative; /* 자식 요소들의 absolute 기준이 될 수 있도록 */
+}
+
+/* common-layout.css의 h1, nav-buttons 등 fixed 요소들이
+   이 페이지의 body에 가려지도록 z-index를 조정하거나,
+   hidden 클래스를 !important로 더욱 강력하게 적용해야 함. */
+.hidden {
+display: none !important; /* !important를 사용하여 확실하게 숨김 */
+}
+
+/* start-button, instruction-text, end-message 등은
+   body가 100vh 100vw가 된 상태에서 중앙에 올 수 있도록
+   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+   패턴을 사용하는 것이 가장 확실함.
+   지금은 기존 마진을 유지하고, 필요하면 조정. */
+.start-button {
+display: block;
+margin: 100px auto 30px auto; /* 초기 위치 조정 */
+width: 250px;
+height: auto;
+cursor: pointer;
+z-index: 5;
+}
+
+p.instruction-text {
+font-size: 18px;
+margin-top: 0px;
+margin-bottom: 30px;
+text-align: center;
+max-width: 80%;
+margin-left: auto;
+margin-right: auto;
+}
+
+audio {
+display: none;
+}
+
+.end-message {
+position: fixed; /* body가 100vh 100vw이므로 fixed/absolute 모두 가능. fixed 유지. */
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: rgba(0, 0, 0, 0.8);
+color: white;
+font-size: 28px;
+padding: 30px 50px;
+border-radius: 10px;
+text-align: center;
+line-height: 1.5;
+display: none;
+z-index: 99999;
+}
+.end-message span {
+display: block;
+}
+</style>
+</head>
+<body>
+
+<h1><a href="../index.html" class="title-link">LCDホワイトスポットテスト</a></h1>
+
+<img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
+<p class="instruction-text">画面をクリックして色を切り替えてください。🤗</p>
+
+<div id="endMessage" class="end-message">
+<span>テスト終了。</span>
+<span>ESCキーを押して終了してください。</span>
+</div>
+
+<div id="nav" class="nav-buttons">
+<button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
+<button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+<button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
+</div>
+
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+<script>
+const colors = ['red', 'green', 'white', 'blue', 'black'];
+let currentIndex = -1;
+let testStarted = false;
+const endMessageEl = document.getElementById("endMessage");
+
+function startTest() {
+// 모든 초기 UI 요소들을 숨김
+document.getElementById("start").classList.add("hidden");
+document.querySelector('h1').classList.add("hidden"); // h1 태그 숨김
+document.querySelector('p.instruction-text').classList.add("hidden"); // p 태그 숨김
+document.getElementById("nav").classList.add("hidden");
+
+testStarted = true;
+currentIndex = -1; // showNextColor 호출 시 첫 번째 색상(red)부터 시작되도록
+
+// 전체 화면 모드 진입 시도 (body 요소를 전체 화면으로 만듦)
+if (document.body.requestFullscreen) {
+document.body.requestFullscreen().then(() => {
+document.body.style.cursor = "none"; // 전체 화면 진입 시 커서 숨김
+showNextColor(); // 첫 색상(red) 표시
+}).catch(err => {
+// 전체 화면 진입 실패 시 (예: 사용자 제스처 부족, 권한 없음)
+console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+// 실패해도 테스트는 진행 (강제로 배경색 변경)
+document.body.style.cursor = "none"; // 실패해도 커서 숨김
+showNextColor(); // 첫 색상(red) 표시
+});
+} else {
+// requestFullscreen API 지원하지 않는 브라우저
+document.body.style.cursor = "none"; // 커서 숨김
+showNextColor(); // 첫 색상(red) 표시
+}
+}
+
+function endTest() {
+testStarted = false; // 테스트 상태 종료
+currentIndex = -1; // 인덱스 초기화
+
+// 테스트 종료 메시지 표시
+endMessageEl.style.display = 'flex'; // flex로 설정하여 중앙 정렬 되도록
+
+// 전체 화면 모드 해제 시도
+if (document.fullscreenElement) { // 현재 문서가 전체 화면 모드일 때만 해제 시도
+document.exitFullscreen().then(() => {
+// 전체 화면 해제 성공 후 초기 화면 요소 표시
+restoreInitialUI();
+}).catch(err => {
+// 전체 화면 해제 실패 시 (에러 발생해도 UI는 복구)
+console.error("Fullscreen exit failed:", err);
+restoreInitialUI();
+});
+} else {
+// 전체 화면 모드가 아니면 바로 초기 화면 요소 표시
+restoreInitialUI();
+}
+}
+
+// 초기 UI 상태로 복구하는 함수
+function restoreInitialUI() {
+document.getElementById("start").classList.remove("hidden");
+document.querySelector('h1').classList.remove("hidden");
+document.querySelector('p.instruction-text').classList.remove("hidden"); // p 태그 다시 보이게
+document.getElementById("nav").classList.remove("hidden");
+document.body.style.backgroundColor = "white"; // 배경색 원래대로 (흰색)
+document.body.style.cursor = "default"; // 커서 다시 보이게
+endMessageEl.style.display = 'none'; // 종료 메시지 숨기기
+}
+
+function showNextColor() {
+if (!testStarted) return; // 테스트 시작 안 했으면 아무것도 안 함
+
+currentIndex++;
+
+if (currentIndex >= colors.length) {
+endTest(); // 모든 색상을 다 봤으면 테스트 종료 로직 실행
+} else {
+// CSS 우선순위 문제를 해결하기 위해 !important를 사용하여 배경색 설정
+document.body.style.setProperty("background-color", colors[currentIndex], "important");
+}
+}
+
+function playAndNavigate(soundId, nextPage) {
+const audio = document.getElementById(soundId);
+if (!audio) {
+location.href = nextPage;
+return;
+}
+
+audio.currentTime = 0;
+audio.play().then(() => {
+setTimeout(() => {
+location.href = nextPage;
+}, 400);
+}).catch(() => {
+location.href = nextPage;
+});
+}
+
+// 이벤트 리스너
+document.getElementById("start").addEventListener("click", startTest);
+document.getElementById("start").addEventListener("touchstart", (e) => {
+e.preventDefault();
+startTest();
+}, { passive: false });
+
+// body 클릭/터치 시 다음 색상 또는 테스트 종료
+document.body.addEventListener("click", showNextColor);
+document.body.addEventListener("touchstart", (e) => {
+e.preventDefault();
+showNextColor();
+}, { passive: false });
+
+// ESC 키로 전체 화면 해제 시 테스트 종료
+document.addEventListener('keydown', (event) => {
+if (event.key === 'Escape') {
+if (testStarted) { // 테스트가 진행 중일 때만 endTest 호출
+endTest();
+}
+}
+});
+
+// 전체 화면 상태 변경 감지 (예: 브라우저 UI로 전체 화면 종료 시)
+document.addEventListener('fullscreenchange', () => {
+if (!document.fullscreenElement && testStarted) { // 전체 화면이 종료되었고, 테스트가 진행 중이었다면
+endTest(); // 테스트 종료 함수 호출 (여기서 UI 복구도 진행)
+}
+});
+</script>
+
+</body>
+</html>
