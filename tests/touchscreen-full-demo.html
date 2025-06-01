@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>➈ タッチスクリーンテスト</title>
+    <title>タッチスクリーンテスト</title>
     <link rel="stylesheet" href="common-layout.css">
     <style>
         body {
@@ -75,18 +75,19 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 150, 0, 0.95);
+            background: rgba(0, 108, 16, 0.95);
             color: white;
-            font-size: 24px;
+            font-size: 30px;
             padding: 30px 50px;
             border-radius: 20px;
             display: none;
             z-index: 10000; /* testArea보다 높게 */
+            border: 3px solid #ffffff; /* 예시: 3px 두께의 단색 노란색 테두리 */
         }
     </style>
 </head>
 <body>
-    <h1>➈ タッチスクリーンテスト</h1>
+    <h1>タッチスクリーンテスト</h1>
     <p>画面全体をタッチしてみて、おかしい部分がないかチェック！🤗</p>
 
     <button class="start-button" onclick="startTest()">テストスタート</button>
@@ -94,7 +95,7 @@
     <div id="testArea">
         <div class="grid" id="grid"></div>
         <div class="complete-message" id="completeMessage">
-            🎉 すべてのエリアをタッチしました！
+            全画面タッチ済！指紋だらけです！🤣 <br> ESCキーを押して終了してね
         </div>
     </div>
 
@@ -171,13 +172,19 @@
 
             testArea.style.display = 'flex'; // 그리드 컨테이너 표시
 
-            function touchCell(target) {
+         function touchCell(target) {
                 if (target && target.classList.contains("cell")) {
-                    if (!target.classList.contains("active")) {
-                        target.classList.add("active");
+                    // active 클래스가 있으면 제거하고, 없으면 추가한다 (토글!)
+                    target.classList.toggle("active"); 
+
+                    // 그리고 Set에서도 추가/제거 로직을 바꿔줘야 해
+                    if (target.classList.contains("active")) {
                         touchedCells.add(target.dataset.index);
-                        updateStatus();
+                    } else {
+                        touchedCells.delete(target.dataset.index);
                     }
+                    
+                    updateStatus(); // 상태 업데이트 (모든 셀이 활성화되었는지 확인)
                 }
             }
 
