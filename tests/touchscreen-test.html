@@ -31,7 +31,9 @@
             background-color: #388E3C;
         }
 
-        html.fullscreen-active, body.fullscreen-active {
+        /* 테스트 영역 관련 스타일 (test2.html에서 가져옴) */
+        /* 이 클래스들은 testArea가 전체 화면이 될 때 body/html에 추가될 거야. */
+        html.fullscreen-active, body.fullscreen-active { /* 전체 화면 활성화 시 body 스타일 */
             margin: 0;
             padding: 0;
             width: 100%;
@@ -39,12 +41,12 @@
             overflow: hidden;
         }
 
-        #testArea {
-            display: none;
+        #testArea { /* 테스트 그리드 컨테이너 */
+            display: none; /* 초기에는 숨김 */
             flex-direction: column;
             background-color: #000;
             font-family: sans-serif;
-            position: fixed;
+            position: fixed; /* 전체 화면 시 화면을 꽉 채우도록 */
             top: 0;
             left: 0;
             width: 100vw;
@@ -60,8 +62,8 @@
         #testArea .cell {
             background-color: #fff;
             border: 1px solid #333;
-            touch-action: none;
-            /* transition: background-color 0.2s; ← 주석처리 */
+            touch-action: manipulation;
+            transition: background-color 0.2s;
         }
 
         #testArea .cell.active {
@@ -79,8 +81,8 @@
             padding: 30px 50px;
             border-radius: 20px;
             display: none;
-            z-index: 10000;
-            border: 3px solid #ffffff;
+            z-index: 10000; /* testArea보다 높게 */
+            border: 3px solid #ffffff; /* 예시: 3px 두께의 단색 노란색 테두리 */
         }
     </style>
 </head>
@@ -98,9 +100,9 @@
     </div>
 
     <div class="nav-buttons">
-        <button onclick="navigateTo('sleep-test.html')">⬅ 前のテスト</button>
+        <button onclick="navigateTo('youtube-test.html')">⬅ 前のテスト</button>
         <button onclick="navigateTo('../index.html')">🏠 ホーム</button>
-        <button onclick="navigateTo('touchpad-test.html')">次のテスト ➡</button>
+        <button onclick="navigateTo('sleep-test.html')">次のテスト ➡</button>
     </div>
 
     <script>
@@ -111,40 +113,50 @@
         let totalCells;
 
         function startTest() {
+            // 전체 화면 전환 시도
             if (testArea.requestFullscreen) {
                 testArea.requestFullscreen().then(() => {
-                    setupGrid();
+                    setupGrid(); // 전체 화면 성공 시 그리드 설정 및 표시
                 }).catch(err => {
-                    simulateFullscreen();
-                    setupGrid();
+                    // 전체 화면 실패 시 (예: 사용자 제스처 부족, 권한 없음)
+                    // alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`); // 에러 메시지는 디버깅용으로만
+                    simulateFullscreen(); // 전체 화면 시뮬레이션 모드 활성화
+                    setupGrid(); // 그리드 설정 및 표시
                 });
             } else {
-                simulateFullscreen();
-                setupGrid();
+                // requestFullscreen 지원하지 않는 경우 (iOS, 구형 브라우저 등)
+                simulateFullscreen(); // 전체 화면 시뮬레이션 모드 활성화
+                setupGrid(); // 그리드 설정 및 표시
             }
         }
 
         function simulateFullscreen() {
-            testArea.style.display = 'flex';
+            // CSS에서 fixed와 100vw/100vh로 처리했기 때문에 JS에서 크게 건드릴 건 없음
+            testArea.style.display = 'flex'; // 숨겨진 testArea를 보이게 함
+
+            // body에 전체 화면 관련 클래스 추가
             document.documentElement.classList.add('fullscreen-active');
             document.body.classList.add('fullscreen-active');
         }
 
         function restoreFromFullscreenSimulation() {
+            // testArea를 숨기고, body/html에 추가했던 클래스 제거
             testArea.style.display = 'none';
             document.documentElement.classList.remove('fullscreen-active');
             document.body.classList.remove('fullscreen-active');
-            if (completeEl) completeEl.style.display = 'none';
-            grid.innerHTML = '';
+            if (completeEl) completeEl.style.display = 'none'; // 메시지 숨김
+            // 그리드 초기화 (선택 사항: 다시 시작할 때 깨끗하게)
+            grid.innerHTML = ''; 
         }
 
         function setupGrid() {
-            const boxSize = 150;
+
+            const boxSize = 150; 
             const numColumns = Math.floor(window.innerWidth / boxSize);
             const numRows = Math.floor(window.innerHeight / boxSize);
 
             touchedCells = new Set();
-            grid.innerHTML = '';
+            grid.innerHTML = ''; // 기존 셀 초기화
 
             grid.style.gridTemplateColumns = `repeat(${numColumns}, 1fr)`;
             grid.style.gridTemplateRows = `repeat(${numRows}, 1fr)`;
@@ -158,44 +170,35 @@
                 grid.appendChild(cell);
             }
 
-            testArea.style.display = 'flex';
+            testArea.style.display = 'flex'; // 그리드 컨테이너 표시
 
-            let lastTouchedElement = null;
+         function touchCell(target) {
+                if (target && target.classList.contains("cell")) {
+                    // active 클래스가 있으면 제거하고, 없으면 추가한다 (토글!)
+                    target.classList.toggle("active"); 
 
-            function touchCell(target) {
-                if (target && target.classList.contains("cell") && target !== lastTouchedElement) {
-                    const index = target.dataset.index;
+                    // 그리고 Set에서도 추가/제거 로직을 바꿔줘야 해
                     if (target.classList.contains("active")) {
-                        target.classList.remove("active");
-                        touchedCells.delete(index);
+                        touchedCells.add(target.dataset.index);
                     } else {
-                        target.classList.add("active");
-                        touchedCells.add(index);
+                        touchedCells.delete(target.dataset.index);
                     }
-                    lastTouchedElement = target;
-                    updateStatus();
+                    
+                    updateStatus(); // 상태 업데이트 (모든 셀이 활성화되었는지 확인)
                 }
             }
 
             grid.addEventListener('click', (event) => touchCell(event.target));
-
             grid.addEventListener('touchstart', (event) => {
-                event.preventDefault();
-                const touch = event.touches[0];
-                const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
-                touchCell(targetElement);
+                event.preventDefault(); 
+                touchCell(event.target);
             }, { passive: false });
-
             grid.addEventListener('touchmove', (event) => {
                 event.preventDefault();
                 const touch = event.touches[0];
                 const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
                 touchCell(targetElement);
             }, { passive: false });
-
-            grid.addEventListener('touchend', () => {
-                lastTouchedElement = null;
-            });
         }
 
         function updateStatus() {
@@ -209,34 +212,41 @@
             location.href = url;
         }
 
+        // 전체 화면 종료 함수를 더 안전하게
         function exitFullscreen() {
-            if (document.fullscreenElement) {
+            if (document.fullscreenElement) { // 실제 전체 화면 모드일 때만 종료 시도
                 document.exitFullscreen();
-            } else {
+            } else { // 실제 전체 화면 모드가 아니면 시뮬레이션 모드를 종료
                 restoreFromFullscreenSimulation();
             }
         }
 
+        // 전체 화면 상태 변경 이벤트 리스너
         document.addEventListener('fullscreenchange', () => {
+            // document.fullscreenElement가 null이면 전체 화면이 종료된 상태
             if (!document.fullscreenElement) {
-                restoreFromFullscreenSimulation();
+                restoreFromFullscreenSimulation(); // 전체 화면이 종료되었으니 상태 복원
             }
         });
 
+        // ESC 키로 전체 화면 해제 시
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
-                exitFullscreen();
+                exitFullscreen(); // 실제 전체 화면이든 시뮬레이션이든 종료 시도
             }
         });
 
+        // 창 크기 변경 시 (iOS에서 화면 회전 등)
         window.addEventListener('resize', () => {
+            // 실제 전체 화면이 아니면서, testArea가 보여지고 있는 시뮬레이션 상태일 경우
             if (!document.fullscreenElement && testArea.style.display === 'flex') {
                 restoreFromFullscreenSimulation();
             }
         });
 
+        // 터치 스크롤 방지 (테스트 중일 때만)
         document.body.addEventListener('touchmove', (e) => {
-            if (testArea.style.display === 'flex') {
+            if (testArea.style.display === 'flex') { // testArea가 활성화되어 있을 때만
                 e.preventDefault();
             }
         }, { passive: false });
