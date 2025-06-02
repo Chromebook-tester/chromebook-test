@@ -3,46 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>スピーカーテスト</title>
+  <link rel="stylesheet" href="common-layout.css">
+  
   <style>
-body {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  background-color: #f9f9f9;
-  padding-top: 60px; /* h1의 높이 + 약간의 여백 */
-  padding-bottom: 80px; /* 네비게이션 버튼 높이 + 약간의 여백 */
-}
-
-h1 {
-  font-size: 24px;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 12px 24px;
-  border: 2px solid #708238;
-  background-color: #DDE7C7;
-  color: #333; /* 텍스트 색상 유지 */
-  border-radius: 0;
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  /* 타이틀 자체에 포인터 커서 추가 */
-  cursor: pointer;
-}
-
-/* 새로 추가된 타이틀 링크 스타일 */
-.title-link {
-  text-decoration: none; /* 밑줄 제거 */
-  color: inherit; /* 부모(h1)의 텍스트 색상 상속 */
-  display: block; /* 링크 영역을 h1 전체로 확장 */
-  height: 100%; /* 링크 영역을 h1 전체 높이로 확장 */
-  line-height: 1; /* 텍스트가 중앙에 오도록 필요시 조정 */
-}
-
+    /* 이 페이지에만 적용되는 스타일 */
 
 .speaker-image {
   cursor: pointer;
@@ -57,56 +21,10 @@ h1 {
   margin-top: 30px;
 }
 
-    button {
-      font-size: 18px;
-      margin: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
 
-    /* テスト用ボタン色・緑 */
-    .test-button {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    .test-button.active {
-      background-color: #A5D6A7;
-      color: black;
-    }
-
-    /* ナビゲーションボタン色・青灰 */
-    .nav-buttons button {
-      background-color: #607D8B;
-      color: white;
-      border: 2px solid #B0BEC5;
-    }
-
-    .nav-buttons button:hover {
-      background-color: #455A64;
-      border: 2px solid white;
-    }
-
-    /* 기존 .nav-buttons 스타일 */
-    .nav-buttons {
-      margin-top: 0;
-      padding: 15px 0;
-      background-color: #607D8B;
-      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      box-sizing: border-box;
-      text-align: center;
-      z-index: 1000;
-    }
-
-    audio {
-      display: none;
-    }
+audio {
+  display: none;
+}
   </style>
 </head>
 <body>
@@ -118,9 +36,8 @@ h1 {
   <br>
   <img src="../media/images/both-speaker.png" alt="左右スピーカー" onclick="toggleAudio('center', this)" class="speaker-image center">
 
-
-  <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
-  <p class="explanation-text">・スピーカーそれぞれからちゃんと音が出たらOK😚</p>
+  <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;"> 
+  <p class="explanation-text">ちゃんと音が出たらOK🥳</p>
 
   <div class="nav-buttons">
     <button onclick="playAndNavigate('sound-previous', 'touchpad-test.html')">⬅ 前のテスト</button>
