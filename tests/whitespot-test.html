@@ -39,9 +39,10 @@ html.fullscreen-active-mode body {
 
 
 html.fullscreen-active-mode h1,
-/*html.fullscreen-active-mode .nav-buttons,*/
+html.fullscreen-active-mode .nav-buttons,
 html.fullscreen-active-mode .start-button,
-html.fullscreen-active-mode p.instruction-text {
+html.fullscreen-active-mode p.instruction-text,
+html.fullscreen-active-mode #touch-instruction { /* 터치 지시 메시지도 숨김 */
   display: none !important;
 }
 
@@ -54,11 +55,26 @@ html.fullscreen-active-mode p.instruction-text {
   z-index: 5;
 }
 
-p.instruction-text {
+p.instruction-text { /* 기존 설명 텍스트 */
   font-size: 18px;
   margin: 0 auto 30px auto;
   text-align: center;
   max-width: 80%;
+}
+
+/* 터치 유도 메시지 스타일 - HTML에 인라인으로도 있지만, 여기서도 관리 가능 */
+#touch-instruction {
+  font-size: 24px;
+  color: #333; /* 잘 보이도록 색상 지정 */
+  position: absolute; /* 화면 중앙 배치를 위해 */
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000; /* 다른 요소들보다 위에 오도록 */
+  text-align: center;
+  padding: 20px; /* 터치 영역 확보 및 가독성 */
+  /* background-color: rgba(255, 255, 255, 0.8); /* 필요하다면 배경 추가 */
+  /* border-radius: 10px; */
 }
 
 .hidden {
@@ -67,25 +83,6 @@ p.instruction-text {
 
 audio {
   display: none;
-}
-
-.end-message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  font-size: 28px;
-  padding: 30px 50px;
-  border-radius: 10px;
-  text-align: center;
-  line-height: 1.5;
-  display: none;
-  z-index: 99999;
-}
-.end-message span {
-  display: block;
 }
 </style>
 </head>
@@ -96,10 +93,7 @@ audio {
 <img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
 <p class="instruction-text">画面に不具合がないかチェックしましょう🔎</p>
 
-<div id="endMessage" class="end-message">
-  <span>테스트 끝!</span>
-  <span>ESC키 누르면 종료돼.</span>
-</div>
+<p id="touch-instruction" class="hidden">画面をタッチすると色が変わります🤩</p>
 
 <div id="nav" class="nav-buttons">
   <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
@@ -114,128 +108,172 @@ audio {
 <script>
 const colors = ['red', 'green', 'white', 'blue', 'black'];
 let currentIndex = -1;
-let testStarted = false;
-const endMessageEl = document.getElementById("endMessage");
-const htmlEl = document.documentElement; // html 태그 요소 가져오기
+let testStarted = false; // 테스트가 실제로 색상 변경을 시작했는지 여부
+const htmlEl = document.documentElement;
+const startButton = document.getElementById("start");
+const h1Title = document.querySelector('h1');
+const initialInstructionText = document.querySelector('p.instruction-text'); // 원래 있던 설명
+const navButtons = document.getElementById("nav");
+const touchInstructionMessage = document.getElementById("touch-instruction");
 
-function startTest() {
-  document.getElementById("start").classList.add("hidden");
-  document.querySelector('h1').classList.add("hidden");
-  document.querySelector('p.instruction-text').classList.add("hidden");
-  document.getElementById("nav").classList.add("hidden");
+function showInitialUIElements(show) {
+    const action = show ? "remove" : "add";
+    startButton.classList[action]("hidden");
+    h1Title.classList[action]("hidden");
+    initialInstructionText.classList[action]("hidden");
+    navButtons.classList[action]("hidden");
+}
 
-  testStarted = true;
-  currentIndex = -1; // 이걸 -1로 유지해서 showNextColor에서 첫 번째 색깔이 나오게 해.
+// 스타트 버튼 클릭/터치 시 호출될 함수
+function prepareForTest() {
+    showInitialUIElements(false); // 시작 버튼, 제목, 기존 설명, 내비게이션 숨기기
+    touchInstructionMessage.classList.remove("hidden"); // "화면 터치" 안내 메시지 보이기
+    // 아직 testStarted = false 상태. 실제 터치가 있어야 테스트 시작.
+}
 
-  // body와 html 태그의 배경색을 모두 첫 번째 색상으로 강제 설정
-  document.body.style.setProperty("background-color", colors[0], "important");
-  document.documentElement.style.setProperty("background-color", colors[0], "important"); // html 태그에도 적용!
+// "화면 터치" 메시지 후 실제 터치 시 호출될 함수
+function initiateColorChangeAndFullscreen() {
+    if (testStarted) return; // 이미 시작된 경우 중복 실행 방지
 
-  tryFullscreen().then(success => {
-    if (!success) activateSimulatedFullscreen();
-    document.body.style.cursor = "none";
-    // ⭐ 이 줄을 제거했어! 이제 showNextColor는 클릭 이벤트로만 호출돼.
-    // showNextColor(); 
-  });
+    testStarted = true; // 이제 진짜 테스트 시작!
+    currentIndex = -1;
+    touchInstructionMessage.classList.add("hidden"); // "화면 터치" 안내 메시지 숨기기
+
+    // 사용자 상호작용(터치) 직후 전체화면 시도
+    setTimeout(() => {
+        tryFullscreen().then(success => {
+            if (!success) {
+                activateSimulatedFullscreen();
+            }
+            document.body.style.cursor = "none"; // 커서 숨기기
+            showNextColor(); // 첫 번째 색상 표시
+        });
+    }, 10); // 아주 짧은 지연 시간
 }
 
 function tryFullscreen() {
-  return new Promise(resolve => {
-    if (document.body.requestFullscreen) {
-      document.body.requestFullscreen().then(() => {
-        resolve(true);
-      }).catch(err => {
-        console.warn("전체화면 실패:", err);
-        resolve(false);
-      });
-    } else {
-      resolve(false);
-    }
-  });
+    return new Promise(resolve => {
+        if (document.body.requestFullscreen) {
+            document.body.requestFullscreen()
+                .then(() => resolve(true))
+                .catch(err => {
+                    console.warn("전체화면 요청 실패:", err);
+                    resolve(false);
+                });
+        } else {
+            resolve(false); // 전체화면 API 미지원
+        }
+    });
 }
 
 function activateSimulatedFullscreen() {
-  htmlEl.classList.add('fullscreen-active-mode');
+    htmlEl.classList.add('fullscreen-active-mode');
+    // 시뮬레이션 모드에서는 body의 배경색을 html이 제어하도록 할 수 있음
+    // 아니면 JavaScript에서 html, body 둘 다 배경색 설정
 }
 
 function endTest() {
-  testStarted = false;
-  currentIndex = -1;
-  endMessageEl.style.display = 'flex';
+    testStarted = false;
+    currentIndex = -1;
 
-  if (document.fullscreenElement) {
-    document.exitFullscreen().then(() => {
-      restoreInitialUI();
-    }).catch(() => {
-      restoreInitialUI();
+    const exitFullscreenPromise = document.fullscreenElement ?
+        document.exitFullscreen() :
+        Promise.resolve(); // 이미 전체화면이 아니거나 API 미지원 시
+
+    exitFullscreenPromise.catch(err => {
+        console.warn("전체화면 종료 실패:", err);
+    }).finally(() => {
+        restoreInitialUI();
     });
-  } else {
-    restoreInitialUI();
-  }
 }
 
 function restoreInitialUI() {
-  htmlEl.classList.remove('fullscreen-active-mode');
-  document.getElementById("start").classList.remove("hidden");
-  document.querySelector('h1').classList.remove("hidden");
-  document.querySelector('p.instruction-text').classList.remove("hidden");
-  document.getElementById("nav").classList.remove("hidden");
-  document.body.style.backgroundColor = "white"; // 초기 배경색으로 돌려놔
-  document.body.style.cursor = "default";
-  endMessageEl.style.display = 'none';
+    htmlEl.classList.remove('fullscreen-active-mode');
+    showInitialUIElements(true); // 숨겼던 UI 요소들 다시 보이기
+    touchInstructionMessage.classList.add("hidden"); // 터치 안내 메시지도 확실히 숨기기
+
+    // 배경색을 초기 상태(흰색)로 복원
+    document.body.style.backgroundColor = "white";
+    document.documentElement.style.backgroundColor = "white";
+    document.body.style.cursor = "default"; // 커서 보이기
 }
 
 function showNextColor() {
-  if (!testStarted) return;
-  currentIndex++;
-  if (currentIndex >= colors.length) {
-    endTest();
-  } else {
-    document.body.style.setProperty("background-color", colors[currentIndex], "important");
-  }
+    if (!testStarted) return;
+
+    currentIndex++;
+    if (currentIndex >= colors.length) {
+        endTest();
+    } else {
+        const currentColor = colors[currentIndex];
+        document.body.style.setProperty("background-color", currentColor, "important");
+        document.documentElement.style.setProperty("background-color", currentColor, "important");
+    }
 }
 
 function playAndNavigate(soundId, nextPage) {
-  const audio = document.getElementById(soundId);
-  if (!audio) {
-    location.href = nextPage;
-    return;
-  }
-  audio.currentTime = 0;
-  audio.play().then(() => {
-    setTimeout(() => {
-      location.href = nextPage;
-    }, 400);
-  }).catch(() => {
-    location.href = nextPage;
-  });
+    const audio = document.getElementById(soundId);
+    if (!audio) {
+        location.href = nextPage;
+        return;
+    }
+    audio.currentTime = 0;
+    audio.play().then(() => {
+        setTimeout(() => {
+            location.href = nextPage;
+        }, 400);
+    }).catch(() => { // 오디오 재생 실패 시 바로 이동
+        location.href = nextPage;
+    });
 }
 
-document.getElementById("start").addEventListener("click", startTest);
-document.getElementById("start").addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  startTest();
+// --- 이벤트 리스너 설정 ---
+startButton.addEventListener("click", prepareForTest);
+startButton.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // 더블탭 확대 등 방지
+    prepareForTest();
 }, { passive: false });
 
-document.body.addEventListener("click", showNextColor);
+// 화면 전체에 대한 터치/클릭 이벤트 처리
+function handleBodyInteraction(event) {
+    // 스타트 버튼이나 네비게이션 버튼 클릭 시에는 이 핸들러가 반응하지 않도록
+    if (event.target === startButton || navButtons.contains(event.target)) {
+        return;
+    }
+
+    if (!testStarted && !touchInstructionMessage.classList.contains("hidden")) {
+        // "화면 터치" 메시지가 보이고, 아직 테스트 시작 전일 때 -> 테스트 시작
+        initiateColorChangeAndFullscreen();
+    } else if (testStarted) {
+        // 테스트가 이미 진행 중일 때 -> 다음 색상
+        showNextColor();
+    }
+}
+
+document.body.addEventListener("click", handleBodyInteraction);
 document.body.addEventListener("touchstart", (e) => {
-  if (!testStarted) return;
-  e.preventDefault();
-  showNextColor();
+    // 스타트 버튼이나 네비게이션 버튼 터치 시에는 이 핸들러가 반응하지 않도록
+    if (e.target === startButton || navButtons.contains(e.target)) {
+        return;
+    }
+    e.preventDefault(); // 스크롤, 확대/축소 등 기본 동작 방지
+    handleBodyInteraction(e); // 이벤트 객체 전달은 필수는 아님
 }, { passive: false });
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    if (testStarted) {
-      endTest();
+    if (event.key === 'Escape') {
+        if (testStarted) {
+            endTest();
+        }
     }
-  }
 });
 
+// 전체화면 상태 변경 감지
 document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement && testStarted) {
-    endTest();
-  }
+    // 사용자가 ESC 키 등으로 직접 전체화면을 해제했을 때 테스트 종료
+    if (!document.fullscreenElement && testStarted) {
+        endTest();
+    }
 });
 </script>
 
