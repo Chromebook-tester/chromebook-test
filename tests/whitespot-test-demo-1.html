@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>LCDホワイトスポットテストを</title>
+<link rel="stylesheet" href="common-layout.css">
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: white !important; /* 초기 배경색은 다시 흰색으로 */
+  cursor: default;
+}
+
+/* 전체화면 활성 모드일 때 HTML과 BODY에 대한 스타일 */
+html.fullscreen-active-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* 추가: 전체화면 모드일 때 body의 배경색이 초기화되지 않도록 */
+html.fullscreen-active-mode body {
+   background-color: initial !important; /* 또는 white !important; */
+}
+
+
+html.fullscreen-active-mode h1,
+html.fullscreen-active-mode .nav-buttons,
+html.fullscreen-active-mode .start-button,
+html.fullscreen-active-mode p.instruction-text {
+  display: none !important;
+}
+
+.start-button {
+  display: block;
+  margin: 100px auto 30px auto;
+  width: 250px;
+  height: auto;
+  cursor: pointer;
+  z-index: 5;
+}
+
+p.instruction-text {
+  font-size: 18px;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  max-width: 80%;
+}
+
+.hidden {
+  display: none;
+}
+
+audio {
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<h1><a href="../index.html" class="title-link">LCDホワイトスポットテスト</a></h1>
+
+<img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
+<p class="instruction-text">画面に不具合がないかチェックしましょう🔎</p>
+
+<div id="nav" class="nav-buttons">
+  <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
+  <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+  <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
+</div>
+
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+<script>
+const colors = ['red', 'green', 'white', 'blue', 'black'];
+let currentIndex = -1;
+let testStarted = false;
+const htmlEl = document.documentElement; // html 태그 요소 가져오기
+
+function startTest() {
+  document.getElementById("start").classList.add("hidden");
+  document.querySelector('h1').classList.add("hidden");
+  document.querySelector('p.instruction-text').classList.add("hidden");
+  document.getElementById("nav").classList.add("hidden");
+
+  testStarted = true;
+  currentIndex = -1;
+
+  // 사용자 상호작용 직후 즉시 전체화면 시도
+  setTimeout(() => {
+    tryFullscreen().then(success => {
+      if (!success) activateSimulatedFullscreen();
+      document.body.style.cursor = "none";
+      
+      // 전체화면 성공 여부와 관계없이 첫 번째 색상 표시
+      document.body.style.setProperty("background-color", colors[0], "important");
+      document.documentElement.style.setProperty("background-color", colors[0], "important");
+    });
+  }, 10); // 아주 짧은 지연
+}
+
+function tryFullscreen() {
+  return new Promise(resolve => {
+    if (document.body.requestFullscreen) {
+      document.body.requestFullscreen().then(() => {
+        resolve(true);
+      }).catch(err => {
+        console.warn("전체화면 실패:", err);
+        resolve(false);
+      });
+    } else {
+      resolve(false);
+    }
+  });
+}
+
+function activateSimulatedFullscreen() {
+  htmlEl.classList.add('fullscreen-active-mode');
+}
+
+function endTest() {
+  testStarted = false;
+  currentIndex = -1;
+
+  if (document.fullscreenElement) {
+    document.exitFullscreen().then(() => {
+      restoreInitialUI();
+    }).catch(() => {
+      restoreInitialUI();
+    });
+  } else {
+    restoreInitialUI();
+  }
+}
+
+function restoreInitialUI() {
+  htmlEl.classList.remove('fullscreen-active-mode');
+  document.getElementById("start").classList.remove("hidden");
+  document.querySelector('h1').classList.remove("hidden");
+  document.querySelector('p.instruction-text').classList.remove("hidden");
+  document.getElementById("nav").classList.remove("hidden");
+  document.body.style.backgroundColor = "white"; // 초기 배경색으로 돌려놔
+  document.body.style.cursor = "default";
+}
+
+function showNextColor() {
+  if (!testStarted) return;
+  currentIndex++;
+  if (currentIndex >= colors.length) {
+    endTest();
+  } else {
+    document.body.style.setProperty("background-color", colors[currentIndex], "important");
+  }
+}
+
+function playAndNavigate(soundId, nextPage) {
+  const audio = document.getElementById(soundId);
+  if (!audio) {
+    location.href = nextPage;
+    return;
+  }
+  audio.currentTime = 0;
+  audio.play().then(() => {
+    setTimeout(() => {
+      location.href = nextPage;
+    }, 400);
+  }).catch(() => {
+    location.href = nextPage;
+  });
+}
+
+document.getElementById("start").addEventListener("click", startTest);
+document.getElementById("start").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  startTest();
+}, { passive: false });
+
+document.body.addEventListener("click", showNextColor);
+document.body.addEventListener("touchstart", (e) => {
+   if (!testStarted) return;
+  e.preventDefault();
+  showNextColor();
+}, { passive: false });
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    if (testStarted) {
+      endTest();
+    }
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && testStarted) {
+    endTest();
+  }
+});
+</script>
+
+</body>
+</html>
