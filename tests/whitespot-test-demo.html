@@ -6,35 +6,35 @@
 <link rel="stylesheet" href="common-layout.css">
 <style>
 html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 body {
-  font-family: sans-serif;
-  background-color: white !important; /* 초기 배경색은 다시 흰색으로 */
-  cursor: default;
+  font-family: sans-serif;
+  background-color: white !important; /* 초기 배경색은 다시 흰색으로 */
+  cursor: default;
 }
 
 /* 전체화면 활성 모드일 때 HTML과 BODY에 대한 스타일 */
 html.fullscreen-active-mode {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden;
-  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  z-index: 9999;
 }
 
 /* 추가: 전체화면 모드일 때 body의 배경색이 초기화되지 않도록 */
 html.fullscreen-active-mode body {
-   background-color: initial !important; /* 또는 white !important; */
+   background-color: initial !important; /* 또는 white !important; */
 }
 
 
@@ -42,50 +42,50 @@ html.fullscreen-active-mode h1,
 /*html.fullscreen-active-mode .nav-buttons,*/
 html.fullscreen-active-mode .start-button,
 html.fullscreen-active-mode p.instruction-text {
-  display: none !important;
+  display: none !important;
 }
 
 .start-button {
-  display: block;
-  margin: 100px auto 30px auto;
-  width: 250px;
-  height: auto;
-  cursor: pointer;
-  z-index: 5;
+  display: block;
+  margin: 100px auto 30px auto;
+  width: 250px;
+  height: auto;
+  cursor: pointer;
+  z-index: 5;
 }
 
 p.instruction-text {
-  font-size: 18px;
-  margin: 0 auto 30px auto;
-  text-align: center;
-  max-width: 80%;
+  font-size: 18px;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  max-width: 80%;
 }
 
 .hidden {
-  display: none;
+  display: none;
 }
 
 audio {
-  display: none;
+  display: none;
 }
 
 .end-message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  font-size: 28px;
-  padding: 30px 50px;
-  border-radius: 10px;
-  text-align: center;
-  line-height: 1.5;
-  display: none;
-  z-index: 99999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 28px;
+  padding: 30px 50px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1.5;
+  display: none;
+  z-index: 99999;
 }
 .end-message span {
-  display: block;
+  display: block;
 }
 </style>
 </head>
@@ -97,14 +97,14 @@ audio {
 <p class="instruction-text">画面に不具合がないかチェックしましょう🔎</p>
 
 <div id="endMessage" class="end-message">
-  <span>테스트 끝!</span>
-  <span>ESC키 누르면 종료돼.</span>
+  <span>테스트 끝!</span>
+  <span>ESC키 누르면 종료돼.</span>
 </div>
 
 <div id="nav" class="nav-buttons">
-  <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
-  <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
-  <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
+  <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
+  <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+  <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
 </div>
 
 <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
@@ -119,122 +119,130 @@ const endMessageEl = document.getElementById("endMessage");
 const htmlEl = document.documentElement; // html 태그 요소 가져오기
 
 function startTest() {
-  document.getElementById("start").classList.add("hidden");
-  document.querySelector('h1').classList.add("hidden");
-  document.querySelector('p.instruction-text').classList.add("hidden");
-  document.getElementById("nav").classList.add("hidden");
+  document.getElementById("start").classList.add("hidden");
+  document.querySelector('h1').classList.add("hidden");
+  document.querySelector('p.instruction-text').classList.add("hidden");
+  document.getElementById("nav").classList.add("hidden");
 
-  testStarted = true;
-  currentIndex = -1; // 이걸 -1로 유지해서 showNextColor에서 첫 번째 색깔이 나오게 해.
+  testStarted = true;
+  currentIndex = -1; // 이걸 -1로 유지해서 showNextColor에서 첫 번째 색깔이 나오게 해.
 
-  // body와 html 태그의 배경색을 모두 첫 번째 색상으로 강제 설정
-  document.body.style.setProperty("background-color", colors[0], "important");
-  document.documentElement.style.setProperty("background-color", colors[0], "important"); // html 태그에도 적용!
+  // body와 html 태그의 배경색을 모두 첫 번째 색상으로 강제 설정
+  document.body.style.setProperty("background-color", colors[0], "important");
+  document.documentElement.style.setProperty("background-color", colors[0], "important"); // html 태그에도 적용!
 
-  tryFullscreen().then(success => {
-    if (!success) activateSimulatedFullscreen();
-    document.body.style.cursor = "none";
-    // ⭐ 이 줄을 제거했어! 이제 showNextColor는 클릭 이벤트로만 호출돼.
-    // showNextColor(); 
-  });
+  tryFullscreen().then(success => {
+    if (!success) activateSimulatedFullscreen();
+    document.body.style.cursor = "none";
+    // ⭐ 이 줄을 제거했어! 이제 showNextColor는 클릭 이벤트로만 호출돼.
+    // showNextColor(); 
+  });
 }
 
 function tryFullscreen() {
-  return new Promise(resolve => {
-    if (document.body.requestFullscreen) {
-      document.body.requestFullscreen().then(() => {
-        resolve(true);
-      }).catch(err => {
-        console.warn("전체화면 실패:", err);
-        resolve(false);
-      });
-    } else {
-      resolve(false);
-    }
-  });
+  return new Promise(resolve => {
+    if (document.body.requestFullscreen) {
+      document.body.requestFullscreen().then(() => {
+        resolve(true);
+      }).catch(err => {
+        console.warn("전체화면 실패:", err);
+        resolve(false);
+      });
+    } else {
+      resolve(false);
+    }
+  });
 }
 
 function activateSimulatedFullscreen() {
-  htmlEl.classList.add('fullscreen-active-mode');
+  htmlEl.classList.add('fullscreen-active-mode');
 }
 
 function endTest() {
-  testStarted = false;
-  currentIndex = -1;
-  endMessageEl.style.display = 'flex';
+  testStarted = false;
+  currentIndex = -1;
+  endMessageEl.style.display = 'flex';
 
-  if (document.fullscreenElement) {
-    document.exitFullscreen().then(() => {
-      restoreInitialUI();
-    }).catch(() => {
-      restoreInitialUI();
-    });
-  } else {
-    restoreInitialUI();
-  }
+  if (document.fullscreenElement) {
+    document.exitFullscreen().then(() => {
+      restoreInitialUI();
+    }).catch(() => {
+      restoreInitialUI();
+    });
+  } else {
+    restoreInitialUI();
+  }
 }
 
 function restoreInitialUI() {
-  htmlEl.classList.remove('fullscreen-active-mode');
-  document.getElementById("start").classList.remove("hidden");
-  document.querySelector('h1').classList.remove("hidden");
-  document.querySelector('p.instruction-text').classList.remove("hidden");
-  document.getElementById("nav").classList.remove("hidden");
-  document.body.style.backgroundColor = "white"; // 초기 배경색으로 돌려놔
-  document.body.style.cursor = "default";
-  endMessageEl.style.display = 'none';
+  htmlEl.classList.remove('fullscreen-active-mode');
+  document.getElementById("start").classList.remove("hidden");
+  document.querySelector('h1').classList.remove("hidden");
+  document.querySelector('p.instruction-text').classList.remove("hidden");
+  document.getElementById("nav").classList.remove("hidden");
+  document.body.style.backgroundColor = "white"; // 초기 배경색으로 돌려놔
+  document.body.style.cursor = "default";
+  endMessageEl.style.display = 'none';
 }
 
 function showNextColor() {
-  if (!testStarted) return;
-  currentIndex++;
-  if (currentIndex >= colors.length) {
-    endTest();
-  } else {
-    document.body.style.setProperty("background-color", colors[currentIndex], "important");
-  }
+  if (!testStarted) return;
+  currentIndex++;
+  if (currentIndex >= colors.length) {
+    endTest();
+  } else {
+    document.body.style.setProperty("background-color", colors[currentIndex], "important");
+  }
 }
 
 function playAndNavigate(soundId, nextPage) {
-  const audio = document.getElementById(soundId);
-  if (!audio) {
-    location.href = nextPage;
-    return;
-  }
-  audio.currentTime = 0;
-  audio.play().then(() => {
-    setTimeout(() => {
-      location.href = nextPage;
-    }, 400);
-  }).catch(() => {
-    location.href = nextPage;
-  });
+  const audio = document.getElementById(soundId);
+  if (!audio) {
+    location.href = nextPage;
+    return;
+  }
+  audio.currentTime = 0;
+  audio.play().then(() => {
+    setTimeout(() => {
+      location.href = nextPage;
+    }, 400);
+  }).catch(() => {
+    location.href = nextPage;
+  });
 }
 
 document.getElementById("start").addEventListener("click", startTest);
 document.getElementById("start").addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  startTest();
+  e.preventDefault();
+  startTest();
 }, { passive: false });
 
-document.body.addEventListener("click", showNextColor);
+// 이 두 부분만 수정하면 돼!
+document.body.addEventListener("click", (e) => {
+    if (e.target.closest('#nav') === null) {
+        showNextColor();
+    }
+});
+
 document.body.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  showNextColor();
+    if (e.target.closest('#nav') === null) {
+        e.preventDefault();
+        showNextColor();
+    }
 }, { passive: false });
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    if (testStarted) {
-      endTest();
-    }
-  }
+  if (event.key === 'Escape') {
+    if (testStarted) {
+      endTest();
+    }
+  }
 });
 
 document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement && testStarted) {
-    endTest();
-  }
+  if (!document.fullscreenElement && testStarted) {
+    endTest();
+  }
 });
 </script>
 
