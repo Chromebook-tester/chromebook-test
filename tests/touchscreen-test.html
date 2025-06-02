@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>タッチスクリーンテスト</title>
+    <link rel="stylesheet" href="common-layout.css">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 60px;
+            font-family: sans-serif;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .start-button {
+            font-size: 20px;
+            padding: 16px 32px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .start-button:hover {
+            background-color: #388E3C;
+        }
+
+        html.fullscreen-active, body.fullscreen-active {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #testArea {
+            display: none;
+            flex-direction: column;
+            background-color: #000;
+            font-family: sans-serif;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+        }
+
+        #testArea .grid {
+            flex: 1;
+            display: grid;
+        }
+
+        #testArea .cell {
+            background-color: #fff;
+            border: 1px solid #333;
+            touch-action: none;
+            /* transition: background-color 0.2s; ← 주석처리 */
+        }
+
+        #testArea .cell.active {
+            background-color: #4CAF50;
+        }
+
+        .complete-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 108, 16, 0.95);
+            color: white;
+            font-size: 30px;
+            padding: 30px 50px;
+            border-radius: 20px;
+            display: none;
+            z-index: 10000;
+            border: 3px solid #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>タッチスクリーンテスト</h1>
+    <p>画面全体をタッチしてみて、おかしい部分がないかチェック！🤗</p>
+
+    <button class="start-button" onclick="startTest()">テストスタート</button>
+
+    <div id="testArea">
+        <div class="grid" id="grid"></div>
+        <div class="complete-message" id="completeMessage">
+            全画面タッチ済！指紋だらけです！🤣 <br> ESCキーを押して終了してね。
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button onclick="navigateTo('sleep-test.html')">⬅ 前のテスト</button>
+        <button onclick="navigateTo('../index.html')">🏠 ホーム</button>
+        <button onclick="navigateTo('touchpad-test.html')">次のテスト ➡</button>
+    </div>
+
+    <script>
+        const testArea = document.getElementById("testArea");
+        const grid = document.getElementById('grid');
+        const completeEl = document.getElementById('completeMessage');
+        let touchedCells;
+        let totalCells;
+
+        function startTest() {
+            if (testArea.requestFullscreen) {
+                testArea.requestFullscreen().then(() => {
+                    setupGrid();
+                }).catch(err => {
+                    simulateFullscreen();
+                    setupGrid();
+                });
+            } else {
+                simulateFullscreen();
+                setupGrid();
+            }
+        }
+
+        function simulateFullscreen() {
+            testArea.style.display = 'flex';
+            document.documentElement.classList.add('fullscreen-active');
+            document.body.classList.add('fullscreen-active');
+        }
+
+        function restoreFromFullscreenSimulation() {
+            testArea.style.display = 'none';
+            document.documentElement.classList.remove('fullscreen-active');
+            document.body.classList.remove('fullscreen-active');
+            if (completeEl) completeEl.style.display = 'none';
+            grid.innerHTML = '';
+        }
+
+        function setupGrid() {
+            const boxSize = 150;
+            const numColumns = Math.floor(window.innerWidth / boxSize);
+            const numRows = Math.floor(window.innerHeight / boxSize);
+
+            touchedCells = new Set();
+            grid.innerHTML = '';
+
+            grid.style.gridTemplateColumns = `repeat(${numColumns}, 1fr)`;
+            grid.style.gridTemplateRows = `repeat(${numRows}, 1fr)`;
+
+            totalCells = numColumns * numRows;
+
+            for (let i = 0; i < totalCells; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.index = i.toString(); 
+                grid.appendChild(cell);
+            }
+
+            testArea.style.display = 'flex';
+
+            let lastTouchedElement = null;
+
+            function touchCell(target) {
+                if (target && target.classList.contains("cell") && target !== lastTouchedElement) {
+                    const index = target.dataset.index;
+                    if (target.classList.contains("active")) {
+                        target.classList.remove("active");
+                        touchedCells.delete(index);
+                    } else {
+                        target.classList.add("active");
+                        touchedCells.add(index);
+                    }
+                    lastTouchedElement = target;
+                    updateStatus();
+                }
+            }
+
+            grid.addEventListener('click', (event) => touchCell(event.target));
+
+            grid.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                const touch = event.touches[0];
+                const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+                touchCell(targetElement);
+            }, { passive: false });
+
+            grid.addEventListener('touchmove', (event) => {
+                event.preventDefault();
+                const touch = event.touches[0];
+                const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+                touchCell(targetElement);
+            }, { passive: false });
+
+            grid.addEventListener('touchend', () => {
+                lastTouchedElement = null;
+            });
+        }
+
+        function updateStatus() {
+            const activeCount = document.querySelectorAll('#grid .cell.active').length;
+            if (completeEl) {
+                completeEl.style.display = (activeCount === totalCells) ? 'block' : 'none';
+            }
+        }
+
+        function navigateTo(url) {
+            location.href = url;
+        }
+
+        function exitFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                restoreFromFullscreenSimulation();
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                restoreFromFullscreenSimulation();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                exitFullscreen();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (!document.fullscreenElement && testArea.style.display === 'flex') {
+                restoreFromFullscreenSimulation();
+            }
+        });
+
+        document.body.addEventListener('touchmove', (e) => {
+            if (testArea.style.display === 'flex') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
