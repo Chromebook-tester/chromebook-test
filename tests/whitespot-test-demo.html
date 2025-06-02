@@ -219,6 +219,7 @@ document.getElementById("start").addEventListener("touchstart", (e) => {
 
 document.body.addEventListener("click", showNextColor);
 document.body.addEventListener("touchstart", (e) => {
+   if (!testStarted) return;
   e.preventDefault();
   showNextColor();
 }, { passive: false });
