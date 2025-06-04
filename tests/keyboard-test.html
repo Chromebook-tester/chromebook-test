@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+ <meta charset="UTF-8">
+<title>👻Test Title👻</title>
+<link rel="stylesheet" href="common-layout.css">
+<style>
+/* 이 페이지에만 적용되는 스타일 */
+body {
+   font-family: sans-serif;
+background-color: #f0f8ff; /* common-layout.css의 배경색을 덮어씀 */
+}
+
+p {
+font-size: 18px;
+margin-top: 0px;
+margin-bottom: 30px;
+}
+
+img {
+width: 640px;
+max-width: 90%;
+margin: 0 auto 10px auto; /* 중앙 정렬 및 하단 마진 */
+display: block;
+}
+
+
+audio {
+display: none;
+}
+</style>
+</head>
+<body>
+<h1><a href="../index.html" class="title-link">キーボードテスト⌨️</a></h1>
+
+
+<p>instruction text here🤗</p>
+
+<img src="../media/images/key1.png" alt="テストイメージ">
+<br>
+<img src="../media/images/key2.png" alt="テストイメージ">
+<br>
+<img src="../media/images/key3.png" alt="テストイメージ">
+<br>
+<img src="../media/images/key4.png" alt="テストイメージ">
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="nav-buttons">
+<button onclick="playAndNavigate('sound-previous', 'whitespot-test.html')">⬅ 前のテスト</button>
+<button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+<button onclick="playAndNavigate('sound-next', 'touchpad-test.html')">次のテスト ➡</button>
+</div>
+
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+<script>
+function playAndNavigate(soundId, nextPage) {
+const audio = document.getElementById(soundId);
+if (!audio) {
+location.href = nextPage;
+return;
+}
+
+audio.currentTime = 0;
+audio.play().then(() => {
+setTimeout(() => {
+location.href = nextPage;
+}, 400);
+}).catch(() => {
+location.href = nextPage;
+});
+}
+</script>
+</body>
+</html>
