@@ -48,7 +48,7 @@ html.fullscreen-active-mode #touch-instruction { /* 터치 지시 메시지도 �
 
 .start-button {
   display: block;
-  margin: 100px auto 30px auto;
+  margin: 50px auto 30px auto;
   width: 250px;
   height: auto;
   cursor: pointer;
@@ -57,7 +57,7 @@ html.fullscreen-active-mode #touch-instruction { /* 터치 지시 메시지도 �
 
 p.instruction-text { /* 기존 설명 텍스트 */
   font-size: 18px;
-  margin: 0 auto 30px auto;
+  margin: -30px auto 30px auto;
   text-align: center;
   max-width: 80%;
 }
@@ -91,9 +91,9 @@ audio {
 <h1><a href="../index.html" class="title-link">LCDホワイトスポットテスト</a></h1>
 
 <img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
-<p class="instruction-text">画面に不具合がないかチェック🔎</p>
+<p class="instruction-text">画面にシミや白い点がないかチェック！🤓</p>
 
-<p id="touch-instruction" class="hidden">画面をタッチすると色が変わります🤩</p>
+<p id="touch-instruction" class="hidden">クリックすると色が変わるよ🤩</p>
 
 <div id="nav" class="nav-buttons">
   <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
@@ -106,7 +106,7 @@ audio {
 <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
 
 <script>
-const colors = ['red', 'green', 'white', 'blue', 'black'];
+const colors = ['white','red', 'green', 'blue', 'black','white'];
 let currentIndex = -1;
 let testStarted = false; // 테스트가 실제로 색상 변경을 시작했는지 여부
 const htmlEl = document.documentElement;
