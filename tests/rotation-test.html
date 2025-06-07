@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
- <meta charset="UTF-8">
+<meta charset="UTF-8">
 <title>画面回転・テスト</title>
 <link rel="stylesheet" href="common-layout.css">
 <style>
 /* 이 페이지에만 적용되는 스타일 */
 body {
-   font-family: sans-serif;
+ font-family: sans-serif;
 background-color: #f0f8ff; /* common-layout.css의 배경색을 덮어씀 */
 }
 
@@ -18,25 +18,22 @@ margin-bottom: 5px;
 }
 
 .reading-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 7px 20px;
-  border: 3px solid #c9d8de;
-  border-radius: 12px;
-  font-family: monospace;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ padding: 7px 20px;
+ border: 3px solid #c9d8de;
+ border-radius: 12px;
+ font-family: monospace;
 
 }
 
 .reading {
-  display: inline-block;
-  margin-right: 20px;
-  font-size: 15px;
-  margin-bottom: 0; /* 위아래 줄 간격 없애기 */
+ display: inline-block;
+ margin-right: 20px;
+ font-size: 15px;
+ margin-bottom: 0; /* 위아래 줄 간격 없애기 */
 }
-
-
-
 
 img {
 width: 230px;
@@ -54,13 +51,12 @@ display: none;
 <body>
 <h1><a href="../index.html" class="title-link">画面回転・テスト</a></h1>
 
-
-<img src="../media/images/cat.png" alt="テストイメージ">
+<img id="cat-image" src="../media/images/cat.png" alt="テストイメージ">
 
 <div class="reading-box">
-  <p class="reading" id="x">x ...</p>
-  <p class="reading" id="y">y ...</p>
-  <p class="reading" id="z">z ...</p>
+ <p class="reading" id="x">x ...</p>
+ <p class="reading" id="y">y ...</p>
+ <p class="reading" id="z">z ...</p>
 </div>
 
 <p>➀ タブレットモードに切り替えて → 本体をゆっくり回転
@@ -69,18 +65,20 @@ display: none;
 
 
 
- <script>
-  if (window.DeviceMotionEvent) {
-   window.addEventListener('devicemotion', function(event) {
-    const acc = event.accelerationIncludingGravity;
-    document.getElementById("x").textContent = "x: " + acc.x.toFixed(2);
-    document.getElementById("y").textContent = "y: " + acc.y.toFixed(2);
-    document.getElementById("z").textContent = "z: " + acc.z.toFixed(2);
-   });
-  } else {
-   document.body.innerHTML += "<p>この端末は加速度センサーに対応していません。</p>";
+<script>
+ if (window.DeviceMotionEvent) {
+ window.addEventListener('devicemotion', function(event) {
+  const acc = event.accelerationIncludingGravity;
+  if (acc) {
+   document.getElementById("x").textContent = "x: " + (acc.x ? acc.x.toFixed(2) : "0.00");
+   document.getElementById("y").textContent = "y: " + (acc.y ? acc.y.toFixed(2) : "0.00");
+   document.getElementById("z").textContent = "z: " + (acc.z ? acc.z.toFixed(2) : "0.00");
   }
- </script>
+ });
+ } else {
+ document.body.innerHTML += "<p>この端末は加速度センサーに対応していません。</p>";
+ }
+</script>
 
 
 
@@ -97,6 +95,8 @@ display: none;
 <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
 <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
 <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+<audio id="cat-sound" src="../media/audio/cat.mp3"></audio>
+
 
 <script>
 function playAndNavigate(soundId, nextPage) {
@@ -116,5 +116,34 @@ location.href = nextPage;
 });
 }
 </script>
+
+
+
+<script>
+
+  const catImage = document.getElementById('cat-image');
+  const catSound = document.getElementById('cat-sound');
+
+  // 클릭/터치하면 무조건 이미지 바꾸고 소리 재생
+  function playMeowNow() {
+    catImage.src = '../media/images/cat1.png';
+    catSound.currentTime = 0;
+    catSound.play();
+  }
+
+  // 소리가 끝나면 이미지만 원래대로
+  catSound.addEventListener('ended', () => {
+    catImage.src = '../media/images/cat.png';
+  });
+
+  // 이벤트 연결
+  catImage.addEventListener('click', playMeowNow);
+  catImage.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    playMeowNow();
+  });
+
+</script>
+
 </body>
 </html>
