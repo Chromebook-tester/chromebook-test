@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>トラックパッドクリックテスト</title>
+  <title>タッチパット テスト</title>
   <link rel="stylesheet" href="common-layout.css">
   <style>
     .title-container {
@@ -23,10 +23,10 @@
     #coords {
       position: absolute;
       top: 50%;
-      right: 24px;
-      transform: translateY(-50%);
+      left: 50%;
+      transform: translate(-50%, -50%);
       font-size: 14px;
-      color: #555;
+      color: #999999;
       background: rgba(255,255,255,0.9);
       padding: 4px 10px;
       border-radius: 6px;
@@ -37,21 +37,11 @@
       font-size: 16px;
       color: #555;
       margin-top: 10px;
-      margin-bottom: 1px;
+      margin-bottom: 10px;
     }
 
-    .trackpad-wrapper {
-      position: relative;
-      width: 480px;
-      margin: 0 auto;
-    }
 
-    .trackpad-img {
-      width: 100%;
-      display: block;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
+ 
 
     .area {
       position: absolute;
@@ -84,20 +74,72 @@
       }
     }
 
-    .counter-wrapper {
-      margin-top: 30px;
-      font-size: 20px;
-      display: flex;
-      justify-content: space-around;
-      width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+/* --- 보스가 될 트랙패드 구역 --- */
+.trackpad-wrapper {
+  /* 화면 너비의 80%를 차지하게 하되, 최대 크기는 480px로 제한 */
+  width: 50%;
+  max-width: 384px; 
+  
+  /* 화면 가운데 정렬 */
+  margin: 40px auto; 
+  
+  /* 내부 요소들을 위치시킬 기준점(매우 중요!) */
+  position: relative; 
+  display: inline-block; /* ✅ 이걸 추가해줘! */
+}
 
-    .counter-box {
-      font-weight: bold;
-    }
+/* --- 보스 이미지 --- */
+.trackpad-img {
+  /* 부모(.trackpad-wrapper)의 크기를 100% 채움 */
+  width: 100%;
+  /* 이미지 비율을 유지하면서 높이는 자동으로 조절 */
+  height: auto;
+  /* 이미지 아래쪽의 불필요한 여백 제거 */
+  display: block; 
+  margin: 0 auto; /* 👈 이미지를 중앙에 놓기 위해 이 코드 추가! */
+}
 
+
+/* --- 카운터들을 감싸는 투명한 오버레이 --- */
+.counter-wrapper {
+  /* .trackpad-wrapper 위에 완전히 겹쳐짐 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  pointer-events: none; /* 클릭 방해 금지 */
+}
+
+/* --- 보스를 따라다니는 카운터들 --- */
+.counter-box {
+    position: absolute;
+    /* 세로 위치: 이미지 높이의 65% 지점 */
+    top: 55%;
+    /* 각 카운터의 정중앙을 기준으로 위치를 잡도록 설정 */
+    transform: translate(-50%, -50%);
+
+    /* ✨ 글자 크기도 이미지에 맞춰 자연스럽게 커지거나 작아짐! ✨ */
+    /* 최소 12px, 최대 22px, 화면너비의 3%를 기준으로 조절 */
+    font-size: clamp(12px, 3vw, 22px);
+    
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    text-align: center;
+}
+
+/* --- 각 카운터의 좌우 위치 (비율 기준) --- */
+.count-left-box {
+    left: 16.7%;
+}
+.count-center-box {
+    left: 50%;
+}
+.count-right-box {
+    left: 83.3%;
+}
     #nav-line {
       position: fixed;
       bottom: 160px;
@@ -112,7 +154,7 @@
 <body>
 
   <div class="title-container">
-    <h1>タッチパッドクリックテスト</h1>
+    <h1>タッチパット テスト</h1>
     <div id="coords">X: 0 / Y: 0</div>
   </div>
 
@@ -121,18 +163,17 @@
     <div class="area left"   onclick="handleClick(event, 'left')"></div>
     <div class="area center" onclick="handleClick(event, 'center')"></div>
     <div class="area right"  onclick="handleClick(event, 'right')"></div>
-  </div>
 
-  <div class="counter-wrapper">
-    <div class="counter-box">左: <span id="count-left">0</span> 回</div>
-    <div class="counter-box">中央: <span id="count-center">0</span> 回</div>
-    <div class="counter-box">右: <span id="count-right">0</span> 回</div>
-  </div>
+   <div class="counter-wrapper">
+    <div class="counter-box count-left-box"><span id="count-left">0</span> 回</div>
+    <div class="counter-box count-center-box"><span id="count-center">0</span> 回</div>
+    <div class="counter-box count-right-box"><span id="count-right">0</span> 回</div>
+</div>
 
-  <p class="click-message">➀左・中央・右を10回以上クリックしてみて</p>
-  <p class="click-message">➁異常がないか確認😊</p>
 
-  
+
+  <p class="click-message">それぞれ10回以上、クリックしてみてね😊</p>
+
   <div class="nav-buttons">
     <button onclick="playAndNavigate('sound-previous', 'sleep-test.html')">⬅ 前のテスト</button>
     <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
@@ -186,6 +227,16 @@
     document.addEventListener('mousemove', function(e) {
       coords.textContent = `X: ${e.clientX} / Y: ${e.clientY}`;
     });
+
+
+    window.addEventListener('load', () => {
+  const wrapper = document.querySelector('.trackpad-wrapper');
+  const image = document.querySelector('.trackpad-img');
+
+  // 이미지 로드 후, wrapper의 높이를 이미지 높이에 맞춤
+  wrapper.style.height = `${image.offsetHeight}px`;
+});
+
   </script>
 
 </body>
