@@ -68,9 +68,9 @@ display: none;
   if (window.DeviceMotionEvent) {
    window.addEventListener('devicemotion', function(event) {
     const acc = event.accelerationIncludingGravity;
-    document.getElementById("x").textContent = "X: " + acc.x.toFixed(2);
-    document.getElementById("y").textContent = "Y: " + acc.y.toFixed(2);
-    document.getElementById("z").textContent = "Z: " + acc.z.toFixed(2);
+    document.getElementById("x").textContent = "ⓧ " + acc.x.toFixed(2);
+    document.getElementById("y").textContent = "ⓨ " + acc.y.toFixed(2);
+    document.getElementById("z").textContent = "ⓩ " + acc.z.toFixed(2);
    });
   } else {
    document.body.innerHTML += "<p>この端末は加速度センサーに対応していません。</p>";
