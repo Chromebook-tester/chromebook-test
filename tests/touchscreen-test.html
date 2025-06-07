@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>タッチスクリーン テスト</title>
+    <title>タッチ入力 テスト</title>
     <link rel="stylesheet" href="common-layout.css">
     <style>
         body {
@@ -86,7 +86,7 @@
     </style>
 </head>
 <body>
-    <h1>タッチスクリーンテスト</h1>
+    <h1>タッチ入力 テスト</h1>
 
     <button class="start-button" onclick="startTest()">スタート</button>
     <p>➀画面全体をタッチしてみて、</p>
@@ -100,7 +100,7 @@
     </div>
 
     <div class="nav-buttons">
-        <button onclick="navigateTo('youtube-test.html')">⬅ 前のテスト</button>
+        <button onclick="playAndNavigate('sound-previous','youtube-test.html')">⬅ 前のテスト</button>
         <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
         <button onclick="playAndNavigate('sound-next', 'rotation-test.html')">次のテスト ➡</button>
 
@@ -249,7 +249,23 @@
             }
         }, { passive: false });
 
-        
+        function playAndNavigate(soundId, nextPage) {
+    const audio = document.getElementById(soundId);
+    if (!audio) {
+        location.href = nextPage;
+        return;
+    }
+
+    audio.currentTime = 0;
+    audio.play().then(() => {
+        setTimeout(() => {
+            location.href = nextPage;
+        }, 400); // 0.4초 기다리고 이동
+    }).catch(() => {
+        location.href = nextPage;
+    });
+}
+
     </script>
 </body>
 </html>
