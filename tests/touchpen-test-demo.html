@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>タッチペン・テスト</title>
+  <link rel="stylesheet" href="common-layout.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f8ff;
+      text-align: center;
+    }
+
+    canvas {
+      border: 2px solid #aaa;
+      border-radius: 8px;
+      margin: 20px auto;
+      display: block;
+      touch-action: none;
+      width: 90vw;
+      height: 30vh;
+      outline: none;
+    }
+
+    .reset-button {
+      background-color: #607D8B;
+      color: white;
+      padding: 10px 20px;
+      font-size: 18px;
+      border: 2px solid #355261;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .nav-buttons button {
+      margin: 10px;
+      font-size: 18px;
+      padding: 8px 16px;
+    }
+
+    audio { display: none; }
+  </style>
+</head>
+<body>
+
+  <h1><a href="../index.html">タッチペン・テスト</a></h1>
+  <canvas id="write-canvas" tabindex="0"></canvas>
+  <p>✏️タッチペンで、数字をなぞってみよう!</p>
+  <button class="reset-button" onclick="clearCanvas()">リセット</button>
+
+  <div class="nav-buttons">
+    <button onclick="playAndNavigate('sound-previous', 'touchscreen-test.html')">⬅ 前のテスト</button>
+    <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+    <button onclick="playAndNavigate('sound-next', 'keyboard-test.html')">次のテスト ➡</button>
+  </div>
+
+  <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+  <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+  <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+  <script>
+    const canvas = document.getElementById('write-canvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    function getCanvasCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      return {
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
+      };
+    }
+
+    function resizeCanvas() {
+      isDrawing = false;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+      drawBackgroundNumbers();
+    }
+
+    function drawBackgroundNumbers() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const rect = canvas.getBoundingClientRect();
+      const fontSize = rect.height * 0.8;
+      ctx.save();
+      ctx.font = `bold ${fontSize}px sans-serif`;
+      ctx.fillStyle = 'rgba(100, 100, 100, 0.2)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const numbers = ['1', '2', '3', '4', '5'];
+      const margin = rect.width * 0.1;
+      const spacing = (rect.width - margin * 2) / (numbers.length - 1);
+      numbers.forEach((num, i) => {
+        const x = margin + spacing * i;
+        ctx.fillText(num, x, rect.height / 2);
+      });
+      ctx.restore();
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackgroundNumbers();
+    }
+
+    function setupCanvas() {
+      canvas.style.display = 'none';
+      canvas.offsetHeight;
+      canvas.style.display = 'block';
+
+      requestAnimationFrame(() => {
+        resizeCanvas();
+        canvas.focus({ preventScroll: true });
+      });
+    }
+
+    canvas.onpointerdown = (e) => {
+      e.preventDefault();
+      isDrawing = true;
+      const { x, y } = getCanvasCoordinates(e);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      canvas.setPointerCapture(e.pointerId);
+    };
+
+    canvas.onpointermove = (e) => {
+      if (!isDrawing) return;
+      const { x, y } = getCanvasCoordinates(e);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    };
+
+    canvas.onpointerup = canvas.onpointerleave = canvas.onpointercancel = (e) => {
+      isDrawing = false;
+      try { canvas.releasePointerCapture(e.pointerId); } catch {}
+    };
+
+    function playAndNavigate(soundId, nextPage) {
+      const audio = document.getElementById(soundId);
+      if (!audio) {
+        location.href = nextPage;
+        return;
+      }
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        setTimeout(() => { location.href = nextPage; }, 400);
+      }).catch(() => {
+        location.href = nextPage;
+      });
+    }
+
+    window.addEventListener('load', setupCanvas);
+    window.addEventListener('pageshow', setupCanvas);
+    window.addEventListener('focus', setupCanvas);
+    window.addEventListener('resize', () => requestAnimationFrame(resizeCanvas));
+  </script>
+</body>
+</html>
