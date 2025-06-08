@@ -94,7 +94,7 @@
     <div id="testArea">
         <div class="grid" id="grid"></div>
         <div class="complete-message" id="completeMessage">
-        指紋だらけです！🤣 <br> ESCキーを押して終了
+        完了! 指紋だらけです！🤣 <br> タッチして終了
         </div>
     </div>
 
@@ -116,6 +116,12 @@
         const completeEl = document.getElementById('completeMessage');
         let touchedCells;
         let totalCells;
+        
+        // 이벤트 핸들러 함수들을 변수로 저장
+        let gridClickHandler;
+        let gridTouchStartHandler;
+        let gridTouchMoveHandler;
+        let gridTouchEndHandler;
 
         function startTest() {
             if (testArea.requestFullscreen) {
@@ -142,7 +148,26 @@
             document.documentElement.classList.remove('fullscreen-active');
             document.body.classList.remove('fullscreen-active');
             if (completeEl) completeEl.style.display = 'none';
+            
+            // 이벤트 리스너 제거
+            removeGridEventListeners();
+            
             grid.innerHTML = '';
+        }
+
+        function removeGridEventListeners() {
+            if (gridClickHandler) {
+                grid.removeEventListener('click', gridClickHandler);
+            }
+            if (gridTouchStartHandler) {
+                grid.removeEventListener('touchstart', gridTouchStartHandler);
+            }
+            if (gridTouchMoveHandler) {
+                grid.removeEventListener('touchmove', gridTouchMoveHandler);
+            }
+            if (gridTouchEndHandler) {
+                grid.removeEventListener('touchend', gridTouchEndHandler);
+            }
         }
 
         function setupGrid() {
@@ -151,6 +176,10 @@
             const numRows = Math.floor(window.innerHeight / boxSize);
 
             touchedCells = new Set();
+            
+            // 기존 이벤트 리스너 제거
+            removeGridEventListeners();
+            
             grid.innerHTML = '';
 
             grid.style.gridTemplateColumns = `repeat(${numColumns}, 1fr)`;
@@ -184,25 +213,32 @@
                 }
             }
 
-            grid.addEventListener('click', (event) => touchCell(event.target));
+            // 이벤트 핸들러 함수들 정의
+            gridClickHandler = (event) => touchCell(event.target);
 
-            grid.addEventListener('touchstart', (event) => {
+            gridTouchStartHandler = (event) => {
                 event.preventDefault();
                 const touch = event.touches[0];
                 const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
                 touchCell(targetElement);
-            }, { passive: false });
+            };
 
-            grid.addEventListener('touchmove', (event) => {
+            gridTouchMoveHandler = (event) => {
                 event.preventDefault();
                 const touch = event.touches[0];
                 const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
                 touchCell(targetElement);
-            }, { passive: false });
+            };
 
-            grid.addEventListener('touchend', () => {
+            gridTouchEndHandler = () => {
                 lastTouchedElement = null;
-            });
+            };
+
+            // 새로운 이벤트 리스너 등록
+            grid.addEventListener('click', gridClickHandler);
+            grid.addEventListener('touchstart', gridTouchStartHandler, { passive: false });
+            grid.addEventListener('touchmove', gridTouchMoveHandler, { passive: false });
+            grid.addEventListener('touchend', gridTouchEndHandler);
         }
 
         function updateStatus() {
@@ -235,7 +271,9 @@
                 exitFullscreen();
             }
         });
-
+        completeEl.addEventListener('click', () => {
+            exitFullscreen();
+        });
         window.addEventListener('resize', () => {
             if (!document.fullscreenElement && testArea.style.display === 'flex') {
                 restoreFromFullscreenSimulation();
@@ -249,21 +287,21 @@
         }, { passive: false });
 
         function playAndNavigate(soundId, nextPage) {
-    const audio = document.getElementById(soundId);
-    if (!audio) {
-        location.href = nextPage;
-        return;
-    }
+            const audio = document.getElementById(soundId);
+            if (!audio) {
+                location.href = nextPage;
+                return;
+            }
 
-    audio.currentTime = 0;
-    audio.play().then(() => {
-        setTimeout(() => {
-            location.href = nextPage;
-        }, 400); // 0.4초 기다리고 이동
-    }).catch(() => {
-        location.href = nextPage;
-    });
-}
+            audio.currentTime = 0;
+            audio.play().then(() => {
+                setTimeout(() => {
+                    location.href = nextPage;
+                }, 400); // 0.4초 기다리고 이동
+            }).catch(() => {
+                location.href = nextPage;
+            });
+        }
 
     </script>
 </body>
