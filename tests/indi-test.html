@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+ <meta charset="UTF-8">
+<title>インジケーター・チェック</title>
+<link rel="stylesheet" href="common-layout.css">
+<style>
+/* 이 페이지에만 적용되는 스타일 */
+body {
+   font-family: sans-serif;
+background-color: #f0f8ff; /* common-layout.css의 배경색을 덮어씀 */
+}
+
+p {
+font-size: 18px;
+margin-top: 0px;
+margin-bottom: 5px;
+}
+
+img {
+width: 450px;
+max-width: 90%;
+margin: 0 auto 10px auto; /* 중앙 정렬 및 하단 마진 */
+display: block;
+}
+
+
+audio {
+display: none;
+}
+</style>
+</head>
+<body>
+<h1><a href="../index.html" class="title-link">インジケーター(充電ランプ)・チェエク</a></h1>
+
+
+<img src="../media/images/indi4.gif" alt="インジケーターイメージ">
+<p>アダプターをさすと、充電ランプが光るよ。</p>
+<p>バッテリーにもイナズママークが出る🤓</p>
+
+
+
+<div class="nav-buttons">
+<button onclick="playAndNavigate('sound-previous', 'bluetooth-test.html')">⬅ 前のテスト</button>
+<button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+<button onclick="playAndNavigate('sound-next', 'camera-test.html')">次のテスト ➡</button>
+</div>
+
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+<script>
+function playAndNavigate(soundId, nextPage) {
+const audio = document.getElementById(soundId);
+if (!audio) {
+location.href = nextPage;
+return;
+}
+
+audio.currentTime = 0;
+audio.play().then(() => {
+setTimeout(() => {
+location.href = nextPage;
+}, 400);
+}).catch(() => {
+location.href = nextPage;
+});
+}
+</script>
+</body>
+</html>
