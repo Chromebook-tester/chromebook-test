@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tailwind 버튼 테스트</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen gap-6">
+
+  <h1 class="text-3xl font-bold text-blue-600 mb-8">🐾 테스트 버튼 모음</h1>
+
+  <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow">
+    ▶️ 시작
+  </button>
+
+  <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow">
+    🔄 리셋
+  </button>
+
+  <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow">
+    ➡️ 다음
+  </button>
+
+</body>
+</html>
