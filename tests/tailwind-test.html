@@ -1,42 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>클릭 사운드 버튼</title>
+  <style>
+    /* From Uiverse.io by Voxybuns */
+    button {
+      --button_radius: 0.75em;
+      --button_color: #669d34;
+      --button_outline_color: #000000;
+      font-size: 17px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--button_radius);
+      background: var(--button_outline_color);
+      padding: 0;
+    }
 
-<!-- From Uiverse.io by Voxybuns --> 
-<button>
-  <span class="button_top"> Button </span>
-</button>
+    .button_top {
+      display: block;
+      box-sizing: border-box;
+      border: 2px solid var(--button_outline_color);
+      border-radius: var(--button_radius);
+      padding: 0.75em 1.5em;
+      background: var(--button_color);
+      color: var(--button_outline_color);
+      transform: translateY(-0.2em);
+      transition: transform 0.1s ease;
+    }
 
+    button:hover .button_top {
+      transform: translateY(-0.33em);
+    }
 
-/* From Uiverse.io by Voxybuns */ 
-button {
-  /* Variables */
-  --button_radius: 0.75em;
-  --button_color: #669d34;
-  --button_outline_color: #000000;
-  font-size: 17px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  border-radius: var(--button_radius);
-  background: var(--button_outline_color);
-}
+    button:active .button_top {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
 
-.button_top {
-  display: block;
-  box-sizing: border-box;
-  border: 2px solid var(--button_outline_color);
-  border-radius: var(--button_radius);
-  padding: 0.75em 1.5em;
-  background: var(--button_color);
-  color: var(--button_outline_color);
-  transform: translateY(-0.2em);
-  transition: transform 0.1s ease;
-}
+  <!-- 버튼 (ID 추가!) -->
+  <button id="click-button">
+    <span class="button_top">Button</span>
+  </button>
 
-button:hover .button_top {
-  /* Pull the button upwards when hovered */
-  transform: translateY(-0.33em);
-}
+  <!-- 오디오 -->
+  <audio id="click-sound" src="click.mp3" preload="auto"></audio>
 
-button:active .button_top {
-  /* Push the button downwards when pressed */
-  transform: translateY(0);
-}
+  <!-- 스크립트 -->
+  <script>
+    const btn = document.getElementById("click-button");
+    const sound = document.getElementById("click-sound");
+
+    btn.addEventListener("click", () => {
+      sound.currentTime = 0;
+      sound.play();
+    });
+  </script>
+
+</body>
+</html>
