@@ -37,6 +37,11 @@
     button:active .button_top {
       transform: translateY(0);
     }
+
+    /* 눌림 고정 상태용 클래스 */
+    button.active .button_top {
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -46,7 +51,6 @@
     <span class="button_top"> 不合格 </span>
   </button>
 
-
   <button>
     <span class="button_top"> 気になる </span>
   </button>
@@ -55,6 +59,16 @@
     <span class="button_top"> 合格 </span>
   </button>
 
-  
+  <script>
+    const buttons = document.querySelectorAll("button");
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+      });
+    });
+  </script>
+
 </body>
 </html>
