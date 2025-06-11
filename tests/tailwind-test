@@ -1,26 +1,62 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>Tailwind 버튼 테스트</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>버튼 테스트</title>
+  <style>
+    /* From Uiverse.io by Voxybuns */
+    button {
+      --button_radius: 0.75em;
+      --button_color: #669d34;
+      --button_outline_color: #000000;
+      font-size: 17px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--button_radius);
+      background: var(--button_outline_color);
+      padding: 0;
+    }
+
+    .button_top {
+      display: block;
+      box-sizing: border-box;
+      border: 2px solid var(--button_outline_color);
+      border-radius: var(--button_radius);
+      padding: 0.75em 1.5em;
+      background: var(--button_color);
+      color: var(--button_outline_color);
+      transform: translateY(-0.2em);
+      transition: transform 0.1s ease;
+    }
+
+    button:hover .button_top {
+      transform: translateY(-0.33em);
+    }
+
+    button:active .button_top {
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen gap-6">
+<body>
 
-  <h1 class="text-3xl font-bold text-blue-600 mb-8">🐾 테스트 버튼 모음</h1>
-
-  <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow">
-    ▶️ 시작
-  </button>
-
-  <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow">
-    🔄 리셋
-  </button>
-
-  <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow">
-    ➡️ 다음
+  <!-- From Uiverse.io by Voxybuns -->
+  <button>
+    <span class="button_top"> 不合格 </span>
   </button>
 
 
+  <button>
+    <span class="button_top"> 気になる </span>
+  </button>
+
+  <button>
+    <span class="button_top"> 合格 </span>
+  </button>
+
+  
 </body>
 </html>
+
+이 코드 에서 버튼을 누르면 눌려진 상태로 고정되게 하고 싶어 대신 다른 버튼을 누르면 눌러져 있던 버튼은 원상태로 돌아오고 그 버튼이 눌러진 상태로 고정 되게
