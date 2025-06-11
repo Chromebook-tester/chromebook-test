@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1922</title>
+  <title>버튼 테스트</title>
   <style>
     /* From Uiverse.io by Voxybuns */
     button {
@@ -41,24 +41,20 @@
 </head>
 <body>
 
-  <!-- 버튼 (ID 추가!) -->
-  <button id="click-button">
-    <span class="button_top">Button</span>
+  <!-- From Uiverse.io by Voxybuns -->
+  <button>
+    <span class="button_top"> 不合格 </span>
   </button>
 
-  <!-- 오디오 -->
-  <audio id="click-sound" src="../media/c/audio/click.mp3" preload="auto"></audio>
 
-  <!-- 스크립트 -->
-  <script>
-    const btn = document.getElementById("click-button");
-    const sound = document.getElementById("click-sound");
+  <button>
+    <span class="button_top"> 気になる </span>
+  </button>
 
-    btn.addEventListener("click", () => {
-      sound.currentTime = 0;
-      sound.play();
-    });
-  </script>
+  <button>
+    <span class="button_top"> 合格 </span>
+  </button>
 
+  
 </body>
 </html>
