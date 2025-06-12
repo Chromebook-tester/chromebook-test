@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1453</title>
+  <title>状態保存ボタン</title>
   <style>
     .button {
       background-color: #04AA6D;
@@ -18,101 +19,134 @@
       cursor: pointer;
     }
 
+```
+.button1, .button2, .button3 {
+  background-color: white;
+  color: black;
+}
 
-    .button1, .button2, .button3 {
-      background-color: white;
-      color: black;
-    }
+.button1 {
+  border: 2px solid #04AA6D;
+}
 
-    .button1 {
-      border: 2px solid #04AA6D;
-    }
+.button2 {
+  border: 2px solid #008CBA;
+}
 
-    .button2 {
-      border: 2px solid #008CBA;
-    }
+.button3 {
+  border: 2px solid #f44336;
+}
 
-    .button3 {
-      border: 2px solid #f44336;
-    }
+.button1:hover:not(.selected) {
+  background-color: #04AA6D;
+  color: white;
+}
 
-    .button1:hover {
-      background-color: #04AA6D;
-      color: white;
-    }
+.button2:hover:not(.selected) {
+  background-color: #008CBA;
+  color: white;
+}
 
-    .button2:hover {
-      background-color: #008CBA;
-      color: white;
-    }
+.button3:hover:not(.selected) {
+  background-color: #f44336;
+  color: white;
+}
 
-    .button3:hover {
-      background-color: #f44336;
-      color: white;
-    }
+/* 선택된 상태에서 호버 시 원래 색상 유지 */
+.button1.selected:hover {
+  background-color: #04AA6D !important;
+  color: white !important;
+}
 
-    /* 눌림 상태 (JS로 제어) */
-    .selected {
-      color: white !important;
-    }
+.button2.selected:hover {
+  background-color: #008CBA !important;
+  color: white !important;
+}
 
-    .selected.button1 {
-      background-color: #04AA6D !important;
-    }
+.button3.selected:hover {
+  background-color: #f44336 !important;
+  color: white !important;
+}
 
-    .selected.button2 {
-      background-color: #008CBA !important;
-    }
+/* 눌림 상태 (JS로 제어) */
+.selected {
+  color: white !important;
+}
 
-    .selected.button3 {
-      background-color: #f44336 !important;
-    }
+.selected.button1 {
+  background-color: #04AA6D !important;
+}
+
+.selected.button2 {
+  background-color: #008CBA !important;
+}
+
+.selected.button3 {
+  background-color: #f44336 !important;
+}
+
+.status {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  font-weight: bold;
+}
+```
+
   </style>
 </head>
 <body>
 
   <h2>どれか一つを選んでください</h2>
 
-  <button class="button button1" onclick="selectResult(this, 'gokaku')">合格</button>
-  <button class="button button2" onclick="selectResult(this, 'kininaru')">気になる</button>
-  <button class="button button3" onclick="selectResult(this, 'fugokaku')">不合格</button>
+<button class="button button1" onclick="selectResult(this, 'gokaku')">合格</button>
+<button class="button button2" onclick="selectResult(this, 'kininaru')">気になる</button>
+<button class="button button3" onclick="selectResult(this, 'fugokaku')">不合格</button>
+
+  <div class="status" id="status">현재 선택: 없음</div>
 
   <script>
+    // 메모리 기반 상태 저장
+    let currentSelection = null;
+
     function selectResult(btn, value) {
-      const isSelected = btn.classList.contains('selected');
+      const isCurrentlySelected = btn.classList.contains('selected');
 
-      if (isSelected) {
-        // 이미 선택된 버튼 → 해제
-        btn.classList.remove('selected');
-        localStorage.removeItem("result");
+      // 모든 버튼에서 selected 클래스 제거
+      document.querySelectorAll('.button').forEach(b => {
+        b.classList.remove('selected');
+      });
+
+      if (isCurrentlySelected) {
+        // 이미 선택된 버튼을 다시 클릭 → 해제
+        // 강제로 스타일 초기화
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+        currentSelection = null;
+        updateStatus('없음');
       } else {
-        // 다른 버튼 → 선택 전환
-        localStorage.setItem("result", value);
-
-        // 모든 버튼에서 .selected 제거
-        document.querySelectorAll('.button').forEach(b => {
-          b.classList.remove('selected');
-        });
-
-        // 현재 누른 버튼에 .selected 추가
+        // 선택되지 않은 버튼 클릭 → 선택
         btn.classList.add('selected');
+        currentSelection = value;
+        
+        // 상태 표시 업데이트
+        const statusText = {
+          'gokaku': '合格',
+          'kininaru': '気になる', 
+          'fugokaku': '불합격'
+        };
+        updateStatus(statusText[value]);
       }
     }
 
-    // 저장된 값으로 상태 복원
+    function updateStatus(text) {
+      document.getElementById('status').textContent = '현재 선택: ' + text;
+    }
+
+    // 페이지 로드 시 초기 상태 설정
     window.addEventListener('load', () => {
-      const result = localStorage.getItem("result");
-      if (!result) return;
-
-      const btnMap = {
-        "gokaku": ".button1",
-        "kininaru": ".button2",
-        "fugokaku": ".button3"
-      };
-
-      const selector = btnMap[result];
-      const btn = document.querySelector(selector);
-      if (btn) btn.classList.add('selected');
+      updateStatus('없음');
     });
   </script>
 
