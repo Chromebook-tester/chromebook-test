@@ -104,6 +104,12 @@
       const btn = document.querySelector(selector);
       if (btn) btn.classList.add('selected');
     });
+    
+  function sendText() {
+    const text = document.getElementById("userText").value;
+    localStorage.setItem("userMessage", text);
+    window.location.href = "Bpage.html";
+  }
   </script>
 
 </body>
