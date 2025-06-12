@@ -30,7 +30,6 @@ padding: 0.75em 1.5em;
 background: var(–button_color);
 color: var(–button_outline_color);
 user-select: none;
-transition: all 0.1s ease; /* ✨ 부드러운 전환 */
 }
 
 button:focus {
@@ -41,12 +40,6 @@ outline: none;
 button.active .button_top {
 background: #444444;
 color: white;
-}
-
-/* 호버 효과 추가 */
-button:hover .button_top {
-transform: translateY(-1px);
-box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 </style>
 
@@ -72,19 +65,9 @@ box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 
     buttons.forEach(button => {
       // mousedown으로 변경하여 즉시 반응
-      button.addEventListener("mousedown", (e) => {
-        e.preventDefault(); // 기본 동작 방지
+      button.addEventListener("mousedown", () => {
         buttons.forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
-      });
-      
-      // 키보드 접근성을 위해 keydown도 추가
-      button.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          buttons.forEach(btn => btn.classList.remove("active"));
-          button.classList.add("active");
-        }
       });
     });
   </script>
