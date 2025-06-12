@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -35,6 +37,10 @@
     <li><label><input type="checkbox" id="chk-kininaru"> 気になる</label></li>
     <li><label><input type="checkbox" id="chk-fugokaku"> 不合格</label></li>
   </ul>
+
+<div id="text-result" style="margin-top: 30px; font-size: 20px; font-weight: bold;"></div>
+
+
 
   <script>
     const boxes = {
@@ -77,6 +83,13 @@
         applySelection(event.newValue);
       }
     });
+    
+    // MAC-test.html에서 입력한 텍스트 불러오기
+const userText = localStorage.getItem("userMessage");
+if (userText) {
+  document.getElementById("text-result").textContent = "入力内容: " + userText;
+}
+
   </script>
 
 </body>
