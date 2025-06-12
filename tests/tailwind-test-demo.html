@@ -1,50 +1,60 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1017</title>
+  <title>1017 - Fast Response</title>
   <style>
     /* From Uiverse.io by Voxybuns */
-    
+
 button {
-  --button_radius: 0.75em;
-  --button_color: #669d34;
-  --button_outline_color: #000000;
-  font-size: 17px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  border-radius: var(--button_radius);
-  background: none; /* ✨ 수정됨 */
-  padding: 0;
+–button_radius: 0.75em;
+–button_color: #669d34;
+–button_outline_color: #000000;
+font-size: 17px;
+font-weight: bold;
+border: none;
+cursor: pointer;
+border-radius: var(–button_radius);
+background: none;
+padding: 0;
+touch-action: manipulation; /* ✨ 터치 지연 제거 */
 }
-    .button_top {
-      display: block;
-      box-sizing: border-box;
-      border: 2px solid var(--button_outline_color);
-      border-radius: var(--button_radius);
-      padding: 0.75em 1.5em;
-      background: var(--button_color);
-      color: var(--button_outline_color);
-      user-select: none;
-    }
 
-    button:focus {
-      outline: none;
-    }
+.button_top {
+display: block;
+box-sizing: border-box;
+border: 2px solid var(–button_outline_color);
+border-radius: var(–button_radius);
+padding: 0.75em 1.5em;
+background: var(–button_color);
+color: var(–button_outline_color);
+user-select: none;
+transition: all 0.1s ease; /* ✨ 부드러운 전환 */
+}
 
-    /* 삭제됨: transform, transition 모두 제거 */
+button:focus {
+outline: none;
+}
 
-    /* 눌림 고정 상태용 클래스 */
-    button.active .button_top {
-      background: #444444;
-      color: white;
-    }
-  </style>
+/* 눌림 고정 상태용 클래스 */
+button.active .button_top {
+background: #444444;
+color: white;
+}
+
+/* 호버 효과 추가 */
+button:hover .button_top {
+transform: translateY(-1px);
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+</style>
+
 </head>
 <body>
 
   <!-- From Uiverse.io by Voxybuns -->
+
   <button>
     <span class="button_top"> 不合格 </span>
   </button>
@@ -61,9 +71,20 @@ button {
     const buttons = document.querySelectorAll("button");
 
     buttons.forEach(button => {
-      button.addEventListener("click", () => {
+      // mousedown으로 변경하여 즉시 반응
+      button.addEventListener("mousedown", (e) => {
+        e.preventDefault(); // 기본 동작 방지
         buttons.forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
+      });
+      
+      // 키보드 접근성을 위해 keydown도 추가
+      button.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          buttons.forEach(btn => btn.classList.remove("active"));
+          button.classList.add("active");
+        }
       });
     });
   </script>
