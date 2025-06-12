@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Bページ - 結果表示</title>
+  <title>Bページ - 結果表示（リアルタイム対応）</title>
   <style>
     body {
       font-family: sans-serif;
@@ -28,7 +28,7 @@
 </head>
 <body>
 
-  <h2>選択された結果（変更もできます）</h2>
+  <h2>選択された結果（リアルタイム更新）</h2>
 
   <ul>
     <li><label><input type="checkbox" id="chk-gokaku"> 合格</label></li>
@@ -37,37 +37,45 @@
   </ul>
 
   <script>
-    // 저장된 상태를 불러와 체크박스에 반영
-    const savedResult = localStorage.getItem("result");
-
-    if (savedResult === "gokaku") {
-      document.getElementById("chk-gokaku").checked = true;
-    } else if (savedResult === "kininaru") {
-      document.getElementById("chk-kininaru").checked = true;
-    } else if (savedResult === "fugokaku") {
-      document.getElementById("chk-fugokaku").checked = true;
-    }
-
-    // 체크 상태가 바뀔 때마다 localStorage에 저장
     const boxes = {
       gokaku: document.getElementById("chk-gokaku"),
       kininaru: document.getElementById("chk-kininaru"),
       fugokaku: document.getElementById("chk-fugokaku")
     };
 
-    Object.entries(boxes).forEach(([key, box]) => {
+    function applySelection(result) {
+      Object.entries(boxes).forEach(([key, box]) => {
+        box.checked = key === result;
+      });
+    }
+
+    function handleChange(key, box) {
       box.addEventListener("change", () => {
-        // 단일 선택만 허용: 다른 체크 해제
-        Object.values(boxes).forEach(b => {
-          if (b !== box) b.checked = false;
-        });
-        // 현재 체크 상태 저장
         if (box.checked) {
+          // 하나만 체크되게
+          Object.values(boxes).forEach(b => {
+            if (b !== box) b.checked = false;
+          });
           localStorage.setItem("result", key);
         } else {
           localStorage.removeItem("result");
         }
       });
+    }
+
+    // 초기 로딩 시 상태 적용
+    applySelection(localStorage.getItem("result"));
+
+    // 체크박스 변화 감지
+    Object.entries(boxes).forEach(([key, box]) => {
+      handleChange(key, box);
+    });
+
+    // 다른 탭(A 페이지)에서 localStorage가 바뀌면 반영
+    window.addEventListener("storage", (event) => {
+      if (event.key === "result") {
+        applySelection(event.newValue);
+      }
     });
   </script>
 
