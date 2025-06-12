@@ -94,13 +94,10 @@
       }
     });
 
-    // PDF 저장 기능
+    // PDF 저장 기능 (선택 없으면 아무 일도 안 함)
     function saveAsPDF() {
       const result = localStorage.getItem("result");
-      if (!result) {
-        alert("保存する前に選択してください！");
-        return;
-      }
+      if (!result) return;
 
       const labels = {
         gokaku: "✅ 合格",
@@ -108,13 +105,36 @@
         fugokaku: "❌ 不合格"
       };
 
-      const win = window.open('', '_blank');
-      win.document.write(`<html><head><title>結果</title></head><body>`);
-      win.document.write(`<h2>選択された結果</h2>`);
-      win.document.write(`<p style="font-size:24px;">${labels[result]}</p>`);
-      win.document.write(`</body></html>`);
-      win.document.close();
-      win.print();
+      const html = `
+        <html>
+          <head>
+            <title>PDFプレビュー</title>
+            <style>
+              body {
+                font-family: sans-serif;
+                padding: 50px;
+                font-size: 24px;
+                line-height: 1.6;
+              }
+              .result {
+                font-size: 32px;
+                font-weight: bold;
+                margin-top: 30px;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>テスト結果レポート</h1>
+            <p>選択された評価は以下の通りです。</p>
+            <div class="result">${labels[result]}</div>
+            <p style="margin-top:50px;">この画面で <strong>Ctrl+P または ⌘+P</strong> を押して PDFとして保存してください。</p>
+          </body>
+        </html>
+      `;
+
+      const newTab = window.open();
+      newTab.document.write(html);
+      newTab.document.close();
     }
   </script>
 
