@@ -2,27 +2,74 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>結果表示</title>
+  <title>Bページ - 結果表示</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 18px;
+      padding: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 12px 0;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <h2>選ばれた結果</h2>
+
+  <h2>選択された結果（変更もできます）</h2>
 
   <ul>
-    <li><label><input type="checkbox" id="chk-gokaku" disabled> 合格</label></li>
-    <li><label><input type="checkbox" id="chk-kininaru" disabled> 気になる</label></li>
-    <li><label><input type="checkbox" id="chk-fugokaku" disabled> 不合格</label></li>
+    <li><label><input type="checkbox" id="chk-gokaku"> 合格</label></li>
+    <li><label><input type="checkbox" id="chk-kininaru"> 気になる</label></li>
+    <li><label><input type="checkbox" id="chk-fugokaku"> 不合格</label></li>
   </ul>
 
   <script>
-    const selected = localStorage.getItem("result");
+    // 저장된 상태를 불러와 체크박스에 반영
+    const savedResult = localStorage.getItem("result");
 
-    if (selected === "gokaku") {
+    if (savedResult === "gokaku") {
       document.getElementById("chk-gokaku").checked = true;
-    } else if (selected === "kininaru") {
+    } else if (savedResult === "kininaru") {
       document.getElementById("chk-kininaru").checked = true;
-    } else if (selected === "fugokaku") {
+    } else if (savedResult === "fugokaku") {
       document.getElementById("chk-fugokaku").checked = true;
     }
+
+    // 체크 상태가 바뀔 때마다 localStorage에 저장
+    const boxes = {
+      gokaku: document.getElementById("chk-gokaku"),
+      kininaru: document.getElementById("chk-kininaru"),
+      fugokaku: document.getElementById("chk-fugokaku")
+    };
+
+    Object.entries(boxes).forEach(([key, box]) => {
+      box.addEventListener("change", () => {
+        // 단일 선택만 허용: 다른 체크 해제
+        Object.values(boxes).forEach(b => {
+          if (b !== box) b.checked = false;
+        });
+        // 현재 체크 상태 저장
+        if (box.checked) {
+          localStorage.setItem("result", key);
+        } else {
+          localStorage.removeItem("result");
+        }
+      });
+    });
   </script>
+
 </body>
 </html>
