@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1446</title>
+  <title>状態保存ボタン</title>
   <style>
     .button {
       background-color: #04AA6D;
@@ -78,14 +78,14 @@
 
   <script>
     function selectResult(btn, value) {
-      const current = localStorage.getItem("result");
+      const isSelected = btn.classList.contains('selected');
 
-      if (current === value) {
-        // 같은 버튼을 다시 누르면 해제
-        localStorage.removeItem("result");
+      if (isSelected) {
+        // 이미 선택된 버튼 → 해제
         btn.classList.remove('selected');
+        localStorage.removeItem("result");
       } else {
-        // 새로 선택된 버튼이면 저장하고 스타일 갱신
+        // 다른 버튼 → 선택 전환
         localStorage.setItem("result", value);
 
         // 모든 버튼에서 .selected 제거
