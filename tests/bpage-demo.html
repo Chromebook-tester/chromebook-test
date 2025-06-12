@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1548（リアルタイム対応）</title>
+  <title>Bページ - 結果表示（リアルタイム対応）</title>
   <style>
     body {
       font-family: sans-serif;
@@ -51,7 +51,7 @@
     <li><label><input type="checkbox" id="chk-fugokaku"> 不合格</label></li>
   </ul>
 
-  <button class="save-btn" onclick="saveAsPDF()">📄 PDFとして保存</button>
+  <button class="save-btn" onclick="openPDF()">📄 PDFを開く</button>
 
   <script>
     const boxes = {
@@ -94,8 +94,8 @@
       }
     });
 
-    // PDF 저장 기능 (선택 없으면 아무 일도 안 함)
-    function saveAsPDF() {
+    // PDF 미리보기 (열기)
+    function openPDF() {
       const result = localStorage.getItem("result");
       if (!result) return;
 
@@ -127,12 +127,11 @@
             <h1>テスト結果レポート</h1>
             <p>選択された評価は以下の通りです。</p>
             <div class="result">${labels[result]}</div>
-            <p style="margin-top:50px;">この画面で <strong>Ctrl+P または ⌘+P</strong> を押して PDFとして保存してください。</p>
           </body>
         </html>
       `;
 
-      const newTab = window.open();
+      const newTab = window.open('', '_blank');
       newTab.document.write(html);
       newTab.document.close();
     }
