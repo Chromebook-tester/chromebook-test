@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1024- Fast Response</title>
+  <title>1017</title>
   <style>
     /* From Uiverse.io by Voxybuns */
 
@@ -16,11 +16,9 @@ font-weight: bold;
 border: none;
 cursor: pointer;
 border-radius: var(–button_radius);
-background: none;
+background: none; /* ✨ 수정됨 */
 padding: 0;
-touch-action: manipulation; /* ✨ 터치 지연 제거 */
 }
-
 .button_top {
 display: block;
 box-sizing: border-box;
@@ -32,17 +30,21 @@ color: var(–button_outline_color);
 user-select: none;
 }
 
+```
 button:focus {
-outline: none;
+  outline: none;
 }
+
+/* 삭제됨: transform, transition 모두 제거 */
 
 /* 눌림 고정 상태용 클래스 */
 button.active .button_top {
-background: #444444;
-color: white;
+  background: #444444;
+  color: white;
 }
-</style>
+```
 
+  </style>
 </head>
 <body>
 
@@ -64,8 +66,7 @@ color: white;
     const buttons = document.querySelectorAll("button");
 
     buttons.forEach(button => {
-      // mousedown으로 변경하여 즉시 반응
-      button.addEventListener("mousedown", () => {
+      button.addEventListener("click", () => {
         buttons.forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
       });
@@ -74,3 +75,4 @@ color: white;
 
 </body>
 </html>
+이 버튼을 누르면 반응이 한박자 느린 이유가 ? 오페라는 괜찮은데 크롬에서는 느려
