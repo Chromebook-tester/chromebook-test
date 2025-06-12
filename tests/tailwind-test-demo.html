@@ -32,28 +32,20 @@
     }
 
     button:focus {
-  outline: none;
-}
-
-button:active {
-  pointer-events: none;
-}
+      outline: none;
+    }
 
     button:hover .button_top {
       transform: translateY(-0.33em);
     }
 
-    button:active .button_top {
-      transform: translateY(0); 
-      transition: none; /* 이 줄을 추가! */
-    }
-
-    }
-
+    /* 삭제됨: pointer-events 제거 */
+    /* 삭제됨: button:active .button_top */
 
     /* 눌림 고정 상태용 클래스 */
     button.active .button_top {
       transform: translateY(0);
+      transition: none;
     }
   </style>
 </head>
