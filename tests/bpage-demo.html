@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Bページ - 結果表示（リアルタイム対応）</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 18px;
+      padding: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 12px 0;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .save-btn {
+      margin-top: 40px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .save-btn:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>選択された結果（リアルタイム更新）</h2>
+
+  <ul id="result-list">
+    <li><label><input type="checkbox" id="chk-gokaku"> 合格</label></li>
+    <li><label><input type="checkbox" id="chk-kininaru"> 気になる</label></li>
+    <li><label><input type="checkbox" id="chk-fugokaku"> 不合格</label></li>
+  </ul>
+
+  <button class="save-btn" onclick="saveAsPDF()">📄 PDFとして保存</button>
+
+  <script>
+    const boxes = {
+      gokaku: document.getElementById("chk-gokaku"),
+      kininaru: document.getElementById("chk-kininaru"),
+      fugokaku: document.getElementById("chk-fugokaku")
+    };
+
+    function applySelection(result) {
+      Object.entries(boxes).forEach(([key, box]) => {
+        box.checked = key === result;
+      });
+    }
+
+    function handleChange(key, box) {
+      box.addEventListener("change", () => {
+        if (box.checked) {
+          Object.values(boxes).forEach(b => {
+            if (b !== box) b.checked = false;
+          });
+          localStorage.setItem("result", key);
+        } else {
+          localStorage.removeItem("result");
+        }
+      });
+    }
+
+    // 초기 로딩 시 상태 적용
+    applySelection(localStorage.getItem("result"));
+
+    // 체크박스 변화 감지
+    Object.entries(boxes).forEach(([key, box]) => {
+      handleChange(key, box);
+    });
+
+    // 다른 탭(A 페이지)에서 localStorage가 바뀌면 반영
+    window.addEventListener("storage", (event) => {
+      if (event.key === "result") {
+        applySelection(event.newValue);
+      }
+    });
+
+    // PDF 저장 기능
+    function saveAsPDF() {
+      const result = localStorage.getItem("result");
+      if (!result) {
+        alert("保存する前に選択してください！");
+        return;
+      }
+
+      const labels = {
+        gokaku: "✅ 合格",
+        kininaru: "❓ 気になる",
+        fugokaku: "❌ 不合格"
+      };
+
+      const win = window.open('', '_blank');
+      win.document.write(`<html><head><title>結果</title></head><body>`);
+      win.document.write(`<h2>選択された結果</h2>`);
+      win.document.write(`<p style="font-size:24px;">${labels[result]}</p>`);
+      win.document.write(`</body></html>`);
+      win.document.close();
+      win.print();
+    }
+  </script>
+
+</body>
+</html>
