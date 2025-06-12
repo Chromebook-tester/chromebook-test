@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>0952</title>
+  <title>tailwind1645</title>
   <style>
     /* From Uiverse.io by Voxybuns */
     button {
@@ -26,8 +26,6 @@
       padding: 0.75em 1.5em;
       background: var(--button_color);
       color: var(--button_outline_color);
-      transform: translateY(-0.2em);
-      
       user-select: none;
     }
 
@@ -35,17 +33,12 @@
       outline: none;
     }
 
-    button:hover .button_top {
-      transform: translateY(-0.33em);
-    }
-
-    /* 삭제됨: pointer-events 제거 */
-    /* 삭제됨: button:active .button_top */
+    /* 삭제됨: transform, transition 모두 제거 */
 
     /* 눌림 고정 상태용 클래스 */
     button.active .button_top {
-      transform: translateY(0);
-      transition: none;
+      background: #444444;
+      color: white;
     }
   </style>
 </head>
