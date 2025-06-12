@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Bページ - 1556</title>
+  <title>Bページ - 結果表示（リアルタイム対応）</title>
   <style>
     body {
       font-family: sans-serif;
@@ -94,18 +94,18 @@
       }
     });
 
-    // PDF 미리보기 (열기)
+    // PDF 프리뷰 페이지 열기
     function openPDF() {
       const result = localStorage.getItem("result");
-      if (!result) return;
-
       const labels = {
         gokaku: "✅ 合格",
         kininaru: "❓ 気になる",
         fugokaku: "❌ 不合格"
       };
+      const display = labels[result] || "";
 
-      const html = `
+      const newTab = window.open('', '_blank');
+      newTab.document.write(`
         <html>
           <head>
             <title>PDFプレビュー</title>
@@ -121,18 +121,31 @@
                 font-weight: bold;
                 margin-top: 30px;
               }
+              .print-btn {
+                display: inline-block;
+                margin-top: 40px;
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #333;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+              }
+              .print-btn:hover {
+                background-color: #555;
+              }
             </style>
           </head>
           <body>
             <h1>テスト結果レポート</h1>
-            <p>選択された評価は以下の通りです。</p>
-            <div class="result">${labels[result]}</div>
+            <p>以下の内容が選択されました：</p>
+            <div class="result">${display}</div>
+
+            <button class="print-btn" onclick="window.print()">📄 PDFとして保存</button>
           </body>
         </html>
-      `;
-
-      const newTab = window.open('', '_blank');
-      newTab.document.write(html);
+      `);
       newTab.document.close();
     }
   </script>
