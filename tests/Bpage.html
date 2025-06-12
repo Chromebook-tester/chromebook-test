@@ -86,8 +86,8 @@
     
     // MAC-test.html에서 입력한 텍스트 불러오기
 const userText = localStorage.getItem("userMessage");
-if (userText) {
-  document.getElementById("text-result").textContent = "入力内容: " + userText;
+document.getElementById("text-result").textContent =
+  "入力内容: " + (userText || "（入力なし）");
 }
 
   </script>
