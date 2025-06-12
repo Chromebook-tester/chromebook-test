@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>結果表示</title>
+</head>
+<body>
+  <h2>選ばれた結果</h2>
+
+  <ul>
+    <li><label><input type="checkbox" id="chk-gokaku" disabled> 合格</label></li>
+    <li><label><input type="checkbox" id="chk-kininaru" disabled> 気になる</label></li>
+    <li><label><input type="checkbox" id="chk-fugokaku" disabled> 不合格</label></li>
+  </ul>
+
+  <script>
+    const selected = localStorage.getItem("result");
+
+    if (selected === "gokaku") {
+      document.getElementById("chk-gokaku").checked = true;
+    } else if (selected === "kininaru") {
+      document.getElementById("chk-kininaru").checked = true;
+    } else if (selected === "fugokaku") {
+      document.getElementById("chk-fugokaku").checked = true;
+    }
+  </script>
+</body>
+</html>
