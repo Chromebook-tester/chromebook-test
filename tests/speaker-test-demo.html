@@ -3,106 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>スピーカーテスト</title>
+  <link rel="stylesheet" href="common-layout.css">
+  
   <style>
-body {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  background-color: #f9f9f9;
-  padding-top: 60px; /* h1의 높이 + 약간의 여백 */
-  padding-bottom: 80px; /* 네비게이션 버튼 높이 + 약간의 여백 */
-}
-
-h1 {
-  font-size: 24px;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 12px 24px;
-  border: 2px solid #708238;
-  background-color: #DDE7C7;
-  color: #333; /* 텍스트 색상 유지 */
-  border-radius: 0;
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  /* 타이틀 자체에 포인터 커서 추가 */
-  cursor: pointer;
-}
-
-/* 새로 추가된 타이틀 링크 스타일 */
-.title-link {
-  text-decoration: none; /* 밑줄 제거 */
-  color: inherit; /* 부모(h1)의 텍스트 색상 상속 */
-  display: block; /* 링크 영역을 h1 전체로 확장 */
-  height: 100%; /* 링크 영역을 h1 전체 높이로 확장 */
-  line-height: 1; /* 텍스트가 중앙에 오도록 필요시 조정 */
-}
-
-
-.speaker-image {
-  cursor: pointer;
-  margin: 20px;
-  margin-top: 80px;
-  width: 150px;
-  height: auto;
-}
-
-.speaker-image.center {
-  width: 190px;
-  margin-top: 30px;
-}
-
-    button {
-      font-size: 18px;
-      margin: 10px;
-      padding: 10px 20px;
+    /* 이 페이지에만 적용되는 스타일 */
+    .button {
+      background-color: #ffffff;
       border: none;
-      border-radius: 6px;
+      padding: 16px 32px;
+      font-size: 16px;
+      margin: 10px;
       cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      border: 2px solid #ccc;
+      transition: all 0.3s ease;
     }
 
-    /* テスト用ボタン色・緑 */
-    .test-button {
-      background-color: #4CAF50;
-      color: white;
-    }
+    .button1 { border-color: #04AA6D; color: #04AA6D; }
+    .button2 { border-color: #008CBA; color: #008CBA; }
+    .button3 { border-color: #f44336; color: #f44336; }
 
-    .test-button.active {
-      background-color: #A5D6A7;
-      color: black;
-    }
+    .button1:hover { background-color: #04AA6D; color: white; }
+    .button2:hover { background-color: #008CBA; color: white; }
+    .button3:hover { background-color: #f44336; color: white; }
 
-    /* ナビゲーションボタン色・青灰 */
-    .nav-buttons button {
-      background-color: #607D8B;
-      color: white;
-      border: 2px solid #B0BEC5;
-    }
-
-    .nav-buttons button:hover {
-      background-color: #455A64;
-      border: 2px solid white;
-    }
-
-    /* 기존 .nav-buttons 스타일 */
-    .nav-buttons {
-      margin-top: 0;
-      padding: 15px 0;
-      background-color: #607D8B;
-      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      box-sizing: border-box;
-      text-align: center;
-      z-index: 1000;
-    }
+    .selected.button1 { background-color: #04AA6D; color: white; }
+    .selected.button2 { background-color: #008CBA; color: white; }
+    .selected.button3 { background-color: #f44336; color: white; }
 
     audio {
       display: none;
@@ -111,15 +39,17 @@ h1 {
 </head>
 <body>
 
-  <h1><a href="../index.html" class="title-link">スピーカーテスト🔊 </a></h1>
+  <h1><a href="../index.html" class="title-link">スピーカーテスト </a></h1>
 
-  <img src="../media/images/left-speaker.png" alt="左スピーカー" onclick="toggleAudio('left', this)" class="speaker-image">
-  <img src="../media/images/right-speaker.png" alt="右スピーカー" onclick="toggleAudio('right', this)" class="speaker-image">
-  <br>
-  <img src="../media/images/both-speaker.png" alt="左右スピーカー" onclick="toggleAudio('center', this)" class="speaker-image center">
+  <!-- 버튼으로 교체된 영역 -->
+  <div style="text-align: center; margin-bottom: 20px;">
+    <button class="button button1" onclick="toggleAudio('left', this)">左スピーカー</button>
+    <button class="button button2" onclick="toggleAudio('right', this)">右スピーカー</button>
+    <button class="button button3" onclick="toggleAudio('center', this)">左右スピーカー</button>
+  </div>
 
-
-  <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
+  <hr style="margin: 10px auto; width: 60%; border: 1px solid #ccc;"> 
+  <p class="explanation-text">ちゃんと音が出たらOK👍</p>
 
   <div class="nav-buttons">
     <button onclick="playAndNavigate('sound-previous', 'touchpad-test.html')">⬅ 前のテスト</button>
@@ -142,33 +72,33 @@ h1 {
     function toggleAudio(id, button) {
       const audio = document.getElementById(id);
 
-      // 同じボタンを再度押したら停止
+      // 같은 버튼을 다시 누르면 정지
       if (currentAudio === audio && !audio.paused) {
         audio.pause();
         audio.currentTime = 0;
         currentAudio = null;
-        currentButton.classList.remove("active");
+        if (currentButton) currentButton.classList.remove("selected");
         currentButton = null;
         return;
       }
 
-      // それ以外は旧オーディオ停止
+      // 이전 오디오 정지
       if (currentAudio) {
         currentAudio.pause();
         currentAudio.currentTime = 0;
       }
       if (currentButton) {
-        currentButton.classList.remove("active");
+        currentButton.classList.remove("selected");
       }
 
-      // 新しく再生
+      // 새 오디오 재생
       currentAudio = audio;
       currentButton = button;
 
       audio.play().then(() => {
-        button.classList.add("active");
+        button.classList.add("selected");
       }).catch(err => {
-        alert("\u518d\u751f\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305F: " + err);
+        alert("再生できませんでした: " + err);
       });
     }
 

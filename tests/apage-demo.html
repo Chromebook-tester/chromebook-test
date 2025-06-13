@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1503</title>
+  <title>状態保存ボタン</title>
   <style>
     .button {
       background-color: #04AA6D;
@@ -74,9 +72,9 @@
 
   <h2>どれか一つを選んでください</h2>
 
-  <button class="button button1" onclick="selectResult(this, 'gokaku')">合格</button>
-  <button class="button button2" onclick="selectResult(this, 'kininaru')">気になる</button>
-  <button class="button button3" onclick="selectResult(this, 'fugokaku')">不合格</button>
+  <button class="button button1" onclick="selectResult(this, 'gokaku')">左スピーカー</button>
+  <button class="button button2" onclick="selectResult(this, 'kininaru')">右スピーカー</button>
+  <button class="button button3" onclick="selectResult(this, 'fugokaku')">左右スピーカー</button>
 
   <script>
     function selectResult(btn, value) {
@@ -106,6 +104,12 @@
       const btn = document.querySelector(selector);
       if (btn) btn.classList.add('selected');
     });
+    
+  function sendText() {
+    const text = document.getElementById("userText").value;
+    localStorage.setItem("userMessage", text);
+    window.location.href = "Bpage.html";
+  }
   </script>
 
 </body>
