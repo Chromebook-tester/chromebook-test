@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1615）</title>
+  <title>Bページ - 結果表示 </title>
   <style>
     body {
       font-family: sans-serif;
@@ -43,15 +45,17 @@
 </head>
 <body>
 
-  <h2>選択された結果（リアルタイム更新）</h2>
+  <h2>結果まとめ(テスト中)😋😋</h2>
 
-  <ul id="result-list">
+  <ul>
     <li><label><input type="checkbox" id="chk-gokaku"> 合格</label></li>
     <li><label><input type="checkbox" id="chk-kininaru"> 気になる</label></li>
     <li><label><input type="checkbox" id="chk-fugokaku"> 不合格</label></li>
   </ul>
 
-  <button class="save-btn" onclick="openPDF()">📄 PDFを開く</button>
+<div id="text-result" style="margin-top: 30px; font-size: 20px; font-weight: bold;"></div>
+
+
 
   <script>
     const boxes = {
@@ -69,6 +73,7 @@
     function handleChange(key, box) {
       box.addEventListener("change", () => {
         if (box.checked) {
+          // 하나만 체크되게
           Object.values(boxes).forEach(b => {
             if (b !== box) b.checked = false;
           });
@@ -94,60 +99,13 @@
       }
     });
 
-    // PDF 프리뷰 페이지 열기
-    function openPDF() {
-      const result = localStorage.getItem("result");
-      const labels = {
-        gokaku: "✅ 合格",
-        kininaru: "❓ 気になる",
-        fugokaku: "❌ 不合格"
-      };
-      const display = labels[result] || "";
+    // MAC-test.html에서 입력한 텍스트 불러오기
+const userText = localStorage.getItem("userMessage");
+document.getElementById("text-result").textContent =
+  "マックアドレス     " + (userText || "（入力なし）");
 
-      const newTab = window.open('', '_blank');
-      newTab.document.write(`
-        <html>
-          <head>
-            <title>PDFプレビュー</title>
-            <style>
-              body {
-                font-family: sans-serif;
-                padding: 50px;
-                font-size: 24px;
-                line-height: 1.6;
-              }
-              .result {
-                font-size: 32px;
-                font-weight: bold;
-                margin-top: 30px;
-              }
-              .print-btn {
-                display: inline-block;
-                margin-top: 40px;
-                padding: 10px 20px;
-                font-size: 16px;
-                background-color: #333;
-                color: white;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-              }
-              .print-btn:hover {
-                background-color: #555;
-              }
-            </style>
-          </head>
-          <body>
-            <h1>テスト結果レポート</h1>
-            <p>以下の内容が選択されました：</p>
-            <div class="result">${display}</div>
 
-            <button class="print-btn" onclick="window.print()">📄 PDFとして保存</button>
-          </body>
-        </html>
-      `);
-      newTab.document.close();
-    }
+ 
   </script>
 
 </body>
