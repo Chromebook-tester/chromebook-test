@@ -46,9 +46,10 @@ display: none;
 <button onclick="playAndNavigate('sound-next', 'Bpage.html')">次のテスト ➡</button>
 </div>
 
-<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
-<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
-<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3" preload="auto"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3" preload="auto"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3" preload="auto"></audio>
+
 
 <script>
 function playAndNavigate(soundId, nextPage) {

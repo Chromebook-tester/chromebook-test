@@ -94,7 +94,7 @@ audio {
 <img id="start" class="start-button" src="../media/images/whitespot-button.png" alt="スタート">
 <p class="instruction-text">画面に「白いシミ」や 「キズ」がないか、チェック🔎</p>
 
-<p id="touch-instruction" class="hidden">クリックすると色が変わるよ🤩</p>
+<p id="touch-instruction" class="hidden">タッチすると色が変わるよ🤩</p>
 
 <div id="nav" class="nav-buttons">
   <button onclick="playAndNavigate('sound-previous', 'speaker-test.html')">⬅ 前のテスト</button>
@@ -102,9 +102,9 @@ audio {
   <button onclick="playAndNavigate('sound-next', 'youtube-test.html')">次のテスト ➡</button>
 </div>
 
-<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
-<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
-<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3" preload="auto"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3" preload="auto"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3" preload="auto"></audio>
 
 <script>
 const colors = ['white','red', 'green', 'blue', 'black','white'];

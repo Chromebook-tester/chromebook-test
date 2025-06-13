@@ -14,7 +14,7 @@
       padding: 20px;
     }
 
-```
+
 .title-link {
   text-decoration: none;
   color: inherit;
@@ -41,13 +41,7 @@ canvas {
   margin-top: 10px;
 }
 
-.nav-buttons button {
-  margin: 10px;
-  font-size: 18px;
-  padding: 8px 16px;
-  cursor: pointer;
-}
-```
+
 
   </style>
 </head>
@@ -58,11 +52,12 @@ canvas {
   <p>✏️タッチペンで、数字をなぞってみよう!</p>
   <button class="reset-button" onclick="clearCanvas()">リセット</button>
 
-  <div class="nav-buttons">
-    <button onclick="navigate('touchscreen-test.html')">⬅ 前のテスト</button>
-    <button onclick="navigate('../index.html')">🏠 ホーム</button>
-    <button onclick="navigate('keyboard-test.html')">次のテスト ➡</button>
-  </div>
+<div class="nav-buttons">
+  <button onclick="playAndNavigate('sound-previous', 'touchscreen-test.html')">⬅ 前のテスト</button>
+  <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+  <button onclick="playAndNavigate('sound-next', 'keyboard-test.html')">次のテスト ➡</button>
+</div>
+
 
   <script>
     const canvas = document.getElementById('write-canvas');
@@ -125,13 +120,34 @@ canvas {
       isDrawing = false;
     });
 
-    function navigate(url) {
-      location.href = url;
-    }
 
     window.addEventListener('load', resizeCanvas);
     window.addEventListener('resize', resizeCanvas);
   </script>
+
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3" preload="auto"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3" preload="auto"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3" preload="auto"></audio>
+
+<script>
+function playAndNavigate(soundId, nextPage) {
+  const audio = document.getElementById(soundId);
+  if (!audio) {
+    location.href = nextPage;
+    return;
+  }
+
+  audio.currentTime = 0;
+  audio.play().then(() => {
+    setTimeout(() => {
+      location.href = nextPage;
+    }, 400);
+  }).catch(() => {
+    location.href = nextPage;
+  });
+}
+</script>
+
 
 </body>
 </html>
