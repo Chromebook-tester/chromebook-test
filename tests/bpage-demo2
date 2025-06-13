@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Bページ - 結果表示 </title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 18px;
+      padding: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 12px 0;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>結果まとめ(テスト中)😋😋</h2>
+
+  <ul>
+    <li><label><input type="checkbox" id="chk-gokaku"> 合格</label></li>
+    <li><label><input type="checkbox" id="chk-kininaru"> 気になる</label></li>
+    <li><label><input type="checkbox" id="chk-fugokaku"> 不合格</label></li>
+  </ul>
+
+<div id="text-result" style="margin-top: 30px; font-size: 20px; font-weight: bold;"></div>
+
+
+
+  <script>
+    const boxes = {
+      gokaku: document.getElementById("chk-gokaku"),
+      kininaru: document.getElementById("chk-kininaru"),
+      fugokaku: document.getElementById("chk-fugokaku")
+    };
+
+    function applySelection(result) {
+      Object.entries(boxes).forEach(([key, box]) => {
+        box.checked = key === result;
+      });
+    }
+
+    function handleChange(key, box) {
+      box.addEventListener("change", () => {
+        if (box.checked) {
+          // 하나만 체크되게
+          Object.values(boxes).forEach(b => {
+            if (b !== box) b.checked = false;
+          });
+          localStorage.setItem("result", key);
+        } else {
+          localStorage.removeItem("result");
+        }
+      });
+    }
+
+    // 초기 로딩 시 상태 적용
+    applySelection(localStorage.getItem("result"));
+
+    // 체크박스 변화 감지
+    Object.entries(boxes).forEach(([key, box]) => {
+      handleChange(key, box);
+    });
+
+    // 다른 탭(A 페이지)에서 localStorage가 바뀌면 반영
+    window.addEventListener("storage", (event) => {
+      if (event.key === "result") {
+        applySelection(event.newValue);
+      }
+    });
+    
+    // MAC-test.html에서 입력한 텍스트 불러오기
+const userText = localStorage.getItem("userMessage");
+document.getElementById("text-result").textContent =
+  "マックアドレス     " + (userText || "（入力なし）");
+
+
+ 
+</script>
+
+</body>
+</html>
