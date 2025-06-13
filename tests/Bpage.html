@@ -91,6 +91,33 @@ document.getElementById("text-result").textContent =
 
 
   </script>
+<div class="nav-buttons">
+<button onclick="playAndNavigate('sound-previous', 'mac-test.html')">⬅ 前のテスト</button>
+<button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+<button onclick="playAndNavigate('sound-next', 'indi-test.html')">次のテスト ➡</button>
+</div>
 
+<audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+<audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+<audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+<script>
+function playAndNavigate(soundId, nextPage) {
+const audio = document.getElementById(soundId);
+if (!audio) {
+location.href = nextPage;
+return;
+}
+
+audio.currentTime = 0;
+audio.play().then(() => {
+setTimeout(() => {
+location.href = nextPage;
+}, 400);
+}).catch(() => {
+location.href = nextPage;
+});
+}
+</script>
 </body>
 </html>
