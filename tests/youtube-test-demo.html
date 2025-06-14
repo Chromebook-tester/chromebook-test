@@ -40,23 +40,17 @@
 <body>
 <h1><a href="../index.html" class="title-link">Wi-Fi 接続テスト</a></h1>
 
- <div class="video-container">
-  <iframe 
-   src="https://www.youtube.com/embed/FQi9pff_oAA"
-   allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-   allowfullscreen>
-  </iframe>
+<div class="video-container">
+  <div id="player1"></div>
+  <div id="player2"></div>
+</div>
 
-  <iframe 
-   src="https://www.youtube.com/embed/I8pG6bsgCYQ"  
-   allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-   allowfullscreen>
-  </iframe>
- </div>
+
+
 
  <div class="status">
-    <p>2つの動画が20秒以上再生できれば OK!</p>
-  <p>再生中に、輝度と音量テストもしてくださいねっ😘</p>
+  <p>➀ 動画が20秒以上、再生できればOK</p>
+  <p>➁ 再生中に、輝度と音量テストもしてネ🐱</p>
  </div>
 
  <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
@@ -89,5 +83,27 @@
    });
   }
  </script>
+
+ <!-- YouTube API 불러오기 -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+  let player1, player2;
+
+  function onYouTubeIframeAPIReady() {
+    player1 = new YT.Player('player1', {
+      height: '215',
+      width: '360',
+      videoId: 'rYrInAtoNZc', // 첫 번째 영상 ID
+      playerVars: {
+        'autoplay': 0,
+        'controls': 1,
+        'rel': 0
+      }
+    });
+
+  }
+</script>
+
 </body>
 </html>
