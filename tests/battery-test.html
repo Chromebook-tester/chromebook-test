@@ -25,6 +25,14 @@ img {
     box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* 그림자 효과 추가 */
 }
 
+#input-area input {
+  font-size: 20px;
+  padding: 12px 16px;
+  width: 80%;
+  max-width: 350px;
+  border: 2px solid #7DB249;
+  box-sizing: border-box;
+}
 
 audio {
 display: none;
@@ -32,19 +40,32 @@ display: none;
 </style>
 </head>
 <body>
-<h1><a href="../index.html" class="title-link">バッテリーヘルスを書いてください</a></h1>
+<h1><a href="../index.html" class="title-link">バッテリーテスト</a></h1>
 
 
 <img src="../media/images/battery.png" alt="バッテリーイメージ">
-<p>Hi! Good morning, Roger. All good man. 🤗</p>
 
 
+
+<div id="input-area">
+  <input type="text" id="userText" placeholder="ここにヘルスを書いてネ😺">
+  <button onclick="sendText()" style="border: 2px solid #7DB249;">転送</button>
+</div>
+
+<script>
+function saveBatteryText() {
+  const value = document.getElementById('batteryText').value;
+  localStorage.setItem('batteryHealth', value);
+}
+</script>
 
 <div class="nav-buttons">
 <button onclick="playAndNavigate('sound-previous', 'indi-test.html')">⬅ 前のテスト</button>
 <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
 <button onclick="playAndNavigate('sound-next', 'bpage.html')">次のテスト ➡</button>
 </div>
+
+
 
 <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
 <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
@@ -67,6 +88,34 @@ location.href = nextPage;
 location.href = nextPage;
 });
 }
+
+function sendText() {
+    const userInput = document.getElementById("userText").value;
+    const sendBtn = document.querySelector('#input-area button');
+    localStorage.setItem("userMessage", userInput);
+    if (userInput.trim()) {
+        sendBtn.disabled = true;
+        sendBtn.textContent = "転送済";
+    } else {
+        alert("バッテリーヘルスを書いてくださいね");
+    }
+}
+
+// 입력창에 글자가 입력될 때마다 전송 버튼 활성화
+document.getElementById('userText').addEventListener('input', function() {
+    const sendBtn = document.querySelector('#input-area button');
+    if (this.value.trim()) {
+        sendBtn.disabled = false;
+        sendBtn.textContent = '転送';
+    }
+});
+
+// 페이지 열리면 입력창에 포커스
+window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.getElementById('userText').focus();
+    }, 300);
+});
 </script>
 </body>
 </html>
