@@ -109,10 +109,6 @@
       if (event.key === "result") {
         applySelection(event.newValue);
       }
-      if (event.key === "userMessage") {
-        document.getElementById("text-result").textContent =
-          "・" + (event.newValue || "（入力なし）");
-      }
     });
 
     // MAC-test.html에서 입력한 텍스트 불러오기
