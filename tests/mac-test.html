@@ -77,13 +77,12 @@ display: none;
 <script>
 function sendText() {
     const userInput = document.getElementById("userText").value;
+    const sendBtn = document.querySelector('#input-area button');
     localStorage.setItem("userMessage", userInput);
-    
-    // 선택적: 입력 후 다음 페이지로 이동하거나 피드백 제공
     if (userInput.trim()) {
-        alert("入力が無事に保存されました");
-        // 또는 다음 페이지로 자동 이동
-        // location.href = 'bluetooth-test.html';
+        // alert("入力が無事に保存されました"); // 알림창 제거!
+        sendBtn.disabled = true;
+        sendBtn.textContent = "전송됨!"; // 버튼 텍스트도 바꿔주면 더 직관적!
     } else {
         alert("MACを貼り付けてくださいね");
     }
@@ -111,6 +110,14 @@ window.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         document.getElementById('userText').focus();
     }, 500); // 딜레이를 300ms로 늘림
+});
+
+document.getElementById('userText').addEventListener('input', function() {
+    const sendBtn = document.querySelector('#input-area button');
+    if (this.value.trim()) {
+        sendBtn.disabled = false;
+        sendBtn.textContent = '転送';
+    }
 });
 </script>
 
