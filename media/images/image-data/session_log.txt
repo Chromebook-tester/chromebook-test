@@ -1,0 +1,337 @@
+=== System === 
+
+--- System Info ---
+Snapshot Time: 2025/06/14 10:52:17 JST
+Board Name: phaser360
+Marketing Name: TBD
+CpuModel Name: Intel(R) Celeron(R) N4020 CPU @ 1.10GHz
+Total Memory (kib): 4194304
+Thread Count:  2
+Cpu Max Clock Speed (kHz):  2800000
+Version: 136.16238.0
+Has Battery: true
+
+--- Battery Charge Status ---
+Battery State: kCharging
+Power Source: kAc
+Power Time: 41 分
+Current Now (mA): 1432
+Chage Now (mAh): 1589
+
+--- Battery Health ---
+Charge Full Now (mAh): 2643
+Charge Full Design (mAh): 3685
+Cycle Count: 220
+Wear Percentage: 71
+
+--- Memory Usage ---
+Total Memory (kib): 4194304
+Available Memory (kib): 2572188
+Free Memory (kib): 2171920
+
+--- Cpu Usage ---
+Usage User (%): 17
+Usage System (%): 13
+Usage Free (%): 68
+Avg Temp (C): 52
+Current scaled frequency (kHz): 2405585
+
+
+--- Test Routines --- 
+
+2025/06/14 9:54:47 - BatteryCharge - Started
+2025/06/14 9:55:17 - BatteryCharge - Passed
+2025/06/14 10:10:59 - BatteryDischarge - Started
+2025/06/14 10:11:29 - BatteryDischarge - Passed
+2025/06/14 10:11:41 - Memory - Started
+2025/06/14 10:30:52 - Memory - Passed
+2025/06/14 10:46:23 - CpuStress - Started
+2025/06/14 10:47:25 - CpuStress - Passed
+2025/06/14 10:47:25 - CpuCache - Started
+2025/06/14 10:48:27 - CpuCache - Passed
+2025/06/14 10:48:27 - CpuFloatingPoint - Started
+2025/06/14 10:49:28 - CpuFloatingPoint - Passed
+2025/06/14 10:49:28 - CpuPrime - Started
+2025/06/14 10:50:29 - CpuPrime - Passed
+
+=== Networking === 
+
+--- Network Info ---
+
+Name: eoRT-2c4f823-a
+Type: WiFi
+State: Online
+Active: True
+MAC Address: 4C:79:6E:7D:BA:EF
+Signal Strength: 75
+Frequency: 5180
+SSID: eoRT-2c4f823-a
+BSSID: 00:25:DC:C4:F8:23
+Security: PSK (WPA or RSN)
+Gateway: 192.168.0.1
+IP Address: 192.168.0.25
+Name Servers: 192.168.0.1
+Subnet Mask: 255.255.255.0
+
+--- Test Routines --- 
+
+2025/06/14 9:56:08 - GatewayCanBePinged - Started
+2025/06/14 9:56:17 - GatewayCanBePinged - Failed
+2025/06/14 9:56:17 - LanConnectivity - Started
+2025/06/14 9:56:18 - LanConnectivity - Passed
+2025/06/14 9:56:18 - ArcPing - Started
+2025/06/14 9:56:19 - ArcPing - Unable to run
+2025/06/14 9:56:19 - DnsResolverPresent - Started
+2025/06/14 9:56:20 - DnsResolverPresent - Passed
+2025/06/14 9:56:20 - DnsResolution - Started
+2025/06/14 9:56:21 - DnsResolution - Passed
+2025/06/14 9:56:21 - DnsLatency - Started
+2025/06/14 9:56:22 - DnsLatency - Passed
+2025/06/14 9:56:22 - ArcDnsResolution - Started
+2025/06/14 9:56:23 - ArcDnsResolution - Unable to run
+2025/06/14 9:56:23 - SignalStrength - Started
+2025/06/14 9:56:24 - SignalStrength - Passed
+2025/06/14 9:56:24 - CaptivePortal - Started
+2025/06/14 9:56:25 - CaptivePortal - Passed
+2025/06/14 9:56:25 - HasSecureWiFiConnection - Started
+2025/06/14 9:56:26 - HasSecureWiFiConnection - Passed
+2025/06/14 9:56:26 - HttpsFirewall - Started
+2025/06/14 9:56:27 - HttpsFirewall - Passed
+2025/06/14 9:56:27 - HttpFirewall - Started
+2025/06/14 9:56:28 - HttpFirewall - Passed
+2025/06/14 9:56:28 - HttpsLatency - Started
+2025/06/14 9:56:29 - HttpsLatency - Passed
+2025/06/14 9:56:29 - ArcHttp - Started
+2025/06/14 9:56:30 - ArcHttp - Unable to run
+2025/06/14 9:56:52 - GatewayCanBePinged - Started
+2025/06/14 9:57:03 - GatewayCanBePinged - Failed
+2025/06/14 9:57:03 - LanConnectivity - Started
+2025/06/14 9:57:04 - LanConnectivity - Passed
+2025/06/14 9:57:04 - ArcPing - Started
+2025/06/14 9:57:05 - ArcPing - Unable to run
+2025/06/14 9:57:05 - DnsResolverPresent - Started
+2025/06/14 9:57:06 - DnsResolverPresent - Passed
+2025/06/14 9:57:06 - DnsResolution - Started
+2025/06/14 9:57:07 - DnsResolution - Passed
+2025/06/14 9:57:07 - DnsLatency - Started
+2025/06/14 9:57:08 - DnsLatency - Passed
+2025/06/14 9:57:08 - ArcDnsResolution - Started
+2025/06/14 9:57:09 - ArcDnsResolution - Unable to run
+2025/06/14 9:57:09 - SignalStrength - Started
+2025/06/14 9:57:10 - SignalStrength - Passed
+2025/06/14 9:57:10 - CaptivePortal - Started
+2025/06/14 9:57:11 - CaptivePortal - Passed
+2025/06/14 9:57:11 - HasSecureWiFiConnection - Started
+2025/06/14 9:57:12 - HasSecureWiFiConnection - Passed
+2025/06/14 9:57:12 - HttpsFirewall - Started
+2025/06/14 9:57:13 - HttpsFirewall - Passed
+2025/06/14 9:57:13 - HttpFirewall - Started
+2025/06/14 9:57:26 - HttpFirewall - Passed
+2025/06/14 9:57:26 - HttpsLatency - Started
+2025/06/14 9:57:27 - HttpsLatency - Passed
+2025/06/14 9:57:27 - ArcHttp - Started
+2025/06/14 9:57:28 - ArcHttp - Unable to run
+2025/06/14 9:58:43 - GatewayCanBePinged - Started
+2025/06/14 9:58:47 - GatewayCanBePinged - Failed
+2025/06/14 9:58:47 - LanConnectivity - Started
+2025/06/14 9:58:48 - LanConnectivity - Passed
+2025/06/14 9:58:48 - ArcPing - Started
+2025/06/14 9:58:49 - ArcPing - Unable to run
+2025/06/14 9:58:49 - DnsResolverPresent - Started
+2025/06/14 9:58:50 - DnsResolverPresent - Passed
+2025/06/14 9:58:50 - DnsResolution - Started
+2025/06/14 9:58:51 - Inflight Routine Cancelled
+2025/06/14 9:58:55 - GatewayCanBePinged - Started
+2025/06/14 9:58:56 - Inflight Routine Cancelled
+2025/06/14 9:58:57 - GatewayCanBePinged - Started
+2025/06/14 9:58:59 - Inflight Routine Cancelled
+2025/06/14 9:59:00 - GatewayCanBePinged - Started
+2025/06/14 9:59:04 - GatewayCanBePinged - Failed
+2025/06/14 9:59:04 - LanConnectivity - Started
+2025/06/14 9:59:05 - LanConnectivity - Passed
+2025/06/14 9:59:05 - ArcPing - Started
+2025/06/14 9:59:06 - ArcPing - Unable to run
+2025/06/14 9:59:06 - DnsResolverPresent - Started
+2025/06/14 9:59:07 - DnsResolverPresent - Passed
+2025/06/14 9:59:07 - DnsResolution - Started
+2025/06/14 9:59:19 - Inflight Routine Cancelled
+2025/06/14 9:59:20 - GatewayCanBePinged - Started
+2025/06/14 9:59:23 - GatewayCanBePinged - Failed
+2025/06/14 9:59:23 - LanConnectivity - Started
+2025/06/14 9:59:24 - LanConnectivity - Passed
+2025/06/14 9:59:24 - ArcPing - Started
+2025/06/14 9:59:25 - ArcPing - Unable to run
+2025/06/14 9:59:25 - DnsResolverPresent - Started
+2025/06/14 9:59:26 - DnsResolverPresent - Passed
+2025/06/14 9:59:26 - DnsResolution - Started
+2025/06/14 9:59:27 - DnsResolution - Passed
+2025/06/14 9:59:27 - DnsLatency - Started
+2025/06/14 9:59:28 - DnsLatency - Passed
+2025/06/14 9:59:28 - ArcDnsResolution - Started
+2025/06/14 9:59:29 - Inflight Routine Cancelled
+2025/06/14 9:59:31 - GatewayCanBePinged - Started
+2025/06/14 9:59:41 - GatewayCanBePinged - Passed
+2025/06/14 9:59:41 - LanConnectivity - Started
+2025/06/14 9:59:42 - LanConnectivity - Passed
+2025/06/14 9:59:42 - ArcPing - Started
+2025/06/14 9:59:43 - ArcPing - Unable to run
+2025/06/14 9:59:43 - DnsResolverPresent - Started
+2025/06/14 9:59:44 - DnsResolverPresent - Passed
+2025/06/14 9:59:44 - DnsResolution - Started
+2025/06/14 9:59:45 - DnsResolution - Passed
+2025/06/14 9:59:45 - DnsLatency - Started
+2025/06/14 9:59:46 - DnsLatency - Passed
+2025/06/14 9:59:46 - ArcDnsResolution - Started
+2025/06/14 9:59:47 - ArcDnsResolution - Unable to run
+2025/06/14 9:59:47 - SignalStrength - Started
+2025/06/14 9:59:48 - SignalStrength - Passed
+2025/06/14 9:59:48 - CaptivePortal - Started
+2025/06/14 9:59:49 - CaptivePortal - Passed
+2025/06/14 9:59:49 - HasSecureWiFiConnection - Started
+2025/06/14 9:59:50 - HasSecureWiFiConnection - Passed
+2025/06/14 9:59:50 - HttpsFirewall - Started
+2025/06/14 9:59:52 - HttpsFirewall - Passed
+2025/06/14 9:59:52 - HttpFirewall - Started
+2025/06/14 9:59:53 - HttpFirewall - Passed
+2025/06/14 9:59:53 - HttpsLatency - Started
+2025/06/14 9:59:54 - HttpsLatency - Passed
+2025/06/14 9:59:54 - ArcHttp - Started
+2025/06/14 9:59:55 - ArcHttp - Unable to run
+2025/06/14 10:00:26 - GatewayCanBePinged - Started
+2025/06/14 10:00:35 - Inflight Routine Cancelled
+2025/06/14 10:00:36 - GatewayCanBePinged - Started
+2025/06/14 10:00:46 - Inflight Routine Cancelled
+2025/06/14 10:01:06 - GatewayCanBePinged - Started
+2025/06/14 10:01:17 - GatewayCanBePinged - Passed
+2025/06/14 10:01:17 - LanConnectivity - Started
+2025/06/14 10:01:18 - LanConnectivity - Passed
+2025/06/14 10:01:18 - ArcPing - Started
+2025/06/14 10:01:19 - ArcPing - Unable to run
+2025/06/14 10:01:19 - DnsResolverPresent - Started
+2025/06/14 10:01:20 - DnsResolverPresent - Passed
+2025/06/14 10:01:20 - DnsResolution - Started
+2025/06/14 10:01:21 - DnsResolution - Passed
+2025/06/14 10:01:21 - DnsLatency - Started
+2025/06/14 10:01:22 - DnsLatency - Passed
+2025/06/14 10:01:22 - ArcDnsResolution - Started
+2025/06/14 10:01:23 - ArcDnsResolution - Unable to run
+2025/06/14 10:01:23 - SignalStrength - Started
+2025/06/14 10:01:24 - SignalStrength - Passed
+2025/06/14 10:01:24 - CaptivePortal - Started
+2025/06/14 10:01:25 - CaptivePortal - Passed
+2025/06/14 10:01:25 - HasSecureWiFiConnection - Started
+2025/06/14 10:01:26 - HasSecureWiFiConnection - Passed
+2025/06/14 10:01:26 - HttpsFirewall - Started
+2025/06/14 10:01:27 - HttpsFirewall - Passed
+2025/06/14 10:01:27 - HttpFirewall - Started
+2025/06/14 10:01:28 - HttpFirewall - Passed
+2025/06/14 10:01:28 - HttpsLatency - Started
+2025/06/14 10:01:29 - HttpsLatency - Passed
+2025/06/14 10:01:29 - ArcHttp - Started
+2025/06/14 10:01:30 - Inflight Routine Cancelled
+2025/06/14 10:01:31 - GatewayCanBePinged - Started
+2025/06/14 10:01:33 - Inflight Routine Cancelled
+2025/06/14 10:01:36 - GatewayCanBePinged - Started
+2025/06/14 10:01:49 - Inflight Routine Cancelled
+2025/06/14 10:10:47 - GatewayCanBePinged - Started
+2025/06/14 10:10:51 - GatewayCanBePinged - Failed
+2025/06/14 10:10:51 - LanConnectivity - Started
+2025/06/14 10:10:52 - LanConnectivity - Passed
+2025/06/14 10:10:52 - ArcPing - Started
+2025/06/14 10:10:53 - ArcPing - Unable to run
+2025/06/14 10:10:53 - DnsResolverPresent - Started
+2025/06/14 10:10:54 - DnsResolverPresent - Passed
+2025/06/14 10:10:54 - DnsResolution - Started
+2025/06/14 10:10:57 - Inflight Routine Cancelled
+
+--- Network Events ---
+
+2025/06/14 9:56:08 - WiFi network [4C:79:6E:7D:BA:EF] started in state Online
+2025/06/14 10:01:03 - WiFi network [4C:79:6E:7D:BA:EF] removed
+2025/06/14 10:01:06 - WiFi network [4C:79:6E:7D:BA:EF] started in state Online
+2025/06/14 10:01:53 - WiFi network [4C:79:6E:7D:BA:EF] removed
+2025/06/14 10:10:46 - WiFi network [4C:79:6E:7D:BA:EF] started in state Online
+
+=== Keyboard === 
+
+2025/06/14 10:04:04 - Key press test - AT Translated Set 2 keyboard
+Key code: 1, Scan code: 1
+Key code: 2, Scan code: 2
+Key code: 3, Scan code: 3
+Key code: 4, Scan code: 4
+Key code: 5, Scan code: 5
+Key code: 6, Scan code: 6
+Key code: 7, Scan code: 7
+Key code: 8, Scan code: 8
+Key code: 9, Scan code: 9
+Key code: 10, Scan code: 10
+Key code: 11, Scan code: 11
+Key code: 12, Scan code: 12
+Key code: 13, Scan code: 13
+Key code: 14, Scan code: 14
+Key code: 15, Scan code: 15
+Key code: 16, Scan code: 16
+Key code: 17, Scan code: 17
+Key code: 18, Scan code: 18
+Key code: 19, Scan code: 19
+Key code: 20, Scan code: 20
+Key code: 21, Scan code: 21
+Key code: 22, Scan code: 22
+Key code: 23, Scan code: 23
+Key code: 24, Scan code: 24
+Key code: 25, Scan code: 25
+Key code: 26, Scan code: 26
+Key code: 27, Scan code: 27
+Key code: 28, Scan code: 28
+Key code: 29, Scan code: 29
+Key code: 30, Scan code: 30
+Key code: 31, Scan code: 31
+Key code: 32, Scan code: 32
+Key code: 33, Scan code: 33
+Key code: 34, Scan code: 34
+Key code: 35, Scan code: 35
+Key code: 36, Scan code: 36
+Key code: 37, Scan code: 37
+Key code: 38, Scan code: 38
+Key code: 39, Scan code: 39
+Key code: 40, Scan code: 40
+Key code: 41, Scan code: 41
+Key code: 43, Scan code: 43
+Key code: 44, Scan code: 44
+Key code: 45, Scan code: 45
+Key code: 46, Scan code: 46
+Key code: 47, Scan code: 47
+Key code: 48, Scan code: 48
+Key code: 49, Scan code: 49
+Key code: 50, Scan code: 50
+Key code: 51, Scan code: 51
+Key code: 52, Scan code: 52
+Key code: 53, Scan code: 53
+Key code: 54, Scan code: 54
+Key code: 56, Scan code: 56
+Key code: 57, Scan code: 57
+Key code: 59, Scan code: 59
+Key code: 60, Scan code: 60
+Key code: 61, Scan code: 61
+Key code: 62, Scan code: 62
+Key code: 63, Scan code: 63
+Key code: 64, Scan code: 64
+Key code: 65, Scan code: 65
+Key code: 66, Scan code: 66
+Key code: 67, Scan code: 67
+Key code: 68, Scan code: 68
+Key code: 89, Scan code: 115
+Key code: 92, Scan code: 121
+Key code: 94, Scan code: 123
+Key code: 97, Scan code: 157
+Key code: 100, Scan code: 184
+Key code: 103, Scan code: 200
+Key code: 105, Scan code: 203
+Key code: 106, Scan code: 205
+Key code: 108, Scan code: 208
+Key code: 124, Scan code: 125
+Key code: 106, Scan code: 205
+Key code: 125, Scan code: 219
+2025/06/14 10:09:34 - Key press test - AT Translated Set 2 keyboard
+Key code: 29, Scan code: 29
+Key code: 42, Scan code: 42
