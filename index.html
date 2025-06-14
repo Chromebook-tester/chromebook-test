@@ -60,7 +60,18 @@
 </head>
 <body>
 
-  <img src="./media/images/yumi.png" alt="테스트 앱 로고" width="380" height="auto">
+  <img src="./media/images/yumi.png" alt="테스트 앱 로고" width="380" style="height: auto; cursor:pointer;" id="logo-img">
+  <audio id="logo-audio" src="./media/audio/testapp.mp3" preload="auto"></audio>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const img = document.getElementById('logo-img');
+      const audio = document.getElementById('logo-audio');
+      img.addEventListener('click', function() {
+        audio.currentTime = 0;
+        audio.play();
+      });
+    });
+  </script>
 
   <ul id="test-list"></ul>
 
