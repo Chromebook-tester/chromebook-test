@@ -101,6 +101,13 @@ location.href = nextPage;
 location.href = nextPage;
 });
 }
+
+// 페이지 열리면 자동으로 입력창에 포커스!
+window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.getElementById('userText').focus();
+    }, 100);
+});
 </script>
 
 </body>
