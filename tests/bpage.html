@@ -58,6 +58,8 @@
   </ul>
 
   <div id="text-result" style="margin-top: 30px; font-size: 20px; font-weight: bold;"></div>
+  <div id="mac-result" style="margin-top: 30px; font-size: 20px; font-weight: bold; color: #1a237e;"></div>
+  <div id="battery-result" style="margin-top: 10px; font-size: 20px; font-weight: bold; color: #33691e;"></div>
 
   <div class="nav-buttons">
     <button onclick="playAndNavigate('sound-previous', 'indi-test.html')">⬅ 前のテスト</button>
@@ -99,7 +101,7 @@
     // 초기 로딩 시 상태 적용
     applySelection(localStorage.getItem("result"));
 
-    // 체크백스 변화 감지
+    // 체크박스 변화 감지
     Object.entries(boxes).forEach(([key, box]) => {
       handleChange(key, box);
     });
@@ -109,16 +111,25 @@
       if (event.key === "result") {
         applySelection(event.newValue);
       }
-      if (event.key === "userMessage") {
-        document.getElementById("text-result").textContent =
-          "・     " + (event.newValue || "（入力なし）");
+      if (event.key === "macMessage") {
+        document.getElementById("mac-result").textContent =
+          "・MAC: " + (event.newValue || "（入力なし）");
+      }
+      if (event.key === "batteryMessage") {
+        document.getElementById("battery-result").textContent =
+          "・Battery: " + (event.newValue || "（入力なし）");
       }
     });
 
     // MAC-test.html에서 입력한 텍스트 불러오기
-    const userText = localStorage.getItem("userMessage");
-    document.getElementById("text-result").textContent =
-      "・     " + (userText || "（入力なし）");
+    const macText = localStorage.getItem("macMessage");
+    document.getElementById("mac-result").textContent =
+      "・MAC: " + (macText || "（入力なし）");
+
+    // battery-test.html에서 입력한 텍스트 불러오기
+    const batteryText = localStorage.getItem("batteryMessage");
+    document.getElementById("battery-result").textContent =
+      "・Battery: " + (batteryText || "（入力なし）");
 
     function playAndNavigate(soundId, nextPage) {
       const audio = document.getElementById(soundId);

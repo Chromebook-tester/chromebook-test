@@ -79,7 +79,7 @@ display: none;
 function sendText() {
     const userInput = document.getElementById("userText").value;
     const sendBtn = document.querySelector('#input-area button');
-    localStorage.setItem("userMessage", userInput);
+    localStorage.setItem("macMessage", userInput);
     if (userInput.trim()) {
         // alert("入力が無事に保存されました"); // 알림창 제거!
         sendBtn.disabled = true;
