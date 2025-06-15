@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>👻1141👻</title>
+  <link rel="stylesheet" href="common-layout.css">
+  <style>
+    /* 이 페이지에만 적용되는 스타일 */
+    body {
+      font-family: sans-serif;
+      background-color: #f0f8ff; /* common-layout.css의 배경색을 덕여쓰면 */
+      font-size: 18px;
+      padding: 30px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-top: 0px;
+      margin-bottom: 30px;
+    }
+
+    img {
+      width: 500px;
+      max-width: 90%;
+      margin: 0 auto 10px auto; /* 중앙 정렬 및 하단 만인 */
+      display: block;
+    }
+
+    audio {
+      display: none;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 12px 0;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1><a href="../index.html" class="title-link">👻Summary👻</a></h1>
+
+  <h2>結果まとめ(テスト中)😋😋</h2>
+
+  <ul>
+    <li><label><input type="checkbox" id="chk-gokaku"> 合格</label></li>
+    <li><label><input type="checkbox" id="chk-kininaru"> 気になる</label></li>
+    <li><label><input type="checkbox" id="chk-fugokaku"> 不合格</label></li>
+  </ul>
+
+  <div id="text-result" style="margin-top: 30px; font-size: 20px; font-weight: bold;"></div>
+  <div id="mac-result" style="margin-top: 30px; font-size: 20px; font-weight: bold; color: #1a237e;"></div>
+  <div id="battery-result" style="margin-top: 10px; font-size: 20px; font-weight: bold; color: #33691e;"></div>
+
+  <div class="nav-buttons">
+    <button onclick="playAndNavigate('sound-previous', 'battery-test.html')">⬅ 前のテスト</button>
+    <button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
+    <button onclick="playAndNavigate('sound-next', '../index.html')">次のテスト ➔</button>
+  </div>
+
+  <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
+  <audio id="sound-home" src="../media/audio/home-button-sound.mp3"></audio>
+  <audio id="sound-next" src="../media/audio/next-button-sound.mp3"></audio>
+
+  <script>
+    const boxes = {
+      gokaku: document.getElementById("chk-gokaku"),
+      kininaru: document.getElementById("chk-kininaru"),
+      fugokaku: document.getElementById("chk-fugokaku")
+    };
+
+    function applySelection(result) {
+      Object.entries(boxes).forEach(([key, box]) => {
+        box.checked = key === result;
+      });
+    }
+
+    function handleChange(key, box) {
+      box.addEventListener("change", () => {
+        if (box.checked) {
+          // 하나만 체크되게
+          Object.values(boxes).forEach(b => {
+            if (b !== box) b.checked = false;
+          });
+          localStorage.setItem("result", key);
+        } else {
+          localStorage.removeItem("result");
+        }
+      });
+    }
+
+    // 초기 로딩 시 상태 적용
+    applySelection(localStorage.getItem("result"));
+
+    // 체크박스 변화 감지
+    Object.entries(boxes).forEach(([key, box]) => {
+      handleChange(key, box);
+    });
+
+    // 다른 탭에서 localStorage가 변경되면 반영
+    window.addEventListener("storage", (event) => {
+      if (event.key === "result") {
+        applySelection(event.newValue);
+      }
+      if (event.key === "macMessage") {
+        document.getElementById("mac-result").textContent =
+          "・" + (event.newValue || "（入力なし）");
+      }
+      if (event.key === "batteryMessage") {
+        document.getElementById("battery-result").textContent =
+          "・バッテリーヘルス:" + (event.newValue || "（入力なし）");
+      }
+    });
+
+    // MAC-test.html에서 입력한 텍스트 불러오기
+    const macText = localStorage.getItem("macMessage");
+    document.getElementById("mac-result").textContent =
+      "・" + (macText || "（入力なし）");
+
+    // battery-test.html에서 입력한 텍스트 불러오기
+    const batteryText = localStorage.getItem("batteryMessage");
+    document.getElementById("battery-result").textContent =
+      "・バッテリーヘルス:" + (batteryText || "（入力なし）");
+
+    function playAndNavigate(soundId, nextPage) {
+      const audio = document.getElementById(soundId);
+      if (!audio) {
+        location.href = nextPage;
+        return;
+      }
+
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        setTimeout(() => {
+          location.href = nextPage;
+        }, 400);
+      }).catch(() => {
+        location.href = nextPage;
+      });
+    }
+  </script>
+</body>
+</html>
