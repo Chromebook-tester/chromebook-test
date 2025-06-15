@@ -48,13 +48,34 @@
       background-color: #f44336;
       color: white;
     }
+
+    /* 토글(선택) 상태 스타일 */
+    .selected.button1 { background-color: #04AA6D; color: white; }
+    .selected.button2 { background-color: #008CBA; color: white; }
+    .selected.button3 { background-color: #f44336; color: white; }
   </style>
 </head>
 <body>
 
-  <button class="button button1">合格</button>
-  <button class="button button2">気になる</button>
   <button class="button button3">不合格</button>
+  <button class="button button2">気になる</button>
+  <button class="button button1">合格</button>
+
+
+  <script>
+    document.querySelectorAll('.button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // 이미 선택된 버튼을 다시 누르면 해제
+        if (this.classList.contains('selected')) {
+          this.classList.remove('selected');
+          return;
+        }
+        // 다른 버튼 선택 해제
+        document.querySelectorAll('.button').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  </script>
 
 </body>
 </html>

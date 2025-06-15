@@ -81,6 +81,9 @@ button {
 
 /* 하단 네비게이션 바 컨테이너 스타일 */
 .nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 0;
   padding: 15px 0;
   background-color: #607D8B;
@@ -152,3 +155,35 @@ button {
   background-color: #FFB74D; /* 밝은 주황색 배경 */
   border: 2px solid white;
 }
+
+.nav-center {
+  display: flex;
+  gap: 10px;
+}
+
+/* speaker-test.html 스타일 기반 중앙 판정 버튼 */
+.button {
+  background-color: #ffffff;
+  border: none;
+  padding: 16px 32px;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  border: 2px solid #ccc;
+  transition: all 0.3s ease;
+}
+.button1 { border-color: #04AA6D; color: #04AA6D; }
+.button2 { border-color: #aba30e; color: #aba30e; }
+.button3 { border-color: #f44336; color: #f44336; }
+.button1:hover { background-color: #04AA6D; color: white; }
+.button2:hover { background-color: #aba30e; color: white; }
+.button3:hover { background-color: #f44336; color: white; }
+.selected.button1 { background-color: #04AA6D; color: white; }
+.selected.button2 { background-color: #aba30e; color: white; }
+.selected.button3 { background-color: #f44336; color: white; }
+/* 하단 중앙 버튼 토글 스타일 우선순위 강화 */
+.nav-center .button.selected.button1 { background-color: #04AA6D; color: white; }
+.nav-center .button.selected.button2 { background-color: #aba30e; color: white; }
+.nav-center .button.selected.button3 { background-color: #f44336; color: white; }

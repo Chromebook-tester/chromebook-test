@@ -28,6 +28,31 @@ display: block;
 audio {
 display: none;
 }
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.nav-center {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.judge-btn {
+  margin: 0 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.judge-btn.active {
+  background-color: #007bff;
+  color: white;
+}
 </style>
 </head>
 <body>
@@ -46,9 +71,18 @@ display: none;
 
 
 <div class="nav-buttons">
-<button onclick="playAndNavigate('sound-previous', 'whitespot-test.html')">⬅ 前のテスト</button>
-<button onclick="playAndNavigate('sound-home', '../index.html')">🏠 ホーム</button>
-<button onclick="playAndNavigate('sound-next', 'touchpad-test.html')">次のテスト➡</button>
+  <div class="nav-left">
+    <button onclick="playAndNavigate('sound-previous', 'whitespot-test.html')">⬅ 前のテスト</button>
+  </div>
+  <div class="nav-center">
+
+    <button class="button button3">不合格</button>
+    <button class="button button2">気になる</button>
+    <button class="button button1">合格</button>
+  </div>
+  <div class="nav-right">
+    <button onclick="playAndNavigate('sound-next', 'touchpad-test.html')">次のテスト ➡</button>
+  </div>
 </div>
 
 <audio id="sound-previous" src="../media/audio/previous-button-sound.mp3"></audio>
@@ -72,6 +106,21 @@ location.href = nextPage;
 location.href = nextPage;
 });
 }
+
+// 하단 중앙 3개 버튼 토글 기능 (CSS 우선순위 강화)
+function setBottomToggleButtons() {
+  document.querySelectorAll('.nav-center .button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (this.classList.contains('selected')) {
+        this.classList.remove('selected');
+        return;
+      }
+      document.querySelectorAll('.nav-center .button').forEach(b => b.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+}
+window.addEventListener('DOMContentLoaded', setBottomToggleButtons);
 </script>
 </body>
 </html>
