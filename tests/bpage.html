@@ -113,23 +113,23 @@
       }
       if (event.key === "macMessage") {
         document.getElementById("mac-result").textContent =
-          "・MAC: " + (event.newValue || "（入力なし）");
+          "・" + (event.newValue || "（入力なし）");
       }
       if (event.key === "batteryMessage") {
         document.getElementById("battery-result").textContent =
-          "・Battery: " + (event.newValue || "（入力なし）");
+          "・バッテリーヘルス:" + (event.newValue || "（入力なし）");
       }
     });
 
     // MAC-test.html에서 입력한 텍스트 불러오기
     const macText = localStorage.getItem("macMessage");
     document.getElementById("mac-result").textContent =
-      "・MAC: " + (macText || "（入力なし）");
+      "・" + (macText || "（入力なし）");
 
     // battery-test.html에서 입력한 텍스트 불러오기
     const batteryText = localStorage.getItem("batteryMessage");
     document.getElementById("battery-result").textContent =
-      "・Battery: " + (batteryText || "（入力なし）");
+      "・バッテリーヘルス:" + (batteryText || "（入力なし）");
 
     function playAndNavigate(soundId, nextPage) {
       const audio = document.getElementById(soundId);
