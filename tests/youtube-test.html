@@ -42,7 +42,6 @@
 
 <div class="video-container">
   <div id="player1"></div>
-  <div id="player2"></div>
 </div>
 
 
@@ -53,7 +52,6 @@
   <p>➁ 再生中に、輝度と音量テストもしてネ🐱</p>
  </div>
 
- <hr style="margin: 40px auto; width: 60%; border: 1px solid #ccc;">
 
  <div class="nav-buttons">
   <button class="nav-button" onclick="playAndNavigate('sound-previous', 'whitespot-test.html')">⬅ 前のテスト</button>
@@ -88,7 +86,7 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-  let player1, player2;
+  let player1;
 
   function onYouTubeIframeAPIReady() {
     player1 = new YT.Player('player1', {
@@ -101,7 +99,6 @@
         'rel': 0
       }
     });
-
   }
 </script>
 
