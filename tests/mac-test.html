@@ -47,6 +47,9 @@ display: none;
   border: 2px solid #7DB249;
   box-sizing: border-box;
 }
+#input-area input.gray-input {
+  color: #aaa;
+}
 </style>
 
 </head>
@@ -79,11 +82,12 @@ display: none;
 function sendText() {
     const userInput = document.getElementById("userText").value;
     const sendBtn = document.querySelector('#input-area button');
+    const inputBox = document.getElementById("userText");
     localStorage.setItem("macMessage", userInput);
     if (userInput.trim()) {
-        // alert("入力が無事に保存されました"); // 알림창 제거!
         sendBtn.disabled = true;
-        sendBtn.textContent = "転送済"; // 버튼 텍스트도 바꿔주면 더 직관적!
+        sendBtn.textContent = "転送済";
+        inputBox.classList.add('gray-input');
     } else {
         alert("MACを貼り付けてくださいね");
     }
@@ -111,10 +115,23 @@ window.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         document.getElementById('userText').focus();
     }, 500); // 딜레이를 300ms로 늘림
+    const inputBox = document.getElementById("userText");
+    const sendBtn = document.querySelector('#input-area button');
+    inputBox.value = localStorage.getItem("macMessage") || "";
+    if (inputBox.value.trim()) {
+        inputBox.classList.add('gray-input');
+        sendBtn.disabled = true;
+        sendBtn.textContent = "転送済";
+    } else {
+        inputBox.classList.remove('gray-input');
+        sendBtn.disabled = false;
+        sendBtn.textContent = "転送";
+    }
 });
 
 document.getElementById('userText').addEventListener('input', function() {
     const sendBtn = document.querySelector('#input-area button');
+    this.classList.remove('gray-input');
     if (this.value.trim()) {
         sendBtn.disabled = false;
         sendBtn.textContent = '転送';
