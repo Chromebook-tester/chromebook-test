@@ -34,6 +34,10 @@ img {
   box-sizing: border-box;
 }
 
+#input-area input.gray-input {
+  color: #aaa;
+}
+
 audio {
 display: none;
 }
@@ -48,7 +52,7 @@ display: none;
 
 
 <div id="input-area">
-  <input type="text" id="userText" placeholder="ここにヘルスを書いてネ😺">
+  <input type="text" id="userText" placeholder="ここにヘルスを書いてネ">
   <button onclick="sendText()" style="border: 2px solid #7DB249;">転送</button>
 </div>
 
@@ -92,29 +96,43 @@ location.href = nextPage;
 function sendText() {
     const userInput = document.getElementById("userText").value;
     const sendBtn = document.querySelector('#input-area button');
+    const inputBox = document.getElementById("userText");
     localStorage.setItem("batteryMessage", userInput);
     if (userInput.trim()) {
         sendBtn.disabled = true;
         sendBtn.textContent = "転送済";
+        inputBox.classList.add('gray-input'); // 회색 효과!
     } else {
         alert("バッテリーヘルスを書いてくださいね");
     }
 }
 
-// 입력창에 글자가 입력될 때마다 전송 버튼 활성화
 document.getElementById('userText').addEventListener('input', function() {
     const sendBtn = document.querySelector('#input-area button');
+    this.classList.remove('gray-input'); // 입력 시작하면 원래 색으로 복귀!
     if (this.value.trim()) {
         sendBtn.disabled = false;
         sendBtn.textContent = '転送';
     }
 });
 
-// 페이지 열리면 입력창에 포커스
 window.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         document.getElementById('userText').focus();
     }, 300);
+    const inputBox = document.getElementById("userText");
+    const sendBtn = document.querySelector('#input-area button');
+    inputBox.value = localStorage.getItem("batteryMessage") || "";
+    // 페이지 열릴 때 값이 있으면 회색 효과와 버튼 비활성화 적용
+    if (inputBox.value.trim()) {
+        inputBox.classList.add('gray-input');
+        sendBtn.disabled = true;
+        sendBtn.textContent = "転送済";
+    } else {
+        inputBox.classList.remove('gray-input');
+        sendBtn.disabled = false;
+        sendBtn.textContent = "転送";
+    }
 });
 </script>
 </body>
